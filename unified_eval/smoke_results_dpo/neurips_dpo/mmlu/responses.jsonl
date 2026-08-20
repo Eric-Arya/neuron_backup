@@ -1,2 +1,0 @@
-{"answer": 2, "correct": false, "id": 0, "option_logits": {"A": 5.65625, "B": 2.875, "C": 3.90625, "D": 2.71875}, "prediction": 0, "prediction_letter": "A", "run_fingerprint": "d8fad7ff86d8710868a0202a5c8696f49ae09b134a4cab50b848efe0bac347f4", "subject": "abstract_algebra"}
-{"answer": 3, "correct": false, "id": 1, "option_logits": {"A": 9.9375, "B": 9.0, "C": 8.375, "D": 7.59375}, "prediction": 0, "prediction_letter": "A", "run_fingerprint": "d8fad7ff86d8710868a0202a5c8696f49ae09b134a4cab50b848efe0bac347f4", "subject": "abstract_algebra"}

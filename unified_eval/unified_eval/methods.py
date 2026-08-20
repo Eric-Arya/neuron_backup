@@ -22,19 +22,12 @@ from .common import CHOICES
 
 
 DEFAULT_LLAMA3 = Path("/workspace/xcy/models/Meta-Llama-3-8B-Instruct")
-DEFAULT_LLAMA3_DPO_ADAPTER = Path(
-    "/workspace/xcy/models/Meta-Llama-3-8B-Instruct-DPO-IA3-HH"
-)
 DEFAULT_LLAMA3_SFT_ADAPTER = Path(
-    "/workspace/xcy/models/Meta-Llama-3-8B-Instruct-SFT-IA3-SNChat256-E20"
-)
-DEFAULT_LLAMA3_DPO_PATCH_RANKING = Path(
-    "/workspace/xcy/safety_repro/neurips_neuron/output/change_scores/"
-    "llama3_instruct_vs_dpo_hh_harmless_native_completion.pt"
+    "/workspace/xcy/models/Meta-Llama-3-8B-Instruct-SFT-IA3-SNRawDot256-E20"
 )
 DEFAULT_LLAMA3_SFT_PATCH_RANKING = Path(
     "/workspace/xcy/safety_repro/neurips_neuron/output/change_scores/"
-    "llama3_instruct_vs_sft_snchat256_harmbench_dev_native_completion.pt"
+    "llama3_instruct_vs_sft_snrawdot256_alpha3_snheldout_seed42_n200_raw_completion.pt"
 )
 DEFAULT_SN_ALPHA8 = Path(
     "/workspace/xcy/safety_repro/iclr_neuron_expanded_kv/neuron_enhancement/outputs/"
@@ -50,13 +43,6 @@ DEFAULT_GRAD_RANKING = Path(
     "raw_refusal_advbench_rows100_299/top_neurons.csv"
 )
 DEFAULT_NEURIPS_REPO = Path("/workspace/xcy/safety_repro/neurips_neuron")
-DEFAULT_LLAMA2 = Path("/workspace/xcy/models/Llama-2-7b-hf")
-DEFAULT_SFT_ADAPTER = DEFAULT_NEURIPS_REPO / "output/real_run"
-DEFAULT_DPO_ADAPTER = DEFAULT_NEURIPS_REPO / "output/dpo_real_run"
-DEFAULT_NEURIPS_RANKING = (
-    DEFAULT_NEURIPS_REPO
-    / "output/change_scores/llama2_sft_vs_dpo_hh_harmless_sft_completion.pt"
-)
 
 
 DTYPES = {
@@ -150,9 +136,6 @@ class Method:
             answer = " " + choice if prefix_space else choice
             encoded = self.tokenizer.encode(answer, add_special_tokens=False)
             if prefix_space and encoded:
-                # This matches the released NeurIPS MMLU evaluator, which uses
-                # the final token of the space-prefixed option under Llama-2's
-                # SentencePiece tokenizer (the prefix can tokenize separately).
                 encoded = encoded[-1:]
             if len(encoded) != 1:
                 raise ValueError(f"MMLU option {answer!r} is not one token: {encoded}")
@@ -498,45 +481,8 @@ def _import_neurips_eval(repo: Path):
     return module
 
 
-class NeuripsMethod(Method):
-    name = "neurips"
-    prompt_style = "tulu"
-
-    def __init__(
-        self,
-        repo: Path,
-        model_path: Path,
-        sft_adapter: Path,
-        dpo_adapter: Path,
-        ranking_path: Path,
-        top_k: int,
-        base_device: str,
-        guide_device: str,
-        dtype_name: str,
-    ) -> None:
-        self.repo = repo.resolve()
-        self.model_path = model_path.resolve()
-        self.sft_adapter = sft_adapter.resolve()
-        self.dpo_adapter = dpo_adapter.resolve()
-        self.ranking_path = ranking_path.resolve()
-        self.top_k = top_k
-        self.module = _import_neurips_eval(repo)
-        self.base, self._tokenizer = self.module.load_hooked_model(
-            self.model_path, self.model_path, [], base_device, dtype_name
-        )
-        self.guide, guide_tokenizer = self.module.load_hooked_model(
-            self.model_path,
-            self.model_path,
-            [self.sft_adapter, self.dpo_adapter],
-            guide_device,
-            dtype_name,
-        )
-        if self._tokenizer.get_vocab() != guide_tokenizer.get_vocab():
-            raise ValueError("NeurIPS base and guide tokenizers differ")
-        selected, self.ranking_count = self.module.load_ranked_neurons(
-            self.ranking_path, top_k, self.base
-        )
-        self.neurons_by_layer = self.module.group_neurons(selected)
+class GuidePatchMethod(Method):
+    """Shared inference implementation for same-family activation patching."""
 
     @property
     def tokenizer(self):
@@ -591,7 +537,7 @@ class NeuripsMethod(Method):
         clear_memory()
 
 
-class Llama3GuidePatchMethod(NeuripsMethod):
+class Llama3GuidePatchMethod(GuidePatchMethod):
     """Patch ranked post-MLP activations from a Llama-3 PEFT guide."""
 
     prompt_style = "raw"
@@ -664,33 +610,57 @@ class Llama3GuidePatchMethod(NeuripsMethod):
         return logits.float().cpu()
 
 
-class NeuripsDpoMethod(Method):
-    """Standalone Llama-2 SFT+DPO guide used by the NeurIPS intervention."""
+class NeuripsDirectMethod(Method):
+    """Scale a ranked set of Llama-3 post-MLP activation dimensions."""
 
-    name = "neurips_dpo"
-    prompt_style = "tulu"
+    name = "neurips_direct"
+    prompt_style = "raw"
 
     def __init__(
         self,
         repo: Path,
         model_path: Path,
-        sft_adapter: Path,
-        dpo_adapter: Path,
+        ranking_path: Path,
+        top_k: int,
+        multiplier: float,
         device: str,
         dtype_name: str,
     ) -> None:
         self.repo = repo.resolve()
         self.model_path = model_path.resolve()
-        self.sft_adapter = sft_adapter.resolve()
-        self.dpo_adapter = dpo_adapter.resolve()
         self.module = _import_neurips_eval(repo)
         self.model, self._tokenizer = self.module.load_hooked_model(
-            self.model_path,
-            self.model_path,
-            [self.sft_adapter, self.dpo_adapter],
-            device,
-            dtype_name,
+            self.model_path, self.model_path, [], device, dtype_name
         )
+        if not torch.isfinite(torch.tensor(multiplier)) or multiplier <= 0:
+            raise ValueError("NeurIPS direct multiplier must be finite and positive")
+        self.ranking_path = ranking_path.resolve()
+        self.top_k = top_k
+        self.multiplier = float(multiplier)
+        selected, self.ranking_count = self.module.load_ranked_neurons(
+            self.ranking_path, top_k, self.model
+        )
+        self.neurons_by_layer = self.module.group_neurons(selected)
+        self.handles: list[Any] = []
+
+        def scale_hook(indices: torch.Tensor):
+            def scale(_module, _inputs, output):
+                if self.multiplier == 1.0:
+                    return output
+                scaled = output.clone()
+                scaled[..., indices] *= self.multiplier
+                return scaled
+
+            return scale
+
+        model_device = self.module.model_device(self.model)
+        for layer, neuron_list in self.neurons_by_layer.items():
+            indices = torch.tensor(neuron_list, dtype=torch.long, device=model_device)
+            self.handles.append(
+                self.model.model.layers[layer].mlp.hook_post.register_forward_hook(
+                    scale_hook(indices)
+                )
+            )
 
     @property
     def tokenizer(self):
@@ -726,89 +696,12 @@ class NeuripsDpoMethod(Method):
         return logits.float().cpu()
 
     def close(self) -> None:
-        self.model = None
-        self._tokenizer = None
-        clear_memory()
-
-
-class Llama2BaseMethod(NeuripsDpoMethod):
-    """Unmodified Llama-2 base using the released NeurIPS inference implementation."""
-
-    name = "llama2_base"
-
-    def __init__(
-        self,
-        repo: Path,
-        model_path: Path,
-        device: str,
-        dtype_name: str,
-    ) -> None:
-        self.repo = repo.resolve()
-        self.model_path = model_path.resolve()
-        self.sft_adapter = None
-        self.dpo_adapter = None
-        self.module = _import_neurips_eval(repo)
-        self.model, self._tokenizer = self.module.load_hooked_model(
-            self.model_path,
-            self.model_path,
-            [],
-            device,
-            dtype_name,
-        )
-
-
-class NeuripsDirectMethod(Llama2BaseMethod):
-    """Scale NeurIPS-ranked post-MLP activations in Llama-3 Instruct."""
-
-    name = "neurips_direct"
-    harm_prompt_style = "raw"
-
-    def __init__(
-        self,
-        repo: Path,
-        model_path: Path,
-        ranking_path: Path,
-        top_k: int,
-        multiplier: float,
-        device: str,
-        dtype_name: str,
-    ) -> None:
-        super().__init__(repo, model_path, device, dtype_name)
-        if not torch.isfinite(torch.tensor(multiplier)) or multiplier <= 0:
-            raise ValueError("NeurIPS direct multiplier must be finite and positive")
-        self.ranking_path = ranking_path.resolve()
-        self.top_k = top_k
-        self.multiplier = float(multiplier)
-        selected, self.ranking_count = self.module.load_ranked_neurons(
-            self.ranking_path, top_k, self.model
-        )
-        self.neurons_by_layer = self.module.group_neurons(selected)
-        self.handles: list[Any] = []
-
-        def scale_hook(indices: torch.Tensor):
-            def scale(_module, _inputs, output):
-                if self.multiplier == 1.0:
-                    return output
-                scaled = output.clone()
-                scaled[..., indices] *= self.multiplier
-                return scaled
-
-            return scale
-
-        model_device = self.module.model_device(self.model)
-        for layer, neuron_list in self.neurons_by_layer.items():
-            indices = torch.tensor(neuron_list, dtype=torch.long, device=model_device)
-            self.handles.append(
-                self.model.model.layers[layer].mlp.hook_post.register_forward_hook(
-                    scale_hook(indices)
-                )
-            )
-
-    def close(self) -> None:
         for handle in self.handles:
             handle.remove()
         self.handles.clear()
-        super().close()
+        self.model = None
+        self._tokenizer = None
+        clear_memory()
 
 
 def build_method(args, max_batch_size: int) -> Method:
@@ -817,29 +710,11 @@ def build_method(args, max_batch_size: int) -> Method:
             "llama3_base", args.llama3_model, args.device,
             args.llama3_base_dtype, "raw",
         )
-    if args.method == "llama3_dpo":
-        return StandardMethod(
-            "llama3_dpo", args.llama3_model, args.device,
-            args.llama3_dpo_dtype, "raw", args.llama3_dpo_adapter,
-        )
     if args.method == "llama3_sft":
         return StandardMethod(
             "llama3_sft", args.llama3_model, args.device,
             args.llama3_sft_dtype, "raw", args.llama3_sft_adapter,
             args.llama3_sft_ia3_alpha,
-        )
-    if args.method == "llama3_dpo_patch":
-        return Llama3GuidePatchMethod(
-            "llama3_dpo_patch",
-            "DPO-guide",
-            args.neurips_repo,
-            args.llama3_model,
-            args.llama3_dpo_adapter,
-            args.llama3_dpo_patch_ranking,
-            args.llama3_dpo_patch_top_k,
-            args.base_device,
-            args.guide_device,
-            args.llama3_dpo_patch_dtype,
         )
     if args.method == "llama3_sft_patch":
         return Llama3GuidePatchMethod(
@@ -870,12 +745,6 @@ def build_method(args, max_batch_size: int) -> Method:
             args.llama3_model, args.sn_direct_neurons, args.sn_direct_cap,
             args.sn_direct_strength, args.device, args.sn_direct_dtype,
         )
-    if args.method == "neurips":
-        return NeuripsMethod(
-            args.neurips_repo, args.llama2_model, args.sft_adapter,
-            args.dpo_adapter, args.neurips_ranking, args.neurips_top_k,
-            args.base_device, args.guide_device, args.neurips_dtype,
-        )
     if args.method == "neurips_direct":
         return NeuripsDirectMethod(
             args.neurips_repo,
@@ -883,22 +752,6 @@ def build_method(args, max_batch_size: int) -> Method:
             args.neurips_direct_ranking,
             args.neurips_top_k,
             args.neurips_direct_multiplier,
-            args.device,
-            args.neurips_dtype,
-        )
-    if args.method == "neurips_dpo":
-        return NeuripsDpoMethod(
-            args.neurips_repo,
-            args.llama2_model,
-            args.sft_adapter,
-            args.dpo_adapter,
-            args.device,
-            args.neurips_dtype,
-        )
-    if args.method == "llama2_base":
-        return Llama2BaseMethod(
-            args.neurips_repo,
-            args.llama2_model,
             args.device,
             args.neurips_dtype,
         )

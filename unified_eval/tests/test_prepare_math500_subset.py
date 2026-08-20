@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from prepare_math500_subset import proportional_allocation
+from scripts.prepare_math500_subset import proportional_allocation
 
 
 def test_math500_l1_l3_allocation_matches_source_ratios() -> None:

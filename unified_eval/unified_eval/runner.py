@@ -27,42 +27,29 @@ from .common import (
     extract_gsm_answer,
     extract_gsm_flexible_answer,
     extract_gsm_strict_answer,
-    finite_summary,
     format_mmlu_question,
     json_hash,
     load_resumable,
     read_jsonl,
     score_asr,
     sha256_file,
-    tulu_chat,
 )
 from .methods import (
-    DEFAULT_DPO_ADAPTER,
     DEFAULT_GRAD_RANKING,
-    DEFAULT_LLAMA2,
     DEFAULT_LLAMA3,
-    DEFAULT_LLAMA3_DPO_ADAPTER,
-    DEFAULT_LLAMA3_DPO_PATCH_RANKING,
     DEFAULT_LLAMA3_SFT_ADAPTER,
     DEFAULT_LLAMA3_SFT_PATCH_RANKING,
-    DEFAULT_NEURIPS_RANKING,
     DEFAULT_NEURIPS_REPO,
-    DEFAULT_SFT_ADAPTER,
     DEFAULT_SN_ALPHA8,
     DEFAULT_SN_DIRECT_NEURONS,
     build_method,
     clear_memory,
-    _import_neurips_eval,
 )
 
 
 DEFAULT_HARMBENCH = Path(
     "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/"
     "table1_seed42_n200.jsonl"
-)
-DEFAULT_BEAVERTAILS = Path(
-    "/workspace/xcy/dataset/projects/neurips_neuron/beavertails/splits/"
-    "figure2_seed42_n200.jsonl"
 )
 DEFAULT_GSM8K = Path("/workspace/xcy/dataset/shared/gsm8k/main")
 DEFAULT_MMLU = Path("/workspace/xcy/dataset/mmlu_balanced_5_per_subject/mmlu/all")
@@ -84,17 +71,9 @@ DEFAULT_BBH_ROOT = Path("/workspace/xcy/dataset/big_bench_hard")
 DEFAULT_BBH_EVALUATOR_ROOT = Path("/workspace/xcy/safety_repro/lm-evaluation-harness")
 DEFAULT_MATH500 = Path("/workspace/xcy/dataset/math500")
 DEFAULT_MATH500_SOURCE = DEFAULT_MATH500 / "SOURCE.json"
-DEFAULT_COST_MODEL = Path("/workspace/xcy/models/beaver-7b-v1.0-cost")
-DEFAULT_REWARD_MODEL = Path("/workspace/xcy/models/beaver-7b-v1.0-reward")
 DEFAULT_OUTPUT = Path("/workspace/xcy/safety_repro/unified_eval/results")
-DEFAULT_NEURIPS_HARM_CACHE = (
-    DEFAULT_NEURIPS_REPO / "results/table1_llama_base_harmbench"
-)
 EXPECTED_HARMBENCH_SHA256 = (
     "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c"
-)
-EXPECTED_BEAVERTAILS_SHA256 = (
-    "eb2272513b954bf097aa645b518ffc271ecb22ec815f8db4377276e19909c5e9"
 )
 BBH_ANSWER_REGEX = r"(?<=the answer is )(.*)(?=.)"
 BBH_STOP_STRINGS = ("</s>", "Q", "\n\n")
@@ -144,17 +123,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--method",
         choices=(
             "llama3_base",
-            "llama3_dpo",
             "llama3_sft",
-            "llama3_dpo_patch",
             "llama3_sft_patch",
-            "llama2_base",
             "grad",
             "sn",
             "sn_direct",
-            "neurips",
             "neurips_direct",
-            "neurips_dpo",
         ),
     )
     parser.add_argument(
@@ -166,18 +140,16 @@ def build_parser() -> argparse.ArgumentParser:
         nargs="+",
         choices=(
             "harmbench",
-            "beavertails",
             "gsm8k",
             "mmlu",
             "ifeval",
             "bbh",
             "math500",
         ),
-        default=["harmbench", "gsm8k", "mmlu"],
+        default=["harmbench"],
     )
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--harmbench", type=Path, default=DEFAULT_HARMBENCH)
-    parser.add_argument("--beavertails", type=Path, default=DEFAULT_BEAVERTAILS)
     parser.add_argument("--gsm8k", type=Path, default=DEFAULT_GSM8K)
     parser.add_argument("--mmlu", type=Path, default=DEFAULT_MMLU)
     parser.add_argument("--mmlu-manifest", type=Path, default=DEFAULT_MMLU_MANIFEST)
@@ -194,8 +166,6 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--math500", type=Path, default=DEFAULT_MATH500)
     parser.add_argument("--math500-source", type=Path, default=DEFAULT_MATH500_SOURCE)
-    parser.add_argument("--cost-model", type=Path, default=DEFAULT_COST_MODEL)
-    parser.add_argument("--reward-model", type=Path, default=DEFAULT_REWARD_MODEL)
     parser.add_argument("--llama3-model", type=Path, default=DEFAULT_LLAMA3)
     parser.add_argument(
         "--llama3-base-capability-source",
@@ -207,15 +177,12 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "--llama3-dpo-adapter", type=Path, default=DEFAULT_LLAMA3_DPO_ADAPTER
-    )
-    parser.add_argument(
         "--llama3-sft-adapter", type=Path, default=DEFAULT_LLAMA3_SFT_ADAPTER
     )
     parser.add_argument(
         "--llama3-sft-training-format",
-        choices=("raw", "chat"),
-        default="chat",
+        choices=("raw",),
+        default="raw",
         help="Serialization used to train the selected Llama-3 IA3-SFT adapter.",
     )
     parser.add_argument(
@@ -228,12 +195,6 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "--llama3-dpo-patch-ranking",
-        type=Path,
-        default=DEFAULT_LLAMA3_DPO_PATCH_RANKING,
-    )
-    parser.add_argument("--llama3-dpo-patch-top-k", type=int, default=20_000)
-    parser.add_argument(
         "--llama3-sft-patch-ranking",
         type=Path,
         default=DEFAULT_LLAMA3_SFT_PATCH_RANKING,
@@ -245,17 +206,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="float32",
     )
     parser.add_argument(
-        "--llama3-dpo-dtype",
-        choices=("bfloat16", "float16", "float32"),
-        default="float32",
-    )
-    parser.add_argument(
         "--llama3-sft-dtype",
-        choices=("bfloat16", "float16", "float32"),
-        default="float32",
-    )
-    parser.add_argument(
-        "--llama3-dpo-patch-dtype",
         choices=("bfloat16", "float16", "float32"),
         default="float32",
     )
@@ -311,17 +262,13 @@ def build_parser() -> argparse.ArgumentParser:
         default="float32",
     )
     parser.add_argument("--neurips-repo", type=Path, default=DEFAULT_NEURIPS_REPO)
-    parser.add_argument("--llama2-model", type=Path, default=DEFAULT_LLAMA2)
-    parser.add_argument("--sft-adapter", type=Path, default=DEFAULT_SFT_ADAPTER)
-    parser.add_argument("--dpo-adapter", type=Path, default=DEFAULT_DPO_ADAPTER)
-    parser.add_argument("--neurips-ranking", type=Path, default=DEFAULT_NEURIPS_RANKING)
     parser.add_argument(
         "--neurips-direct-ranking",
         type=Path,
-        default=DEFAULT_LLAMA3_DPO_PATCH_RANKING,
+        default=DEFAULT_LLAMA3_SFT_PATCH_RANKING,
         help=(
-            "Llama-3 NeurIPS-style post-MLP ranking used only by neurips_direct. "
-            "Defaults to the held-out Llama-3 Instruct-vs-DPO ranking."
+            "Llama-3 post-MLP ranking used only by neurips_direct. Defaults to "
+            "the held-out SNCorpus raw-SFT IA3 ranking."
         ),
     )
     parser.add_argument("--neurips-top-k", type=int, default=20_000)
@@ -332,44 +279,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Direct multiplier for ranked NeurIPS post-MLP activations.",
     )
     parser.add_argument(
-        "--neurips-capability-protocol",
-        choices=("paper", "table2_adapted"),
-        default="table2_adapted",
-        help=(
-            "table2_adapted uses the unified zero-shot GSM8K and five-shot MMLU protocol "
-            "(default); paper restores 8-shot GSM8K and zero-shot MMLU for Llama-2."
-        ),
-    )
-    parser.add_argument(
         "--neurips-dtype", choices=("bfloat16", "float16", "float32"), default="float32"
     )
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--base-device", default="cuda:0")
     parser.add_argument("--guide-device", default="cuda:1")
-    parser.add_argument("--cost-device", default="cuda:0")
-    parser.add_argument("--reward-device", default="cuda:0")
-    parser.add_argument(
-        "--cost-dtype", choices=("bfloat16", "float16", "float32"), default="float32"
-    )
-    parser.add_argument(
-        "--reward-dtype", choices=("bfloat16", "float16", "float32"), default="float32"
-    )
-    parser.add_argument(
-        "--skip-cost-scoring",
-        action="store_true",
-        help="Do not load or run the Beaver cost model after safety generation.",
-    )
     parser.add_argument("--harmbench-batch-size", type=int)
-    parser.add_argument("--beavertails-batch-size", type=int, default=16)
     parser.add_argument("--gsm8k-batch-size", type=int, default=16)
     parser.add_argument("--mmlu-batch-size", type=int, default=8)
     parser.add_argument("--ifeval-batch-size", type=int)
     parser.add_argument("--bbh-batch-size", type=int)
     parser.add_argument("--math500-batch-size", type=int)
-    parser.add_argument("--cost-batch-size", type=int, default=16)
-    parser.add_argument("--reward-batch-size", type=int, default=16)
     parser.add_argument("--harmbench-max-new-tokens", type=int, default=128)
-    parser.add_argument("--beavertails-max-new-tokens", type=int, default=128)
     parser.add_argument(
         "--llama3-harm-prompt-format",
         choices=("raw", "chat"),
@@ -377,25 +298,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Use raw behavior text or the tokenizer-native Llama-3 chat template for HarmBench.",
     )
     parser.add_argument(
-        "--llama3-beavertails-prompt-format",
-        choices=("raw", "chat"),
-        default="raw",
-        help=(
-            "Use raw question text or the tokenizer-native Llama-3 chat template "
-            "for BeaverTails."
-        ),
-    )
-    parser.add_argument(
         "--gsm8k-max-new-tokens",
         type=int,
         default=None,
         help=(
-            "GSM8K generation limit (default: 256 for grad/SN; "
-            "1024 for NeurIPS Llama-2 methods)."
+            "GSM8K generation limit (default: 256)."
         ),
     )
     parser.add_argument("--harmbench-limit", type=int)
-    parser.add_argument("--beavertails-limit", type=int)
     parser.add_argument("--gsm8k-limit", type=int)
     parser.add_argument("--mmlu-limit", type=int)
     parser.add_argument("--ifeval-limit", type=int)
@@ -411,16 +321,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--benchmark-max-new-tokens", type=int, default=8)
     parser.add_argument(
         "--benchmark-task",
-        choices=("harmbench", "beavertails", "ifeval", "bbh", "math500"),
+        choices=("harmbench", "ifeval", "bbh", "math500"),
         default="harmbench",
-    )
-    parser.add_argument(
-        "--reuse-neurips-harm-cache",
-        action=argparse.BooleanOptionalAction,
-        default=True,
-    )
-    parser.add_argument(
-        "--neurips-harm-cache", type=Path, default=DEFAULT_NEURIPS_HARM_CACHE
     )
     return parser
 
@@ -430,28 +332,17 @@ def require_method(args: argparse.Namespace) -> None:
         raise SystemExit(f"--method is required for {args.command}")
 
 
-def is_llama2_method(name: str) -> bool:
-    return name in {"llama2_base", "neurips", "neurips_dpo"}
-
-
 def neurips_direct_selection_source(ranking: Path) -> str:
     name = ranking.name.lower()
     if "vs_sft" in name:
         return "Llama-3 NeurIPS-style Instruct-vs-SFT safety-neuron ranking"
-    if "vs_dpo" in name:
-        return "Llama-3 NeurIPS-style Instruct-vs-DPO safety-neuron ranking"
     return "custom Llama-3 NeurIPS-style safety-neuron ranking"
 
 
 def resolve_method_defaults(args: argparse.Namespace) -> None:
     """Apply model-family defaults while preserving explicit CLI overrides."""
     if args.gsm8k_max_new_tokens is None and args.method is not None:
-        args.gsm8k_max_new_tokens = (
-            1024
-            if is_llama2_method(args.method)
-            and args.neurips_capability_protocol == "paper"
-            else 256
-        )
+        args.gsm8k_max_new_tokens = 256
     if args.math500_batch_size is None:
         # The two-model BF16 IA3 guide patch was benchmarked separately on real
         # MATH-500 prompts; batch 32 is fastest and peaks below 45 GiB on H100.
@@ -479,19 +370,14 @@ def validate_positive(args: argparse.Namespace) -> None:
     numbers = (
         args.grad_top_k,
         args.neurips_top_k,
-        args.llama3_dpo_patch_top_k,
         args.llama3_sft_patch_top_k,
         args.harmbench_batch_size,
-        args.beavertails_batch_size,
         args.gsm8k_batch_size,
         args.mmlu_batch_size,
         args.ifeval_batch_size,
         args.bbh_batch_size,
         args.math500_batch_size,
-        args.cost_batch_size,
-        args.reward_batch_size,
         args.harmbench_max_new_tokens,
-        args.beavertails_max_new_tokens,
         args.gsm8k_max_new_tokens,
         args.ifeval_max_new_tokens,
         args.bbh_max_new_tokens,
@@ -516,7 +402,6 @@ def validate_positive(args: argparse.Namespace) -> None:
         raise ValueError("llama3-sft-ia3-alpha must be finite and nonnegative")
     for value in (
         args.harmbench_limit,
-        args.beavertails_limit,
         args.gsm8k_limit,
         args.mmlu_limit,
         args.ifeval_limit,
@@ -544,16 +429,6 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
         args.mmlu,
         args.mmlu_manifest,
     ]
-    if not args.skip_cost_scoring:
-        required.append(args.cost_model / "config.json")
-    if "beavertails" in args.tasks:
-        required.extend(
-            (
-                args.beavertails,
-                args.reward_model / "config.json",
-                args.reward_model / "model.safetensors.index.json",
-            )
-        )
     if "ifeval" in args.tasks:
         required.extend(
             (
@@ -579,30 +454,12 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
         required.append(args.llama3_model / "config.json")
         if args.llama3_base_capability_source == "inherited":
             required.extend((LLAMA3_BASE_GSM_SOURCE, LLAMA3_BASE_MMLU_SOURCE))
-    elif args.method == "llama3_dpo":
-        required.extend(
-            (
-                args.llama3_model / "config.json",
-                args.llama3_dpo_adapter / "adapter_config.json",
-                args.llama3_dpo_adapter / "adapter_model.safetensors",
-            )
-        )
     elif args.method == "llama3_sft":
         required.extend(
             (
                 args.llama3_model / "config.json",
                 args.llama3_sft_adapter / "adapter_config.json",
                 args.llama3_sft_adapter / "adapter_model.safetensors",
-            )
-        )
-    elif args.method == "llama3_dpo_patch":
-        required.extend(
-            (
-                args.neurips_repo,
-                args.llama3_model / "config.json",
-                args.llama3_dpo_adapter / "adapter_config.json",
-                args.llama3_dpo_adapter / "adapter_model.safetensors",
-                args.llama3_dpo_patch_ranking,
             )
         )
     elif args.method == "llama3_sft_patch":
@@ -623,22 +480,6 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
             required.append(args.sn_model / "delta_scale_config.json")
     elif args.method == "sn_direct":
         required.extend((args.llama3_model / "config.json", args.sn_direct_neurons))
-    elif args.method == "llama2_base":
-        required.extend(
-            (
-                args.neurips_repo,
-                args.llama2_model / "config.json",
-            )
-        )
-    elif args.method in {"neurips", "neurips_dpo"}:
-        required.extend(
-            (
-                args.llama2_model / "config.json",
-                args.sft_adapter / "adapter_config.json",
-                args.dpo_adapter / "adapter_config.json",
-                args.neurips_ranking,
-            )
-        )
     elif args.method == "neurips_direct":
         required.extend(
             (
@@ -661,29 +502,6 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("HarmBench must be the unique 200-row NeurIPS manifest")
     if any(not isinstance(row.get("prompt"), str) or not row["prompt"] for row in harm):
         raise ValueError("Every HarmBench record needs a prompt")
-
-    beavertails = None
-    beavertails_hash = None
-    if "beavertails" in args.tasks:
-        beavertails = read_jsonl(args.beavertails)
-        beavertails_hash = sha256_file(args.beavertails)
-        if beavertails_hash != EXPECTED_BEAVERTAILS_SHA256:
-            raise ValueError(
-                "BeaverTails manifest hash mismatch: "
-                f"{beavertails_hash}; expected {EXPECTED_BEAVERTAILS_SHA256}"
-            )
-        if (
-            len(beavertails) != 200
-            or len({row.get("id") for row in beavertails}) != 200
-        ):
-            raise ValueError(
-                "BeaverTails must be the unique paper-protocol 200-row manifest"
-            )
-        if any(
-            not isinstance(row.get("prompt"), str) or not row["prompt"]
-            for row in beavertails
-        ):
-            raise ValueError("Every BeaverTails record needs a prompt")
 
     gsm = load_from_disk(str(args.gsm8k))
     if len(gsm["test"]) < 100:
@@ -720,51 +538,19 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
             "test_arrow_sha256": dataset_arrow_hash(args.mmlu, "test"),
             "dev_arrow_sha256": dataset_arrow_hash(args.mmlu, "dev"),
         },
-        "cost_model": str(args.cost_model.resolve()),
-        "cost_dtype": args.cost_dtype,
-        "reward_model": str(args.reward_model.resolve()),
-        "reward_dtype": args.reward_dtype,
         "prompt_protocol": {
             "harmbench": (
-                "Tulu chat"
-                if is_llama2_method(args.method)
-                else "native Llama-3 chat"
+                "native Llama-3 chat"
                 if args.llama3_harm_prompt_format == "chat"
                 else "raw behavior text"
             ),
-            "beavertails": (
-                "Tulu chat"
-                if is_llama2_method(args.method)
-                else "native Llama-3 chat"
-                if args.llama3_beavertails_prompt_format == "chat"
-                else "raw question text"
-            ),
-            "gsm8k": (
-                "8-shot CoT Tulu with requested #### answer delimiter"
-                if is_llama2_method(args.method)
-                and args.neurips_capability_protocol == "paper"
-                else "zero-shot chat with step-by-step answer prefix"
-            ),
-            "mmlu": (
-                "zero-shot Tulu with constrained next-token scoring"
-                if is_llama2_method(args.method)
-                and args.neurips_capability_protocol == "paper"
-                else "five-shot multi-turn chat with constrained next-token scoring"
-            ),
+            "gsm8k": "zero-shot chat with step-by-step answer prefix",
+            "mmlu": "five-shot multi-turn chat with constrained next-token scoring",
             "ifeval": "task-native single-turn chat",
             "bbh": "official raw three-shot CoT text completion",
             "math500": "publisher zero-shot CoT prompt in task-native chat",
         },
     }
-    if beavertails is not None:
-        validation["beavertails"] = {
-            "path": str(args.beavertails.resolve()),
-            "sha256": beavertails_hash,
-            "count": len(beavertails),
-            "source_split": "PKU-Alignment/BeaverTails round0/330k/test",
-            "selection": "seed 42 random.sample of 200 from the final 600 rows",
-            "prompt_only": True,
-        }
     if "ifeval" in args.tasks:
         ifeval = read_jsonl(args.ifeval)
         ifeval_hash = sha256_file(args.ifeval)
@@ -929,9 +715,6 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
 def semantic_config(
     args: argparse.Namespace, validation: dict[str, Any]
 ) -> dict[str, Any]:
-    neurips_strict_gsm = (
-        is_llama2_method(args.method) and args.neurips_capability_protocol == "paper"
-    )
     common = {
         "method": args.method,
         "floating_point_protocol": floating_point_protocol(),
@@ -944,26 +727,10 @@ def semantic_config(
             "flexible numeric exact match: final ####, final answer phrase, "
             "final equation RHS, then last-number fallback"
         ),
-        "gsm8k_hash_delimiter_requested": neurips_strict_gsm,
-        "metrics": [
-            "llm-attacks case-sensitive refusal-substring ASR",
-            "beaver-7b-v1.0-cost",
-        ],
-        "cost_model": str(args.cost_model.resolve()),
+        "gsm8k_hash_delimiter_requested": False,
+        "metrics": ["llm-attacks case-sensitive refusal-substring ASR"],
+        "cost_scoring": False,
     }
-    if args.skip_cost_scoring:
-        common["metrics"] = ["llm-attacks case-sensitive refusal-substring ASR"]
-        common["cost_scoring"] = False
-        common.pop("cost_model")
-    if "beavertails" in args.tasks:
-        # Keep historical non-BeaverTails fingerprints stable.
-        common["datasets"]["beavertails"] = validation["beavertails"]
-        common["beavertails_max_new_tokens"] = args.beavertails_max_new_tokens
-        common["beavertails_prompt_format"] = (
-            "tulu_chat"
-            if is_llama2_method(args.method)
-            else f"llama3_{args.llama3_beavertails_prompt_format}"
-        )
     if "ifeval" in args.tasks:
         common["datasets"]["ifeval"] = validation["ifeval"]
         common["ifeval_max_new_tokens"] = args.ifeval_max_new_tokens
@@ -987,20 +754,11 @@ def semantic_config(
         common["math500_answer_protocol"] = (
             "math_verify parse/verify over full reference solution and generation"
         )
-    if is_llama2_method(args.method):
-        common["neurips_capability_protocol"] = args.neurips_capability_protocol
-    elif args.llama3_harm_prompt_format == "chat":
+    if args.llama3_harm_prompt_format == "chat":
         # Keep the historical raw-prompt semantic payload unchanged while
         # fingerprinting native-chat safety runs as a distinct condition.
         common["harmbench_prompt_format"] = "native_llama3_chat"
-    if args.method == "llama2_base":
-        common["intervention"] = {
-            "model": str(args.llama2_model.resolve()),
-            "model_config_sha256": sha256_file(args.llama2_model / "config.json"),
-            "condition": "unmodified pretrained base model; no SFT/DPO adapters or patch",
-            "dtype": args.neurips_dtype,
-        }
-    elif args.method == "llama3_base":
+    if args.method == "llama3_base":
         common["intervention"] = {
             "model": str(args.llama3_model.resolve()),
             "model_config_sha256": sha256_file(args.llama3_model / "config.json"),
@@ -1012,20 +770,6 @@ def semantic_config(
             common["inherited_capability_sources"] = validation[
                 "inherited_capability_sources"
             ]
-    elif args.method == "llama3_dpo":
-        common["intervention"] = {
-            "model": str(args.llama3_model.resolve()),
-            "model_config_sha256": sha256_file(args.llama3_model / "config.json"),
-            "dpo_adapter": str(args.llama3_dpo_adapter.resolve()),
-            "dpo_adapter_config_sha256": sha256_file(
-                args.llama3_dpo_adapter / "adapter_config.json"
-            ),
-            "dpo_adapter_model_sha256": sha256_file(
-                args.llama3_dpo_adapter / "adapter_model.safetensors"
-            ),
-            "condition": "standalone Llama-3-8B-Instruct plus HH-harmless DPO IA3 adapter",
-            "dtype": args.llama3_dpo_dtype,
-        }
     elif args.method == "llama3_sft":
         common["intervention"] = {
             "model": str(args.llama3_model.resolve()),
@@ -1045,23 +789,6 @@ def semantic_config(
             "ia3_displacement_alpha": args.llama3_sft_ia3_alpha,
             "ia3_scaling_formula": "1 + alpha * (trained_gate - 1)",
             "dtype": args.llama3_sft_dtype,
-        }
-    elif args.method == "llama3_dpo_patch":
-        common["intervention"] = {
-            "model": str(args.llama3_model.resolve()),
-            "model_config_sha256": sha256_file(args.llama3_model / "config.json"),
-            "dpo_adapter": str(args.llama3_dpo_adapter.resolve()),
-            "dpo_adapter_config_sha256": sha256_file(
-                args.llama3_dpo_adapter / "adapter_config.json"
-            ),
-            "dpo_adapter_model_sha256": sha256_file(
-                args.llama3_dpo_adapter / "adapter_model.safetensors"
-            ),
-            "ranking": str(args.llama3_dpo_patch_ranking.resolve()),
-            "ranking_sha256": sha256_file(args.llama3_dpo_patch_ranking),
-            "top_k": args.llama3_dpo_patch_top_k,
-            "patch": "copy HH-DPO-guide post-MLP activations into Llama-3 Instruct base",
-            "dtype": args.llama3_dpo_patch_dtype,
         }
     elif args.method == "llama3_sft_patch":
         common["intervention"] = {
@@ -1127,18 +854,6 @@ def semantic_config(
             "condition": "direct activation scaling; no fine-tuning or trained weights",
             "dtype": args.sn_direct_dtype,
         }
-    elif args.method == "neurips":
-        common["intervention"] = {
-            "model": str(args.llama2_model.resolve()),
-            "model_config_sha256": sha256_file(args.llama2_model / "config.json"),
-            "sft_adapter": str(args.sft_adapter.resolve()),
-            "dpo_adapter": str(args.dpo_adapter.resolve()),
-            "ranking": str(args.neurips_ranking.resolve()),
-            "ranking_sha256": sha256_file(args.neurips_ranking),
-            "top_k": args.neurips_top_k,
-            "patch": "copy DPO-guide post-MLP activations into Llama-2 base",
-            "dtype": args.neurips_dtype,
-        }
     elif args.method == "neurips_direct":
         common["intervention"] = {
             "model": str(args.llama3_model.resolve()),
@@ -1157,14 +872,7 @@ def semantic_config(
             "dtype": args.neurips_dtype,
         }
     else:
-        common["intervention"] = {
-            "model": str(args.llama2_model.resolve()),
-            "model_config_sha256": sha256_file(args.llama2_model / "config.json"),
-            "sft_adapter": str(args.sft_adapter.resolve()),
-            "dpo_adapter": str(args.dpo_adapter.resolve()),
-            "condition": "standalone SFT+DPO model",
-            "dtype": args.neurips_dtype,
-        }
+        raise ValueError(f"Unsupported method: {args.method}")
     return common
 
 
@@ -1180,27 +888,19 @@ def ensure_config(args: argparse.Namespace, semantic: dict[str, Any]) -> Path:
             "floating_point_protocol": floating_point_protocol(),
             "batch_sizes": {
                 "harmbench": args.harmbench_batch_size,
-                "beavertails": args.beavertails_batch_size,
                 "gsm8k": args.gsm8k_batch_size,
                 "mmlu": args.mmlu_batch_size,
                 "bbh": args.bbh_batch_size,
                 "math500": args.math500_batch_size,
-                "cost": args.cost_batch_size,
-                "reward": args.reward_batch_size,
             },
             "dtypes": {
                 "llama3_base": args.llama3_base_dtype,
-                "llama3_dpo": args.llama3_dpo_dtype,
                 "llama3_sft": args.llama3_sft_dtype,
-                "llama3_dpo_patch": args.llama3_dpo_patch_dtype,
                 "llama3_sft_patch": args.llama3_sft_patch_dtype,
                 "grad": args.grad_dtype,
                 "sn": args.sn_dtype,
                 "sn_direct": args.sn_direct_dtype,
-                "neurips": args.neurips_dtype,
                 "neurips_direct": args.neurips_dtype,
-                "cost": args.cost_dtype,
-                "reward": args.reward_dtype,
             },
         },
     }
@@ -1222,8 +922,6 @@ def limit_count(total: int, value: int | None, default: int) -> int:
 
 
 def render_user(method, content: str) -> str:
-    if is_llama2_method(method.name):
-        return tulu_chat([{"role": "user", "content": content}])
     return method.tokenizer.apply_chat_template(
         [{"role": "user", "content": content}],
         tokenize=False,
@@ -1256,16 +954,9 @@ def score_math500_response(solution: str, response: str) -> dict[str, Any]:
 
 
 def render_harm_prompt(args: argparse.Namespace, method, prompt: str) -> str:
-    # Preserve each reproduction's safety protocol: raw Llama-3 prompts and Tulu Llama-2.
     if getattr(method, "harm_prompt_style", None) == "raw":
         return prompt
-    if is_llama2_method(method.name) or args.llama3_harm_prompt_format == "chat":
-        return render_user(method, prompt)
-    return prompt
-
-
-def render_beavertails_prompt(args: argparse.Namespace, method, prompt: str) -> str:
-    if is_llama2_method(method.name) or args.llama3_beavertails_prompt_format == "chat":
+    if args.llama3_harm_prompt_format == "chat":
         return render_user(method, prompt)
     return prompt
 
@@ -1295,31 +986,7 @@ def truncate_bbh_response(response: str) -> tuple[str, str | None]:
     return response[:index], stop
 
 
-def gsm_prompts(method, dataset, count: int, neurips_protocol: str) -> list[str]:
-    if is_llama2_method(method.name) and neurips_protocol == "paper":
-        from eval.gsm.examplars import EXAMPLARS
-
-        demonstrations = "\n\n".join(
-            f"Question: {record['question']}\n"
-            f"Answer: {record['cot_answer']} #### {record['short_answer']}"
-            for record in EXAMPLARS[:8]
-        )
-        prefix = (
-            "Answer the following questions. Show your reasoning, then end each answer "
-            "with exactly `#### <number>`.\n\n" + demonstrations + "\n\n"
-        )
-        return [
-            tulu_chat(
-                [
-                    {
-                        "role": "user",
-                        "content": prefix + f"Question: {record['question'].strip()}",
-                    }
-                ]
-            )
-            + "Answer:"
-            for record in dataset["test"].select(range(count))
-        ]
+def gsm_prompts(method, dataset, count: int) -> list[str]:
     prompts = []
     for record in dataset["test"].select(range(count)):
         content = f"Question: {record['question']}\nAnswer: Let's think step by step."
@@ -1327,7 +994,7 @@ def gsm_prompts(method, dataset, count: int, neurips_protocol: str) -> list[str]
     return prompts
 
 
-def mmlu_prompts(method, dataset, count: int, neurips_protocol: str) -> list[str]:
+def mmlu_prompts(method, dataset, count: int) -> list[str]:
     dev_by_subject: dict[str, list[dict[str, Any]]] = {}
     for record in dataset["dev"]:
         dev_by_subject.setdefault(record["subject"], []).append(record)
@@ -1338,12 +1005,6 @@ def mmlu_prompts(method, dataset, count: int, neurips_protocol: str) -> list[str
             "The following are multiple choice questions (with answers) about "
             f"{subject.replace('_', ' ')}.\n\n"
         )
-        if is_llama2_method(method.name) and neurips_protocol == "paper":
-            prompt = header + format_mmlu_question(record, False)
-            prompts.append(
-                tulu_chat([{"role": "user", "content": prompt}]) + "The answer is:"
-            )
-            continue
         messages: list[dict[str, str]] = []
         for index, example in enumerate(dev_by_subject[subject][:5]):
             question = format_mmlu_question(example, False)
@@ -1358,93 +1019,16 @@ def mmlu_prompts(method, dataset, count: int, neurips_protocol: str) -> list[str
         messages.append(
             {"role": "user", "content": format_mmlu_question(record, False)}
         )
-        if is_llama2_method(method.name):
-            prompts.append(tulu_chat(messages))
-        else:
-            prompts.append(
-                method.tokenizer.apply_chat_template(
-                    messages, tokenize=False, add_generation_prompt=True
-                )
+        prompts.append(
+            method.tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True
             )
+        )
     return prompts
 
 
 def task_fingerprint(semantic: dict[str, Any], task: str, count: int) -> str:
     return json_hash({"semantic": semantic, "task": task, "count": count})
-
-
-def import_neurips_harm_cache(
-    args: argparse.Namespace,
-    source: Sequence[dict[str, Any]],
-    fingerprint: str,
-    response_path: Path,
-    cost_path: Path,
-) -> bool:
-    if not (
-        args.method in {"llama2_base", "neurips", "neurips_dpo"}
-        and args.reuse_neurips_harm_cache
-        and len(source) == 200
-        and args.harmbench_limit is None
-        and args.harmbench_max_new_tokens == 128
-        and (
-            args.method in {"llama2_base", "neurips_dpo"}
-            or args.neurips_top_k == 20_000
-        )
-    ):
-        return False
-    cache = args.neurips_harm_cache
-    frozen = read_jsonl(cache / "prompt_manifest.jsonl")
-    if [(row["id"], row["prompt"]) for row in frozen] != [
-        (row["id"], row["prompt"]) for row in source
-    ]:
-        raise ValueError(
-            "NeurIPS HarmBench cache manifest does not match requested manifest"
-        )
-    condition = {
-        "llama2_base": "base",
-        "neurips_dpo": "dpo",
-        "neurips": "patched",
-    }[args.method]
-    generations: dict[str, dict[str, Any]] = {}
-    costs: dict[str, dict[str, Any]] = {}
-    for path in sorted((cache / f"generations/{condition}").glob("batch_*.jsonl")):
-        for row in read_jsonl(path):
-            generations[row["id"]] = row
-    for path in sorted((cache / f"costs/{condition}").glob("batch_*.jsonl")):
-        for row in read_jsonl(path):
-            costs[row["id"]] = row
-    expected = {row["id"] for row in source}
-    if set(generations) != expected or set(costs) != expected:
-        raise ValueError("NeurIPS cache is incomplete")
-    response_rows = []
-    cost_rows = []
-    for row in source:
-        cached = generations[row["id"]]
-        response_rows.append(
-            {
-                "id": row["id"],
-                "source_index": row["source_index"],
-                "behavior_id": row["behavior_id"],
-                "prompt": row["prompt"],
-                "formatted_prompt": cached["formatted_prompt"],
-                "response": cached["completion"],
-                "score_text": cached["score_text"],
-                "generated_token_count": cached["generated_token_count"],
-                "run_fingerprint": fingerprint,
-                "provenance": f"verified_neurips_{condition}_cache",
-            }
-        )
-        cost_rows.append(
-            {
-                "id": row["id"],
-                "cost": float(costs[row["id"]]["cost"]),
-                "run_fingerprint": fingerprint,
-                "provenance": f"verified_neurips_{condition}_cache",
-            }
-        )
-    atomic_write_jsonl(response_path, response_rows)
-    atomic_write_jsonl(cost_path, cost_rows)
-    return True
 
 
 def run_harmbench(args, method, semantic, run_dir: Path) -> Path:
@@ -1454,13 +1038,8 @@ def run_harmbench(args, method, semantic, run_dir: Path) -> Path:
     fingerprint = task_fingerprint(semantic, "harmbench", count)
     task_dir = run_dir / "harmbench"
     response_path = task_dir / "responses.jsonl"
-    cost_path = task_dir / "costs.jsonl"
     ids = {row["id"] for row in source}
     completed = load_resumable(response_path, fingerprint, ids)
-    if not completed and import_neurips_harm_cache(
-        args, source, fingerprint, response_path, cost_path
-    ):
-        completed = load_resumable(response_path, fingerprint, ids)
     pending = [row for row in source if row["id"] not in completed]
     for start in range(0, len(pending), args.harmbench_batch_size):
         batch = pending[start : start + args.harmbench_batch_size]
@@ -1498,67 +1077,6 @@ def run_harmbench(args, method, semantic, run_dir: Path) -> Path:
         "attack_success_rate": 100.0 * attacks / count,
         "asr_rule": "case-sensitive llm-attacks refusal-substring absence",
         "blank_responses": sum(not str(row["response"]).strip() for row in scored),
-        "mean_beaver_cost": None,
-        "run_fingerprint": fingerprint,
-    }
-    atomic_write_json(task_dir / "summary.json", summary)
-    return task_dir
-
-
-def run_beavertails(args, method, semantic, run_dir: Path) -> Path:
-    source_all = read_jsonl(args.beavertails)
-    count = limit_count(len(source_all), args.beavertails_limit, 200)
-    source = source_all[:count]
-    fingerprint = task_fingerprint(semantic, "beavertails", count)
-    task_dir = run_dir / "beavertails"
-    response_path = task_dir / "responses.jsonl"
-    ids = {row["id"] for row in source}
-    completed = load_resumable(response_path, fingerprint, ids)
-    pending = [row for row in source if row["id"] not in completed]
-    for start in range(0, len(pending), args.beavertails_batch_size):
-        batch = pending[start : start + args.beavertails_batch_size]
-        prompts = [
-            render_beavertails_prompt(args, method, str(row["prompt"])) for row in batch
-        ]
-        started = time.perf_counter()
-        outputs = method.generate(prompts, args.beavertails_max_new_tokens)
-        elapsed = time.perf_counter() - started
-        rows = [
-            {
-                **source_row,
-                "formatted_prompt": prompt,
-                **output,
-                "batch_elapsed_seconds": elapsed,
-                "run_fingerprint": fingerprint,
-            }
-            for source_row, prompt, output in zip(batch, prompts, outputs)
-        ]
-        append_jsonl(response_path, rows)
-        completed.update({row["id"]: row for row in rows})
-        print(f"{args.method} BeaverTails {len(completed)}/{count}", flush=True)
-    ordered = [completed[row["id"]] for row in source]
-    atomic_write_jsonl(response_path, ordered)
-    summary = {
-        "benchmark": "BeaverTails",
-        "subset": (
-            "round0/330k/test; seed-42 random sample of 200 from final 600 rows"
-        ),
-        "num_samples": count,
-        "prompt_only": True,
-        "prompt_format": (
-            "Tulu chat"
-            if is_llama2_method(args.method)
-            else "native Llama-3 chat"
-            if args.llama3_beavertails_prompt_format == "chat"
-            else "raw question text"
-        ),
-        "max_new_tokens": args.beavertails_max_new_tokens,
-        "blank_responses": sum(not str(row["response"]).strip() for row in ordered),
-        "mean_beaver_cost": None,
-        "primary_metrics": [
-            "mean beaver-7b-v1.0-cost (lower is safer)",
-            "mean beaver-7b-v1.0-reward (higher is more helpful)",
-        ],
         "run_fingerprint": fingerprint,
     }
     atomic_write_json(task_dir / "summary.json", summary)
@@ -1573,10 +1091,7 @@ def run_gsm8k(args, method, semantic, run_dir: Path) -> None:
     response_path = task_dir / "responses.jsonl"
     ids = set(range(count))
     completed = load_resumable(response_path, fingerprint, ids)
-    prompts = gsm_prompts(method, dataset, count, args.neurips_capability_protocol)
-    strict_answers = (
-        is_llama2_method(args.method) and args.neurips_capability_protocol == "paper"
-    )
+    prompts = gsm_prompts(method, dataset, count)
     pending = [index for index in range(count) if index not in completed]
     for start in range(0, len(pending), args.gsm8k_batch_size):
         indices = pending[start : start + args.gsm8k_batch_size]
@@ -1600,9 +1115,7 @@ def run_gsm8k(args, method, semantic, run_dir: Path) -> None:
                     "strict_prediction": strict_prediction,
                     "answer": answer,
                     "correct": prediction is not None and prediction == answer,
-                    "format_compliant": (
-                        strict_prediction is not None if strict_answers else None
-                    ),
+                    "format_compliant": None,
                     "run_fingerprint": fingerprint,
                 }
             )
@@ -1623,9 +1136,7 @@ def run_gsm8k(args, method, semantic, run_dir: Path) -> None:
             "strict_prediction": strict_prediction,
             "answer": answer,
             "correct": prediction is not None and prediction == answer,
-            "format_compliant": strict_prediction is not None
-            if strict_answers
-            else None,
+            "format_compliant": None,
         }
     atomic_write_jsonl(response_path, (completed[index] for index in range(count)))
 
@@ -1634,15 +1145,8 @@ def run_gsm8k(args, method, semantic, run_dir: Path) -> None:
         "benchmark": "GSM8K",
         "subset": f"first {count} test rows",
         "num_samples": count,
-        "prompt_format": "Tulu chat"
-        if is_llama2_method(args.method)
-        else "Llama-3 chat",
-        "num_fewshot": (
-            8
-            if is_llama2_method(args.method)
-            and args.neurips_capability_protocol == "paper"
-            else 0
-        ),
+        "prompt_format": "Llama-3 chat",
+        "num_fewshot": 0,
         "max_new_tokens": args.gsm8k_max_new_tokens,
         "answer_extraction": (
             "flexible numeric exact match: final ####, final answer phrase, "
@@ -1666,42 +1170,10 @@ def run_gsm8k(args, method, semantic, run_dir: Path) -> None:
                 "last_number_fallback",
             )
         },
-        "strict_correct": (
-            sum(
-                completed[index].get("strict_prediction") == completed[index]["answer"]
-                for index in range(count)
-            )
-            if strict_answers
-            else None
-        ),
-        "strict_accuracy": (
-            100.0
-            * sum(
-                completed[index].get("strict_prediction") == completed[index]["answer"]
-                for index in range(count)
-            )
-            / count
-            if strict_answers
-            else None
-        ),
-        "format_compliance_count": (
-            sum(
-                completed[index].get("strict_prediction") is not None
-                for index in range(count)
-            )
-            if strict_answers
-            else None
-        ),
-        "format_compliance_percent": (
-            100.0
-            * sum(
-                completed[index].get("strict_prediction") is not None
-                for index in range(count)
-            )
-            / count
-            if strict_answers
-            else None
-        ),
+        "strict_correct": None,
+        "strict_accuracy": None,
+        "format_compliance_count": None,
+        "format_compliance_percent": None,
         "run_fingerprint": fingerprint,
     }
     atomic_write_json(task_dir / "summary.json", summary)
@@ -1807,11 +1279,8 @@ def run_mmlu(args, method, semantic, run_dir: Path) -> None:
     response_path = task_dir / "responses.jsonl"
     ids = set(range(count))
     completed = load_resumable(response_path, fingerprint, ids)
-    prompts = mmlu_prompts(method, dataset, count, args.neurips_capability_protocol)
-    paper_neurips = (
-        is_llama2_method(args.method) and args.neurips_capability_protocol == "paper"
-    )
-    option_ids = method.option_token_ids(prefix_space=paper_neurips)
+    prompts = mmlu_prompts(method, dataset, count)
+    option_ids = method.option_token_ids()
     pending = [index for index in range(count) if index not in completed]
     for start in range(0, len(pending), args.mmlu_batch_size):
         indices = pending[start : start + args.mmlu_batch_size]
@@ -1848,14 +1317,8 @@ def run_mmlu(args, method, semantic, run_dir: Path) -> None:
         "benchmark": "MMLU",
         "subset": "seed-112, 5 test questions per 57 subjects",
         "num_samples": count,
-        "num_fewshot": 0 if paper_neurips else 5,
-        "prompt_format": (
-            "single-turn Tulu chat with assistant answer prefix"
-            if paper_neurips
-            else "multi-turn Tulu chat"
-            if is_llama2_method(args.method)
-            else "multi-turn Llama-3 chat"
-        ),
+        "num_fewshot": 5,
+        "prompt_format": "multi-turn Llama-3 chat",
         "correct": correct,
         "accuracy": 100.0 * correct / count,
         "subject_macro_accuracy": sum(subject_accuracy.values())
@@ -2128,115 +1591,6 @@ def run_ifeval(args, method, semantic, run_dir: Path) -> None:
     atomic_write_json(task_dir / "summary.json", summary)
 
 
-def score_task_cost(args, run_dir: Path, task: str) -> None:
-    task_dir = run_dir / task
-    response_path = task_dir / "responses.jsonl"
-    if not response_path.exists():
-        return
-    responses = read_jsonl(response_path)
-    if not responses:
-        raise ValueError(f"No {task} responses to score")
-    fingerprint = responses[0]["run_fingerprint"]
-    ids = {row["id"] for row in responses}
-    cost_path = task_dir / "costs.jsonl"
-    completed = load_resumable(cost_path, fingerprint, ids)
-    pending = [row for row in responses if row["id"] not in completed]
-    if pending:
-        module = _import_neurips_eval(args.neurips_repo)
-        model, tokenizer = module.load_score_model(
-            args.cost_model, args.cost_device, args.cost_dtype
-        )
-        direction = module.validate_cost_direction(model, tokenizer)
-        atomic_write_json(task_dir / "cost_direction.json", direction)
-        try:
-            for start in range(0, len(pending), args.cost_batch_size):
-                batch = pending[start : start + args.cost_batch_size]
-                values = module.score_texts(
-                    model, tokenizer, [str(row["score_text"]) for row in batch]
-                )
-                rows = [
-                    {"id": row["id"], "cost": value, "run_fingerprint": fingerprint}
-                    for row, value in zip(batch, values)
-                ]
-                append_jsonl(cost_path, rows)
-                completed.update({row["id"]: row for row in rows})
-                print(
-                    f"{args.method} Beaver cost {len(completed)}/{len(responses)}",
-                    flush=True,
-                )
-        finally:
-            model = tokenizer = None
-            clear_memory()
-    costs = [float(completed[row["id"]]["cost"]) for row in responses]
-    cost_summary = finite_summary(costs)
-    summary_path = task_dir / "summary.json"
-    summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    summary["mean_beaver_cost"] = cost_summary["mean"]
-    summary["beaver_cost"] = cost_summary
-    summary["lower_cost_is_safer"] = True
-    atomic_write_json(summary_path, summary)
-
-
-def score_harmbench_cost(args, run_dir: Path) -> None:
-    score_task_cost(args, run_dir, "harmbench")
-
-
-def score_beavertails_cost(args, run_dir: Path) -> None:
-    score_task_cost(args, run_dir, "beavertails")
-
-
-def score_beavertails_reward(args, run_dir: Path) -> None:
-    task_dir = run_dir / "beavertails"
-    response_path = task_dir / "responses.jsonl"
-    if not response_path.exists():
-        return
-    responses = read_jsonl(response_path)
-    if not responses:
-        raise ValueError("No beavertails responses to score")
-    fingerprint = responses[0]["run_fingerprint"]
-    ids = {row["id"] for row in responses}
-    reward_path = task_dir / "rewards.jsonl"
-    completed = load_resumable(reward_path, fingerprint, ids)
-    pending = [row for row in responses if row["id"] not in completed]
-    if pending:
-        module = _import_neurips_eval(args.neurips_repo)
-        model, tokenizer = module.load_score_model(
-            args.reward_model, args.reward_device, args.reward_dtype
-        )
-        try:
-            for start in range(0, len(pending), args.reward_batch_size):
-                batch = pending[start : start + args.reward_batch_size]
-                values = module.score_texts(
-                    model, tokenizer, [str(row["score_text"]) for row in batch]
-                )
-                rows = [
-                    {
-                        "id": row["id"],
-                        "reward": value,
-                        "run_fingerprint": fingerprint,
-                    }
-                    for row, value in zip(batch, values)
-                ]
-                append_jsonl(reward_path, rows)
-                completed.update({row["id"]: row for row in rows})
-                print(
-                    f"{args.method} Beaver reward {len(completed)}/{len(responses)}",
-                    flush=True,
-                )
-        finally:
-            model = tokenizer = None
-            clear_memory()
-    rewards = [float(completed[row["id"]]["reward"]) for row in responses]
-    reward_summary = finite_summary(rewards)
-    summary_path = task_dir / "summary.json"
-    summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    summary["mean_beaver_reward"] = reward_summary["mean"]
-    summary["beaver_reward"] = reward_summary
-    summary["higher_reward_is_more_helpful"] = True
-    summary["reward_model"] = str(args.reward_model.resolve())
-    atomic_write_json(summary_path, summary)
-
-
 def inherit_llama3_base_capability(run_dir: Path) -> None:
     """Attach immutable source-experiment summaries without regenerating capability data."""
     sources = {
@@ -2275,7 +1629,6 @@ def collect_method_summary(method: str, run_dir: Path) -> dict[str, Any]:
     output: dict[str, Any] = {"method": method}
     for task in (
         "harmbench",
-        "beavertails",
         "gsm8k",
         "mmlu",
         "ifeval",
@@ -2285,7 +1638,7 @@ def collect_method_summary(method: str, run_dir: Path) -> dict[str, Any]:
         path = run_dir / task / "summary.json"
         if path.exists():
             task_summary = json.loads(path.read_text(encoding="utf-8"))
-            if task in {"harmbench", "beavertails"}:
+            if task == "harmbench":
                 responses = read_jsonl(run_dir / task / "responses.jsonl")
                 repetitive = 0
                 unique_ratios = []
@@ -2329,7 +1682,6 @@ def write_result_checksums(directory: Path) -> None:
 def benchmark(args, semantic: dict[str, Any], run_dir: Path) -> None:
     source_path = {
         "harmbench": args.harmbench,
-        "beavertails": args.beavertails,
         "ifeval": args.ifeval,
         "bbh": args.bbh,
         "math500": args.math500,
@@ -2347,11 +1699,6 @@ def benchmark(args, semantic: dict[str, Any], run_dir: Path) -> None:
             if args.benchmark_task == "harmbench":
                 prompts = [
                     render_harm_prompt(args, method, row["prompt"])
-                    for row in source[:batch_size]
-                ]
-            elif args.benchmark_task == "beavertails":
-                prompts = [
-                    render_beavertails_prompt(args, method, row["prompt"])
                     for row in source[:batch_size]
                 ]
             elif args.benchmark_task == "ifeval":
@@ -2418,17 +1765,12 @@ def summarize_all(output_root: Path) -> None:
     payload: dict[str, Any] = {}
     preferred = [
         "llama3_base",
-        "llama3_dpo",
         "llama3_sft",
-        "llama3_dpo_patch_20k",
-        "llama3_dpo_patch_8k",
         "llama3_sft_patch_20k_chat",
-        "llama2_base",
         "grad",
         "sn",
-        "neurips",
-        "neurips_dpo",
-        "neurips_8k",
+        "sn_direct",
+        "neurips_direct",
     ]
     available = [
         path.name for path in output_root.iterdir() if (path / "summary.json").is_file()
@@ -2446,20 +1788,10 @@ def summarize_all(output_root: Path) -> None:
         rows.append(
             {
                 "method": method,
-                "model_family": "Llama-2" if is_llama2_method(method) else "Llama-3",
+                "model_family": "Llama-3",
                 "harmbench_n": summary.get("harmbench", {}).get("num_samples"),
                 "harmbench_asr_percent": summary.get("harmbench", {}).get(
                     "attack_success_rate"
-                ),
-                "mean_beaver_cost": summary.get("harmbench", {}).get(
-                    "mean_beaver_cost"
-                ),
-                "beavertails_n": summary.get("beavertails", {}).get("num_samples"),
-                "beavertails_mean_beaver_cost": summary.get("beavertails", {}).get(
-                    "mean_beaver_cost"
-                ),
-                "beavertails_mean_beaver_reward": summary.get("beavertails", {}).get(
-                    "mean_beaver_reward"
                 ),
                 "gsm8k_n": summary.get("gsm8k", {}).get("num_samples"),
                 "gsm8k_accuracy_percent": summary.get("gsm8k", {}).get("accuracy"),
@@ -2522,75 +1854,22 @@ def run(args: argparse.Namespace) -> None:
         torch.cuda.manual_seed_all(args.seed)
     max_batch = max(
         args.harmbench_batch_size,
-        args.beavertails_batch_size,
         args.gsm8k_batch_size,
         args.mmlu_batch_size,
         args.ifeval_batch_size,
         args.bbh_batch_size,
         args.math500_batch_size,
     )
-    needs_method = any(
-        task != "harmbench"
-        for task in args.tasks
-        if args.method != "llama3_base"
-        or args.llama3_base_capability_source == "fresh"
-        or task == "harmbench"
+    inherited_only = (
+        args.method == "llama3_base"
+        and args.llama3_base_capability_source == "inherited"
+        and set(args.tasks) <= {"gsm8k", "mmlu"}
     )
-    if "harmbench" in args.tasks:
-        response_path = run_dir / "harmbench/responses.jsonl"
-        if not response_path.exists() or not (
-            args.method in {"llama2_base", "neurips", "neurips_dpo"}
-            and args.reuse_neurips_harm_cache
-        ):
-            needs_method = True
+    needs_method = not inherited_only
     method = build_method(args, max_batch) if needs_method else None
     try:
         if "harmbench" in args.tasks:
-            # Cache import does not need a loaded method, but rendering new rows does.
-            if method is None:
-                source = read_jsonl(args.harmbench)
-                count = limit_count(len(source), args.harmbench_limit, 200)
-                fingerprint = task_fingerprint(semantic, "harmbench", count)
-                import_neurips_harm_cache(
-                    args,
-                    source[:count],
-                    fingerprint,
-                    run_dir / "harmbench/responses.jsonl",
-                    run_dir / "harmbench/costs.jsonl",
-                )
-                rows = read_jsonl(run_dir / "harmbench/responses.jsonl")
-                scored = []
-                for row in rows:
-                    jailbroken, prefixes = score_asr(row["response"])
-                    scored.append(
-                        {
-                            **row,
-                            "jailbroken": jailbroken,
-                            "matched_refusal_prefixes": prefixes,
-                        }
-                    )
-                atomic_write_jsonl(run_dir / "harmbench/asr_scored.jsonl", scored)
-                attacks = sum(row["jailbroken"] for row in scored)
-                atomic_write_json(
-                    run_dir / "harmbench/summary.json",
-                    {
-                        "benchmark": "HarmBench",
-                        "subset": "NeurIPS paper seed-42 sample of 200/400",
-                        "num_samples": count,
-                        "attack_success_count": attacks,
-                        "attack_success_rate": 100.0 * attacks / count,
-                        "asr_rule": "case-sensitive llm-attacks refusal-substring absence",
-                        "blank_responses": sum(
-                            not row["response"].strip() for row in scored
-                        ),
-                        "mean_beaver_cost": None,
-                        "run_fingerprint": fingerprint,
-                    },
-                )
-            else:
-                run_harmbench(args, method, semantic, run_dir)
-        if "beavertails" in args.tasks:
-            run_beavertails(args, method, semantic, run_dir)
+            run_harmbench(args, method, semantic, run_dir)
         if "gsm8k" in args.tasks and (
             args.method != "llama3_base"
             or args.llama3_base_capability_source == "fresh"
@@ -2613,12 +1892,6 @@ def run(args: argparse.Namespace) -> None:
         method = None
         gc.collect()
         clear_memory()
-    if "harmbench" in args.tasks and not args.skip_cost_scoring:
-        score_harmbench_cost(args, run_dir)
-    if "beavertails" in args.tasks and not args.skip_cost_scoring:
-        score_beavertails_cost(args, run_dir)
-    if "beavertails" in args.tasks:
-        score_beavertails_reward(args, run_dir)
     if (
         args.method == "llama3_base"
         and args.llama3_base_capability_source == "inherited"

@@ -3,111 +3,65 @@ from __future__ import annotations
 import pytest
 
 from unified_eval.runner import (
-    EXPECTED_BEAVERTAILS_SHA256,
     build_parser,
     configure_float32_execution,
     floating_point_protocol,
-    is_llama2_method,
+    render_harm_prompt,
     render_math500_prompt,
+    resolve_method_defaults,
     score_math500_response,
     truncate_bbh_response,
-    render_beavertails_prompt,
-    render_harm_prompt,
-    resolve_method_defaults,
 )
-from unified_eval.common import read_jsonl, sha256_file
 
 
 @pytest.mark.parametrize(
-    ("method", "expected"),
+    "method",
     [
-        ("llama3_base", 256),
-        ("llama3_dpo", 256),
-        ("llama3_dpo_patch", 256),
-        ("llama3_sft_patch", 256),
-        ("llama2_base", 256),
-        ("grad", 256),
-        ("sn", 256),
-        ("sn_direct", 256),
-        ("neurips", 256),
-        ("neurips_direct", 256),
-        ("neurips_dpo", 256),
+        "llama3_base",
+        "llama3_sft",
+        "llama3_sft_patch",
+        "grad",
+        "sn",
+        "sn_direct",
+        "neurips_direct",
     ],
 )
-def test_gsm8k_token_default_depends_on_model_family(
-    method: str, expected: int
-) -> None:
+def test_gsm8k_token_default_is_unified(method: str) -> None:
     args = build_parser().parse_args(["run", "--method", method])
     resolve_method_defaults(args)
-    assert args.gsm8k_max_new_tokens == expected
+    assert args.gsm8k_max_new_tokens == 256
 
 
-def test_explicit_gsm8k_token_limit_overrides_method_default() -> None:
+def test_explicit_gsm8k_token_limit_overrides_default() -> None:
     args = build_parser().parse_args(
-        ["run", "--method", "neurips", "--gsm8k-max-new-tokens", "768"]
+        ["run", "--method", "grad", "--gsm8k-max-new-tokens", "768"]
     )
     resolve_method_defaults(args)
     assert args.gsm8k_max_new_tokens == 768
 
 
-def test_table2_adapted_llama2_uses_common_256_token_limit() -> None:
-    args = build_parser().parse_args(
-        [
-            "run",
-            "--method",
-            "llama2_base",
-            "--neurips-capability-protocol",
-            "table2_adapted",
-        ]
-    )
-    resolve_method_defaults(args)
-    assert args.gsm8k_max_new_tokens == 256
-
-
-def test_explicit_paper_llama2_protocol_uses_1024_token_limit() -> None:
-    args = build_parser().parse_args(
-        [
-            "run",
-            "--method",
-            "llama2_base",
-            "--neurips-capability-protocol",
-            "paper",
-        ]
-    )
-    resolve_method_defaults(args)
-    assert args.gsm8k_max_new_tokens == 1024
-
-
-def test_llama3_base_can_request_fresh_capability_evaluation() -> None:
-    args = build_parser().parse_args(
-        [
-            "run",
-            "--method",
-            "llama3_base",
-            "--llama3-base-capability-source",
-            "fresh",
-        ]
-    )
+def test_llama3_base_defaults_to_fresh_capability_evaluation() -> None:
+    args = build_parser().parse_args(["run", "--method", "llama3_base"])
     assert args.llama3_base_capability_source == "fresh"
+    assert args.tasks == ["harmbench"]
 
 
-def test_unified_capability_protocol_is_the_default() -> None:
-    llama3 = build_parser().parse_args(["run", "--method", "llama3_base"])
-    llama2 = build_parser().parse_args(["run", "--method", "llama2_base"])
-    assert llama3.llama3_base_capability_source == "fresh"
-    assert llama2.neurips_capability_protocol == "table2_adapted"
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        ["run", "--method", "llama2_base"],
+        ["run", "--method", "llama3_dpo"],
+        ["run", "--method", "llama3_base", "--tasks", "beavertails"],
+    ],
+)
+def test_retired_experiments_are_not_cli_choices(arguments: list[str]) -> None:
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(arguments)
 
 
 def test_grad_direction_defaults_to_positive_only() -> None:
     args = build_parser().parse_args(["run", "--method", "grad"])
     assert args.grad_direction == "positive-only"
-
-
-def test_cost_scoring_can_be_disabled() -> None:
-    args = build_parser().parse_args(
-        ["run", "--method", "grad", "--skip-cost-scoring"]
-    )
-    assert args.skip_cost_scoring is True
 
 
 def test_bbh_defaults_to_official_harness_generation_limit() -> None:
@@ -151,15 +105,15 @@ def test_ifeval_method_defaults_reuse_benchmarks() -> None:
     grad = build_parser().parse_args(
         ["run", "--method", "grad", "--tasks", "ifeval"]
     )
-    neurips_direct = build_parser().parse_args(
+    ranking_direct = build_parser().parse_args(
         ["run", "--method", "neurips_direct", "--tasks", "ifeval"]
     )
     resolve_method_defaults(direct)
     resolve_method_defaults(grad)
-    resolve_method_defaults(neurips_direct)
+    resolve_method_defaults(ranking_direct)
     assert direct.ifeval_batch_size == 32
     assert grad.ifeval_batch_size == 8
-    assert neurips_direct.ifeval_batch_size == 32
+    assert ranking_direct.ifeval_batch_size == 32
 
 
 def test_direct_overlays_reuse_harmbench_batch_benchmarks() -> None:
@@ -175,7 +129,7 @@ def test_direct_multiplier_arguments_accept_attenuation() -> None:
     sn_args = build_parser().parse_args(
         ["run", "--method", "sn_direct", "--sn-direct-strength", "-0.1"]
     )
-    neurips_args = build_parser().parse_args(
+    ranking_args = build_parser().parse_args(
         [
             "run",
             "--method",
@@ -185,26 +139,12 @@ def test_direct_multiplier_arguments_accept_attenuation() -> None:
         ]
     )
     assert 1 + sn_args.sn_direct_strength == pytest.approx(0.9)
-    assert neurips_args.neurips_direct_multiplier == pytest.approx(0.8)
+    assert ranking_args.neurips_direct_multiplier == pytest.approx(0.8)
 
 
-def test_neurips_direct_uses_llama3_protocol_and_ranking() -> None:
+def test_neurips_direct_defaults_to_sncorpus_sft_ranking() -> None:
     args = build_parser().parse_args(["run", "--method", "neurips_direct"])
-    assert is_llama2_method(args.method) is False
-    assert args.neurips_direct_ranking.name == (
-        "llama3_instruct_vs_dpo_hh_harmless_native_completion.pt"
-    )
-
-
-def test_neurips_direct_selection_source_tracks_guide(tmp_path) -> None:
-    from unified_eval.runner import neurips_direct_selection_source
-
-    assert "Instruct-vs-SFT" in neurips_direct_selection_source(
-        tmp_path / "llama3_instruct_vs_sft_snraw.pt"
-    )
-    assert "Instruct-vs-DPO" in neurips_direct_selection_source(
-        tmp_path / "llama3_instruct_vs_dpo_hh.pt"
-    )
+    assert "vs_sft_snrawdot256" in args.neurips_direct_ranking.name
 
 
 def test_bbh_harness_stop_strings_use_earliest_match() -> None:
@@ -218,6 +158,8 @@ def test_bbh_harness_stop_strings_use_earliest_match() -> None:
 def test_llama3_sft_ia3_alpha_defaults_to_trained_adapter() -> None:
     args = build_parser().parse_args(["run", "--method", "llama3_sft"])
     assert args.llama3_sft_ia3_alpha == 1.0
+    assert args.llama3_sft_training_format == "raw"
+    assert "SNRawDot256" in args.llama3_sft_adapter.name
 
 
 def test_llama3_sft_patch_accepts_alpha_override() -> None:
@@ -244,16 +186,12 @@ def test_all_unified_evaluator_dtypes_default_to_float32() -> None:
     args = build_parser().parse_args(["run", "--method", "grad"])
     dtype_fields = (
         "llama3_base_dtype",
-        "llama3_dpo_dtype",
         "llama3_sft_dtype",
-        "llama3_dpo_patch_dtype",
         "llama3_sft_patch_dtype",
         "grad_dtype",
         "sn_dtype",
         "sn_direct_dtype",
         "neurips_dtype",
-        "cost_dtype",
-        "reward_dtype",
     )
     assert {getattr(args, field) for field in dtype_fields} == {"float32"}
 
@@ -275,7 +213,7 @@ class _FakeTokenizer:
 
 
 class _FakeLlama3Method:
-    name = "llama3_dpo"
+    name = "llama3_base"
     tokenizer = _FakeTokenizer()
 
 
@@ -307,42 +245,13 @@ def test_math500_symbolic_evaluator_accepts_equivalence_and_rejects_invalid() ->
 
 
 def test_llama3_harm_prompt_format_can_use_native_chat() -> None:
-    raw_args = build_parser().parse_args(["run", "--method", "llama3_dpo"])
+    raw_args = build_parser().parse_args(["run", "--method", "llama3_base"])
     chat_args = build_parser().parse_args(
-        ["run", "--method", "llama3_dpo", "--llama3-harm-prompt-format", "chat"]
+        ["run", "--method", "llama3_base", "--llama3-harm-prompt-format", "chat"]
     )
     method = _FakeLlama3Method()
     assert render_harm_prompt(raw_args, method, "behavior") == "behavior"
     assert (
-        render_harm_prompt(chat_args, method, "behavior") == "<chat>behavior<assistant>"
+        render_harm_prompt(chat_args, method, "behavior")
+        == "<chat>behavior<assistant>"
     )
-
-
-def test_llama3_beavertails_prompt_format_can_use_native_chat() -> None:
-    raw_args = build_parser().parse_args(["run", "--method", "llama3_dpo"])
-    chat_args = build_parser().parse_args(
-        [
-            "run",
-            "--method",
-            "llama3_dpo",
-            "--llama3-beavertails-prompt-format",
-            "chat",
-        ]
-    )
-    method = _FakeLlama3Method()
-    assert render_beavertails_prompt(raw_args, method, "question") == "question"
-    assert (
-        render_beavertails_prompt(chat_args, method, "question")
-        == "<chat>question<assistant>"
-    )
-
-
-def test_frozen_beavertails_paper_protocol_manifest() -> None:
-    args = build_parser().parse_args(
-        ["run", "--method", "llama3_base", "--tasks", "beavertails"]
-    )
-    rows = read_jsonl(args.beavertails)
-    assert sha256_file(args.beavertails) == EXPECTED_BEAVERTAILS_SHA256
-    assert len(rows) == 200
-    assert len({row["id"] for row in rows}) == 200
-    assert all(32796 <= row["source_index"] <= 33395 for row in rows)
