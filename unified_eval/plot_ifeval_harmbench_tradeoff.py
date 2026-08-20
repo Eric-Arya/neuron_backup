@@ -21,7 +21,13 @@ METHODS = (
     "Grad (on-policy)",
     "Grad (first-cue, n=256)",
 )
-MAIN_ONLY_METHODS = ("SN-Tune", "IA3-SFT", "IA3 guide patch", "Grad (on-policy)")
+MAIN_ONLY_METHODS = (
+    "SN-Tune",
+    "IA3-SFT",
+    "IA3 guide patch",
+    "Grad (on-policy)",
+    "Grad (first-cue, n=256)",
+)
 COLORS = {
     "SN-Tune": "#0072B2",
     "IA3-SFT": "#CC79A7",
@@ -338,7 +344,7 @@ def main() -> None:
     main_only_ax.set_ylabel("HarmBench attack success rate (%)  ↓")
     main_only_ax.set_title(
         "Main safety–instruction-following trajectories\n"
-        "On-policy Grad: solid K sweep at s=1; dashed K=4000 strength sweep"
+        "Grad: solid K sweeps at s=1; hollow points are prior K=4000 strengths"
     )
     main_only_ax.scatter(
         base_x,
@@ -369,12 +375,8 @@ def main() -> None:
             zorder=2,
         )
     strength_order = {
-        "K=4000, strength=0.4": 0.4,
-        "K=4000, strength=0.5": 0.5,
         "K=4000, strength=0.6": 0.6,
         "K=4000, strength=0.75": 0.75,
-        "K=4000, strength=0.85": 0.85,
-        "K=4000, strength=1": 1.0,
     }
     strength_rows = sorted(
         [
@@ -389,15 +391,14 @@ def main() -> None:
     strength_xs, strength_ys = zip(
         *(coordinates(row) for row in strength_rows), strict=True
     )
-    main_only_ax.plot(
-        [base_x, *strength_xs],
-        [base_y, *strength_ys],
-        color=COLORS["Grad (on-policy)"],
-        linestyle="--",
+    main_only_ax.scatter(
+        strength_xs,
+        strength_ys,
+        edgecolors=COLORS["Grad (on-policy)"],
+        facecolors="white",
         marker=MARKERS["Grad (on-policy)"],
-        markerfacecolor="white",
-        markersize=6.5,
-        linewidth=1.8,
+        s=60,
+        linewidths=1.8,
         zorder=3,
     )
     main_only_rows = [
@@ -407,7 +408,7 @@ def main() -> None:
         and row["plot_role"] in ("main", "main_patch")
     ]
     annotate_rows(main_only_ax, main_only_rows, main_labels, main_offsets)
-    annotate_rows(main_only_ax, strength_rows[:-1], main_labels, main_offsets)
+    annotate_rows(main_only_ax, strength_rows, main_labels, main_offsets)
     main_only_ax.annotate(
         "Baseline",
         (base_x, base_y),
@@ -437,11 +438,18 @@ def main() -> None:
         Line2D(
             [],
             [],
+            marker="X",
+            color=COLORS["Grad (first-cue, n=256)"],
+            label="Grad (first-cue, n=256)",
+        ),
+        Line2D(
+            [],
+            [],
             marker="D",
             markerfacecolor="white",
-            linestyle="--",
+            linestyle="none",
             color=COLORS["Grad (on-policy)"],
-            label="Grad K=4000 strength sweep",
+            label="Prior Grad K=4000, s=0.6/0.75",
         ),
     ]
     main_only_ax.legend(
@@ -449,7 +457,7 @@ def main() -> None:
         frameon=False,
         loc="lower center",
         bbox_to_anchor=(0.5, -0.22),
-        ncol=3,
+        ncol=4,
     )
     save_figure(main_only_fig, "ifeval_harmbench_tradeoff_main_only")
     plt.close(main_only_fig)
@@ -482,6 +490,8 @@ def main() -> None:
             and row["plot_role"] in ("main", "main_patch")
             and row[math_field]
         ]
+        if not method_rows:
+            continue
         xs, ys = zip(
             *(coordinates(row, math_field) for row in method_rows), strict=True
         )
