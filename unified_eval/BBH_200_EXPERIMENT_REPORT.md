@@ -2,15 +2,15 @@
 
 ## What was run
 
-Sixteen Llama-3-8B-Instruct conditions from the main safety--MATH figure were
+Seventeen Llama-3-8B-Instruct conditions from the main safety--MATH figure were
 evaluated on the frozen seed-112, task-stratified 200-example BBH subset:
 
 - Unmodified baseline.
 - SN-Tune at `alpha={1,4,6,8}`.
 - Raw-format IA3-SFT at `alpha={1,1.5,2,2.5,3,3.5}`.
 - Raw-format IA3 guide patch at `K={40000,80000}` with IA3 alpha 3.
-- On-policy Grad at `K={1000,2000,4000}`, strength 1, positive-only direction,
-  and final-token scope.
+- On-policy Grad at `K={1000,2000,4000}`, strength 1, plus `K=4000` at
+  strength 0.75, all with positive-only direction and final-token scope.
 
 Guide-patch `K=160000` and `K=320000` were intentionally stopped before BBH
 evaluation at the user's request. All completed conditions used the official raw
@@ -24,6 +24,9 @@ the base and guide model together and used BF16. A prior real-BBH benchmark foun
 batch size 16 to be the fastest safe guide-patch setting: 0.170 examples/s and
 54.35 GiB peak allocation, versus 0.139 examples/s and 39.30 GiB at batch size 8.
 Batch size 32 OOMed, so the runner now defaults guide-patch BBH to batch size 16.
+The `K=4000, s=0.75` Grad point was evaluated as two deterministic interleaved
+100-example shards on physical GPUs 0 and 1, then merged and rescored in the
+canonical 200-example order.
 
 ## Results
 
@@ -46,6 +49,7 @@ Lower HarmBench ASR is safer; higher BBH accuracy is better.
 | IA3 guide patch | K=80k | 15.5% | 132/200 | 66.0% | 65.87% | +2.5 pp |
 | Grad (on-policy) | K=1000, s=1 | 17.0% | 121/200 | 60.5% | 60.05% | -3.0 pp |
 | Grad (on-policy) | K=2000, s=1 | 9.5% | 115/200 | 57.5% | 57.14% | -6.0 pp |
+| Grad (on-policy) | K=4000, s=0.75 | 8.5% | 123/200 | 61.5% | 61.18% | -2.0 pp |
 | Grad (on-policy) | K=4000, s=1 | 5.5% | 119/200 | 59.5% | 59.33% | -4.0 pp |
 
 Generation diagnostics:
@@ -67,6 +71,7 @@ Generation diagnostics:
 | IA3 guide patch | K=80k | 6 | 106 | 85 | 594.92 |
 | Grad (on-policy) | K=1000, s=1 | 5 | 23 | 6 | 206.34 |
 | Grad (on-policy) | K=2000, s=1 | 6 | 26 | 6 | 206.91 |
+| Grad (on-policy) | K=4000, s=0.75 | 9 | 27 | 4 | 198.98 |
 | Grad (on-policy) | K=4000, s=1 | 14 | 32 | 9 | 220.10 |
 
 ## Interpretation
@@ -75,9 +80,11 @@ Generation diagnostics:
   to alpha 8 reduces HarmBench ASR from 65.5% to 0.5%, while BBH falls from
   63.5% to 39.5%. The increasingly repetitive and token-limited generations show
   that the largest-alpha loss includes output degeneration.
-- On-policy Grad also trades BBH capability for safety: the three edited points
-  reduce ASR to 17.0--5.5% and score 57.5--60.5% on BBH. The BBH trajectory is
-  not monotonic in K on this 200-example subset.
+- On-policy Grad also trades BBH capability for safety: its edited points reduce
+  ASR to 17.0--5.5% and score 57.5--61.5% on BBH. The BBH K trajectory is
+  not monotonic in K on this 200-example subset. At fixed `K=4000`, reducing
+  strength from 1 to 0.75 raises BBH from 59.5% to 61.5%, while ASR rises from
+  5.5% to 8.5%, giving a clean local safety--capability trade-off.
 - The tested IA3-SFT trajectory does not show a BBH trade-off. Alpha 3.5 reaches
   6.5% ASR and 66.0% BBH, 2.5 points above baseline. This small-subset improvement
   should be interpreted alongside the other capability evaluations rather than as
@@ -90,7 +97,7 @@ Generation diagnostics:
 ## Validation and artifacts
 
 Every completed result contains exactly 200 responses across all 27 BBH tasks.
-All 16 ordered response-ID streams have the same SHA-256 digest,
+All 17 ordered response-ID streams have the same SHA-256 digest,
 `af7b17da13c2ad37b38a75a042421327e371679fd5014bf59a0ad0b8108c6a48`,
 confirming matched examples and order.
 
@@ -100,7 +107,8 @@ confirming matched examples and order.
 - SN-Tune: `results/bbh_sn_alpha{1,4,6,8}_raw_cot_fp32/`
 - IA3-SFT: `results/bbh_ia3_sft_snraw_alpha*_raw_cot_fp32/`
 - Guide patch: `results/bbh_sft_patch_snraw_alpha3_top{40000,80000}_raw_cot_bf16/`
-- Grad: `results/bbh_grad_onpolicy_expanded_k{1000,2000,4000}_s1_raw_cot_fp32/`
+- Grad K sweep: `results/bbh_grad_onpolicy_expanded_k{1000,2000,4000}_s1_raw_cot_fp32/`
+- Grad strength point: `results/bbh_grad_onpolicy_expanded_k4000_s0p75_raw_cot_fp32/`
 
 Each completed result directory contains the semantic/runtime configuration,
 validation data, raw and scored per-example responses, and aggregate summary.
