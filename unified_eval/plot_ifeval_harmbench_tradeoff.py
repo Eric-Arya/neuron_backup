@@ -28,6 +28,7 @@ MAIN_ONLY_METHODS = (
     "Grad (on-policy)",
     "Grad (first-cue, n=256)",
 )
+IFEVAL_COMPARISON_METHODS = ("Grad (on-policy)", "Grad (first-cue, n=256)")
 COLORS = {
     "SN-Tune": "#0072B2",
     "IA3-SFT": "#CC79A7",
@@ -343,8 +344,8 @@ def main() -> None:
     main_only_ax.set_xlim(50, 75)
     main_only_ax.set_ylabel("HarmBench attack success rate (%)  ↓")
     main_only_ax.set_title(
-        "Main safety–instruction-following trajectories\n"
-        "Grad: solid K sweeps at s=1; hollow points are prior K=4000 strengths"
+        "Original vs broadened on-policy Grad\n"
+        "Strength = 1, positive-only, final-token intervention"
     )
     main_only_ax.scatter(
         base_x,
@@ -356,7 +357,7 @@ def main() -> None:
         linewidth=0.7,
         zorder=4,
     )
-    for method in MAIN_ONLY_METHODS:
+    for method in IFEVAL_COMPARISON_METHODS:
         method_rows = [
             row
             for row in rows
@@ -374,41 +375,13 @@ def main() -> None:
             linewidth=2.3,
             zorder=2,
         )
-    strength_order = {
-        "K=4000, strength=0.6": 0.6,
-        "K=4000, strength=0.75": 0.75,
-    }
-    strength_rows = sorted(
-        [
-            row
-            for row in rows
-            if row["method"] == "Grad (on-policy)"
-            and row["setting"] in strength_order
-            and row["ranking_candidate_pool"] == "20000"
-        ],
-        key=lambda row: strength_order[row["setting"]],
-    )
-    strength_xs, strength_ys = zip(
-        *(coordinates(row) for row in strength_rows), strict=True
-    )
-    main_only_ax.scatter(
-        strength_xs,
-        strength_ys,
-        edgecolors=COLORS["Grad (on-policy)"],
-        facecolors="white",
-        marker=MARKERS["Grad (on-policy)"],
-        s=60,
-        linewidths=1.8,
-        zorder=3,
-    )
     main_only_rows = [
         row
         for row in rows
-        if row["method"] in MAIN_ONLY_METHODS
+        if row["method"] in IFEVAL_COMPARISON_METHODS
         and row["plot_role"] in ("main", "main_patch")
     ]
     annotate_rows(main_only_ax, main_only_rows, main_labels, main_offsets)
-    annotate_rows(main_only_ax, strength_rows, main_labels, main_offsets)
     main_only_ax.annotate(
         "Baseline",
         (base_x, base_y),
@@ -453,11 +426,15 @@ def main() -> None:
         ),
     ]
     main_only_ax.legend(
-        handles=main_only_legend_handles,
+        handles=(
+            main_only_legend_handles[0],
+            main_only_legend_handles[4],
+            main_only_legend_handles[5],
+        ),
         frameon=False,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.22),
-        ncol=4,
+        bbox_to_anchor=(0.5, -0.16),
+        ncol=3,
     )
     save_figure(main_only_fig, "ifeval_harmbench_tradeoff_main_only")
     plt.close(main_only_fig)
