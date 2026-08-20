@@ -1,0 +1,14 @@
+{
+  "accuracy": 0.0,
+  "accuracy_by_subject": {
+    "abstract_algebra": 0.0
+  },
+  "benchmark": "MMLU",
+  "correct": 0,
+  "num_fewshot": 5,
+  "num_samples": 2,
+  "prompt_format": "multi-turn Llama-3 chat",
+  "run_fingerprint": "3447774083b8a88c078cd1256b0b88d9bf80a2e00e1e87e3a0583912273ff0b6",
+  "subject_macro_accuracy": 0.0,
+  "subset": "seed-112, 5 test questions per 57 subjects"
+}

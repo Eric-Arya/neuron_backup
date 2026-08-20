@@ -1,0 +1,12 @@
+{
+  "accuracy": 10.0,
+  "benchmark": "GSM8K",
+  "correct": 1,
+  "extraction_failures": 2,
+  "max_new_tokens": 512,
+  "num_fewshot": 8,
+  "num_samples": 10,
+  "prompt_format": "Tulu chat",
+  "run_fingerprint": "ad041a837d305da561ad54a80601c8d5c47e89584b2373d6b588c3376e06d4aa",
+  "subset": "first 100 test rows"
+}

@@ -1,0 +1,15 @@
+{
+  "benchmark.json": "584a9f7ee611ae37d4ee55eecbea14d97e9abdeb77093612f83df29b4b34b535",
+  "gsm8k/responses.jsonl": "d3a209dd6809923c8f58df6e9319e8252019645dc1f4e2da797f0dcdff649d9b",
+  "gsm8k/summary.json": "6e4d96a8ee65c0187787a589f6bd16488569ddfb9302d750fb247fb822461031",
+  "harmbench/asr_scored.jsonl": "1c81f35e5d679c17904769fe5d1c312a51eb628219f31147198630f1e077b3af",
+  "harmbench/cost_direction.json": "f819182a7759a4b7f3640f3bfc8f47a77308d6009186a249cb06d2b2026bd742",
+  "harmbench/costs.jsonl": "096ebadd76a7c4d760a8f513fe61d36358fdeb2588eb0d0139a0dc4a2e735e06",
+  "harmbench/responses.jsonl": "7911c02781e836b6be7641885ae9ce27b8960d2b07320a03e6538768a3a13e6b",
+  "harmbench/summary.json": "c8f99bd6f4720daa45abe8b34cb57e7450c0dbe080f6bc999ccb37d5afcc4512",
+  "mmlu/responses.jsonl": "0a5f90c3c8c4e24216a0042a2a60a5a1afe6458055272159f9bcab3895178d82",
+  "mmlu/summary.json": "d5883515b6f3565f92933b8a1b3a11fde73eb35a0bea37b46f2537fb28eef60e",
+  "run_config.json": "49dc8c5a544f977c8199b49a7780813d2b43e4a2127a5ea311208852ad4be9c1",
+  "summary.json": "41e39ac83efc9816bf9f45a4f6545eb617d670f988298fde505afa731c6bf8d9",
+  "validation.json": "3bfb42b826f903fb9690b109e671059f111200918aee472774dbd7bec055eb74"
+}

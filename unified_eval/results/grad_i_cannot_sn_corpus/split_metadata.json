@@ -1,0 +1,36 @@
+{
+  "all_harmbench": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/processed/prompts_all_400.jsonl",
+  "all_harmbench_sha256": "293c5b238d9520f28b17ad92946f97c2332a346b383973df5c8aedf1bc450097",
+  "counts": {
+    "all": 400,
+    "development": 197,
+    "excluded_test_prompt_duplicates": 3,
+    "id_complement": 200,
+    "selection": 150,
+    "test": 200,
+    "tuning": 47
+  },
+  "manifests": {
+    "development": {
+      "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/development_manifest.jsonl",
+      "sha256": "30b639394ccb5130eabf73187ae9cb1f7d3675806fb07177c0e24e78445c48c8"
+    },
+    "excluded_test_prompt_duplicates": {
+      "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/excluded_test_prompt_duplicates.jsonl",
+      "sha256": "52edbc92a0488ac69ec1dc69818320ef382bbe704b3fb9bdb4ff993b2cba2eec"
+    },
+    "selection": {
+      "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/selection_manifest.jsonl",
+      "sha256": "22ade27f318a3c7676ea5d3dcf124f77539ad8dc27b842b4628bf51652310cf6"
+    },
+    "tuning": {
+      "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/tuning_manifest.jsonl",
+      "sha256": "0ef082a5778b1a739c2c79a168975ec95677f8f2fa9a386adb65d4583e5f5b5c"
+    }
+  },
+  "seed": 112,
+  "test_development_id_overlap": 0,
+  "test_development_prompt_overlap": 0,
+  "test_harmbench": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/table1_seed42_n200.jsonl",
+  "test_harmbench_sha256": "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c"
+}

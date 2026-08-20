@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "beavertails",
+  "dataset": "first real beavertails prompts",
+  "max_new_tokens": 16,
+  "method": "llama3_base",
+  "recommended_batch_size": 32,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 0.787938104942441,
+      "examples_per_second": 10.153081758350044,
+      "peak_gpu_memory_gib": [
+        15.116279602050781
+      ],
+      "tokens_per_second": 161.18017291380696
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 0.3231553044170141,
+      "examples_per_second": 49.511797520590534,
+      "peak_gpu_memory_gib": [
+        15.235109329223633
+      ],
+      "tokens_per_second": 782.9052982943379
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 0.3860361687839031,
+      "examples_per_second": 82.89378713089728,
+      "peak_gpu_memory_gib": [
+        15.484121322631836
+      ],
+      "tokens_per_second": 1318.5293015508348
+    }
+  ],
+  "semantic_config_hash": "10e522844294312d41041a33ee8e682c8570cce048e90b16026de849e2806916"
+}

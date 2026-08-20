@@ -1,0 +1,32 @@
+[
+  {
+    "experiment": "baseline",
+    "top_k": 0,
+    "epsilon": 0.0,
+    "scope": "none",
+    "num_samples": 100,
+    "attack_success_count": 34,
+    "attack_success_rate": 34.0,
+    "safe_to_unsafe": 0,
+    "unsafe_to_safe": 0,
+    "blank_responses": 0,
+    "repetitive_responses": 75,
+    "median_word_count": 433.0,
+    "median_unique_word_ratio": 0.10047547547547547
+  },
+  {
+    "experiment": "signed_top25_eps1_last",
+    "top_k": 25,
+    "epsilon": 1.0,
+    "scope": "last",
+    "num_samples": 100,
+    "attack_success_count": 19,
+    "attack_success_rate": 19.0,
+    "safe_to_unsafe": 5,
+    "unsafe_to_safe": 20,
+    "blank_responses": 0,
+    "repetitive_responses": 64,
+    "median_word_count": 419.5,
+    "median_unique_word_ratio": 0.18331927610479404
+  }
+]

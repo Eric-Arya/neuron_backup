@@ -1,0 +1,9 @@
+{
+  "gsm8k/responses.jsonl": "28438362f95ef1a5312ad2439a9d6e720b25935a1efa45218a560d7613e380ec",
+  "gsm8k/summary.json": "649e049cd1e1f2f0363d94216c31b055c2ed66e8012b4806e5e73c4d84ff015d",
+  "mmlu/responses.jsonl": "a7c47328f6c53681a82137e9c034e3bccee9376d163997a3f8f2a4165197dc1f",
+  "mmlu/summary.json": "976575d781a2315c282a0ccefe9d0dd762f71b9d8af1bee8963db4f313f9111d",
+  "run_config.json": "447dc3a3a8f22a6798ff6fe188b0c0edfb8a812442713e745e13efaafc99a2c0",
+  "summary.json": "d73abc9c628e6459c4e92aeb9658c03abaad16e02d24e0bfb0c218e0f8d8350c",
+  "validation.json": "ba1d3310a970431ea66d1904475d925d464218171a58dd2d96751dcc89bbcad9"
+}

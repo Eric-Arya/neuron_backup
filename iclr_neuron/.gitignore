@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Generated evaluation inputs and outputs.
+neuron_deactivate/evaluation_data/
+neuron_deactivate/evaluation_outputs/
+
+# Generated detection corpora and neuron lists. Keep the selected reproduction input below.
+neuron_detection/circuit_breakers_train.json
+neuron_detection/corpus_all/
+neuron_detection/output_neurons/*
+!neuron_detection/output_neurons/Meta-Llama-3-8B-Instruct_zou_train_attn100_ffn200_kvnative_chat_native_200.txt
+
+# Typical training artifacts.
+checkpoint-*/
+wandb/

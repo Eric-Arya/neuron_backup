@@ -1,0 +1,91 @@
+{
+  "protocol": {
+    "dataset": "/workspace/xcy/dataset/shared/gsm8k/main",
+    "test_rows": "first 100",
+    "prompt_format": "Llama-3 chat template",
+    "num_fewshot": 0,
+    "prompt_suffix": "Answer: Let's think step by step.",
+    "decoding": "greedy",
+    "max_new_tokens": 256,
+    "dtype": "bfloat16",
+    "batch_size": 16,
+    "answer_extraction": "ICLR reproduction: #### number else final number"
+  },
+  "controller": {
+    "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/raw_refusal_advbench_rows100_299/top_neurons.csv",
+    "top_k": 50,
+    "strengths": [
+      0.5,
+      0.75,
+      1.0
+    ],
+    "positive_scale": "1 + strength",
+    "negative_scale": "max(0, 1 - strength)",
+    "scope": "final prefill position and cached decoding positions",
+    "prompt_specific": false
+  },
+  "results": [
+    {
+      "condition": "baseline",
+      "num_samples": 100,
+      "correct": 68,
+      "accuracy": 68.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 3,
+      "median_response_tokens": 170.5,
+      "median_word_count": 113.0,
+      "median_unique_word_ratio": 0.42961418143899893
+    },
+    {
+      "condition": "strength_0p5",
+      "num_samples": 100,
+      "correct": 66,
+      "accuracy": 66.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 7,
+      "median_response_tokens": 173.5,
+      "median_word_count": 117.0,
+      "median_unique_word_ratio": 0.42244835701211536
+    },
+    {
+      "condition": "strength_0p75",
+      "num_samples": 100,
+      "correct": 58,
+      "accuracy": 58.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 11,
+      "median_response_tokens": 181.5,
+      "median_word_count": 127.5,
+      "median_unique_word_ratio": 0.39804996405463694
+    },
+    {
+      "condition": "strength_1",
+      "num_samples": 100,
+      "correct": 57,
+      "accuracy": 57.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 15,
+      "median_response_tokens": 201.0,
+      "median_word_count": 136.0,
+      "median_unique_word_ratio": 0.3963702499806516
+    }
+  ],
+  "transitions_vs_baseline": {
+    "strength_0p5": {
+      "incorrect_to_correct": 6,
+      "correct_to_incorrect": 8
+    },
+    "strength_0p75": {
+      "incorrect_to_correct": 5,
+      "correct_to_incorrect": 15
+    },
+    "strength_1": {
+      "incorrect_to_correct": 6,
+      "correct_to_incorrect": 17
+    }
+  }
+}

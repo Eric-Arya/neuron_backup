@@ -1,0 +1,36 @@
+{
+  "bbh": {
+    "accuracy": 100.0,
+    "accuracy_by_task": {
+      "boolean_expressions": 100.0
+    },
+    "answer_extraction": "(?<=the answer is )(.*)(?=.)",
+    "benchmark": "BIG-Bench Hard",
+    "blank_responses": 0,
+    "correct": 2,
+    "decoding": "greedy",
+    "evaluator": "EleutherAI lm-evaluation-harness BBH CoT few-shot v4.0",
+    "evaluator_revision": "8a07e1110d060de48cfc7a9a7987b7659060b60b",
+    "extraction_failures": 0,
+    "max_new_tokens": 1024,
+    "mean_generated_tokens": 137.5,
+    "median_unique_word_ratio": 0.4891304347826087,
+    "metric": "case-sensitive exact match",
+    "num_fewshot": 3,
+    "num_samples": 2,
+    "num_tasks": 1,
+    "prompt_format": "official raw three-shot CoT text completion",
+    "repetition_rule": "a four-word sequence occurs at least five times",
+    "repetitive_responses": 0,
+    "responses_at_token_limit": 0,
+    "run_fingerprint": "439f1fe4110bb586225244105cb257ef38c9ecec8400c41e74dacb94aa2ae94b",
+    "subset": "seed-112 task-stratified subset; first 2 of 200 rows",
+    "task_macro_accuracy": 100.0,
+    "until": [
+      "</s>",
+      "Q",
+      "\n\n"
+    ]
+  },
+  "method": "bbh_smoke_base_exact_stop_raw_fp32"
+}

@@ -1,0 +1,24 @@
+{
+  "accuracy": 80.0,
+  "answer_extraction": "flexible numeric exact match: final ####, final answer phrase, final equation RHS, then last-number fallback",
+  "benchmark": "GSM8K",
+  "correct": 80,
+  "extraction_failures": 0,
+  "format_compliance_count": null,
+  "format_compliance_percent": null,
+  "max_new_tokens": 256,
+  "num_fewshot": 0,
+  "num_samples": 100,
+  "prediction_source_counts": {
+    "answer_phrase": 1,
+    "answer_phrase_equation_rhs": 0,
+    "final_equation_rhs": 97,
+    "hash_delimiter": 0,
+    "last_number_fallback": 2
+  },
+  "prompt_format": "Llama-3 chat",
+  "run_fingerprint": "55deaeaca6bd8a8717180e91a53033a8656acb0f1697745da0b13c807ddd3593",
+  "strict_accuracy": null,
+  "strict_correct": null,
+  "subset": "first 100 test rows"
+}

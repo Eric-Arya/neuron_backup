@@ -1,0 +1,24 @@
+{
+  "alpha_scope": "final prefill position and refusal-target positions",
+  "baseline_scored": "/workspace/xcy/safety_repro/unified_eval/results/grad_harmbench_development/baseline/scored.jsonl",
+  "baseline_scored_sha256": "46817d0aa5ced2f4b850de21ced47a85d0b3516d9d82461e0c075cb3b958e33c",
+  "candidate_pool": 4000,
+  "cuda_visible_devices": "0",
+  "elapsed_seconds": 4.178492491133511,
+  "folds": 3,
+  "gradient_shape": [
+    54,
+    32,
+    14336
+  ],
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "objective": "mean teacher-forced log probability of the first generated refusal sentence, conditioned on the raw prompt plus its on-policy response prefix",
+  "prompt_format": "raw",
+  "ranking": "stability score within candidate pool selected by abs(mean gradient)",
+  "refusal_phrase": "I cannot",
+  "repetitive_selected_rows": 19,
+  "selected_rows": 54,
+  "saved_ranking_rows": 4000,
+  "source_rows": 197,
+  "source_safe_rows": 65
+}

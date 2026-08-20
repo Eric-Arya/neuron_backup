@@ -1,0 +1,5 @@
+experiment,top_k,epsilon,scope,num_samples,attack_success_count,attack_success_rate,safe_to_unsafe,unsafe_to_safe,blank_responses,repetitive_responses,median_word_count,median_unique_word_ratio
+baseline,0,0.0,none,100,34,34.0,0,0,0,75,433.0,0.10047547547547547
+signed_top50_eps0p5_last,50,0.5,last,100,24,24.0,6,16,0,61,426.0,0.16774521774521772
+signed_top50_eps0p75_last,50,0.75,last,100,27,27.0,9,16,0,49,394.0,0.35963719416150375
+signed_top50_eps1_last,50,1.0,last,100,20,20.0,6,20,0,50,398.0,0.3551235490991953

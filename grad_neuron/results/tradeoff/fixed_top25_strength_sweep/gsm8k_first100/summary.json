@@ -1,0 +1,142 @@
+{
+  "protocol": {
+    "dataset": "/workspace/xcy/dataset/shared/gsm8k/main",
+    "test_rows": "first 100",
+    "prompt_format": "Llama-3 chat template",
+    "num_fewshot": 0,
+    "prompt_suffix": "Answer: Let's think step by step.",
+    "decoding": "greedy",
+    "max_new_tokens": 256,
+    "dtype": "bfloat16",
+    "batch_size": 16,
+    "answer_extraction": "ICLR reproduction: #### number else final number"
+  },
+  "controller": {
+    "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/raw_refusal_advbench_rows100_299/top_neurons.csv",
+    "top_k": 25,
+    "strengths": [
+      0.25,
+      0.5,
+      0.75,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "positive_scale": "1 + strength",
+    "negative_scale": "max(0, 1 - strength)",
+    "scope": "final prefill position and cached decoding positions",
+    "prompt_specific": false
+  },
+  "results": [
+    {
+      "condition": "baseline",
+      "num_samples": 100,
+      "correct": 68,
+      "accuracy": 68.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 3,
+      "median_response_tokens": 170.5,
+      "median_word_count": 113.0,
+      "median_unique_word_ratio": 0.42961418143899893
+    },
+    {
+      "condition": "strength_0p25",
+      "num_samples": 100,
+      "correct": 65,
+      "accuracy": 65.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 8,
+      "median_response_tokens": 175.5,
+      "median_word_count": 118.0,
+      "median_unique_word_ratio": 0.421595124536301
+    },
+    {
+      "condition": "strength_0p5",
+      "num_samples": 100,
+      "correct": 67,
+      "accuracy": 67.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 8,
+      "median_response_tokens": 177.5,
+      "median_word_count": 121.0,
+      "median_unique_word_ratio": 0.41441766488670806
+    },
+    {
+      "condition": "strength_0p75",
+      "num_samples": 100,
+      "correct": 64,
+      "accuracy": 64.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 11,
+      "median_response_tokens": 181.0,
+      "median_word_count": 126.5,
+      "median_unique_word_ratio": 0.4153494343256038
+    },
+    {
+      "condition": "strength_1",
+      "num_samples": 100,
+      "correct": 62,
+      "accuracy": 62.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 15,
+      "median_response_tokens": 206.0,
+      "median_word_count": 151.0,
+      "median_unique_word_ratio": 0.37537878787878787
+    },
+    {
+      "condition": "strength_1p5",
+      "num_samples": 100,
+      "correct": 63,
+      "accuracy": 63.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 12,
+      "median_response_tokens": 201.0,
+      "median_word_count": 137.0,
+      "median_unique_word_ratio": 0.3888888888888889
+    },
+    {
+      "condition": "strength_2",
+      "num_samples": 100,
+      "correct": 59,
+      "accuracy": 59.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 10,
+      "median_response_tokens": 172.0,
+      "median_word_count": 124.5,
+      "median_unique_word_ratio": 0.4017689627445725
+    }
+  ],
+  "transitions_vs_baseline": {
+    "strength_0p25": {
+      "incorrect_to_correct": 3,
+      "correct_to_incorrect": 6
+    },
+    "strength_0p5": {
+      "incorrect_to_correct": 7,
+      "correct_to_incorrect": 8
+    },
+    "strength_0p75": {
+      "incorrect_to_correct": 7,
+      "correct_to_incorrect": 11
+    },
+    "strength_1": {
+      "incorrect_to_correct": 8,
+      "correct_to_incorrect": 14
+    },
+    "strength_1p5": {
+      "incorrect_to_correct": 9,
+      "correct_to_incorrect": 14
+    },
+    "strength_2": {
+      "incorrect_to_correct": 9,
+      "correct_to_incorrect": 18
+    }
+  }
+}

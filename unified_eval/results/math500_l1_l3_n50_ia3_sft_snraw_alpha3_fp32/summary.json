@@ -1,0 +1,41 @@
+{
+  "math500": {
+    "accuracy": 46.0,
+    "accuracy_by_level": {
+      "1": 77.77777777777777,
+      "2": 47.36842105263158,
+      "3": 31.818181818181817
+    },
+    "accuracy_by_subject": {
+      "Algebra": 53.333333333333336,
+      "Counting & Probability": 0.0,
+      "Geometry": 40.0,
+      "Intermediate Algebra": 14.285714285714286,
+      "Number Theory": 37.5,
+      "Prealgebra": 70.0,
+      "Precalculus": 50.0
+    },
+    "answer_extraction_failures": 0,
+    "benchmark": "MATH-500",
+    "blank_responses": 0,
+    "correct": 23,
+    "decoding": "greedy",
+    "evaluator": "math_verify parse/verify over full solution and generation",
+    "max_new_tokens": 1024,
+    "mean_generated_tokens": 281.32,
+    "median_unique_word_ratio": 0.43562500000000004,
+    "metric": "deterministic symbolic equivalence",
+    "num_fewshot": 0,
+    "num_samples": 50,
+    "prompt_format": "publisher zero-shot CoT instruction in task-native chat",
+    "repetition_rule": "a four-word sequence occurs at least five times",
+    "repetitive_responses": 10,
+    "responses_at_token_limit": 3,
+    "run_fingerprint": "e317294b8b683012dd880b769600edaf74713a2f77e2aba8ad2a42dc88a9ccf5",
+    "scoring_errors": 0,
+    "subject_macro_accuracy": 37.87414965986395,
+    "subset": "first 50 of 50 locally selected test rows",
+    "uses_llm_judge": false
+  },
+  "method": "math500_l1_l3_n50_ia3_sft_snraw_alpha3_fp32"
+}

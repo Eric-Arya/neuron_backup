@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "math500",
+  "dataset": "first real math500 prompts",
+  "max_new_tokens": 64,
+  "method": "llama3_sft",
+  "recommended_batch_size": 16,
+  "results": [
+    {
+      "batch_size": 4,
+      "elapsed_seconds": 2.3715023156255484,
+      "examples_per_second": 1.68669453689523,
+      "peak_gpu_memory_gib": [
+        30.71350383758545
+      ],
+      "tokens_per_second": 107.94845036129472
+    },
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 3.212402549572289,
+      "examples_per_second": 2.4903479176559453,
+      "peak_gpu_memory_gib": [
+        31.47898817062378
+      ],
+      "tokens_per_second": 159.3822667299805
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 4.588679999113083,
+      "examples_per_second": 3.4868415324434348,
+      "peak_gpu_memory_gib": [
+        33.009955406188965
+      ],
+      "tokens_per_second": 223.15785807637982
+    }
+  ],
+  "semantic_config_hash": "74251bfbae63495ef2bf14e7ce63925a7f68468b810a8f89c4659baa055fc9ea"
+}

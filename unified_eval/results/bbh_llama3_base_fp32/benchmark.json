@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "bbh",
+  "dataset": "first real bbh prompts",
+  "max_new_tokens": 64,
+  "method": "llama3_base",
+  "recommended_batch_size": 32,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 5.428974339738488,
+      "examples_per_second": 1.4735748410970306,
+      "peak_gpu_memory_gib": [
+        33.789952754974365
+      ],
+      "tokens_per_second": 94.30878983020996
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 10.770020824857056,
+      "examples_per_second": 1.4856052982805963,
+      "peak_gpu_memory_gib": [
+        40.12223196029663
+      ],
+      "tokens_per_second": 95.07873908995816
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 19.975868231616914,
+      "examples_per_second": 1.601932873653613,
+      "peak_gpu_memory_gib": [
+        50.29814672470093
+      ],
+      "tokens_per_second": 102.52370391383123
+    }
+  ],
+  "semantic_config_hash": "7116ce6d98d399d85aec45163864762b11d4d7e50d8a3c2d6372f951fb2ebab8"
+}

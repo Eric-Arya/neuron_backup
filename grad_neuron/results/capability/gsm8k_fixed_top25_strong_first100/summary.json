@@ -1,0 +1,51 @@
+{
+  "protocol": {
+    "dataset": "/workspace/xcy/dataset/shared/gsm8k/main",
+    "test_rows": "first 100",
+    "prompt_format": "Llama-3 chat template",
+    "num_fewshot": 0,
+    "prompt_suffix": "Answer: Let's think step by step.",
+    "decoding": "greedy",
+    "max_new_tokens": 256,
+    "dtype": "bfloat16",
+    "batch_size": 16,
+    "answer_extraction": "ICLR reproduction: #### number else final number"
+  },
+  "controller": {
+    "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/raw_refusal_advbench_rows100_299/top_neurons.csv",
+    "top_k": 25,
+    "epsilon": 1.0,
+    "positive_scale": 2.0,
+    "negative_scale": 0.0,
+    "scope": "final prefill position and cached decoding positions",
+    "prompt_specific": false
+  },
+  "results": [
+    {
+      "condition": "baseline",
+      "num_samples": 100,
+      "correct": 68,
+      "accuracy": 68.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 3,
+      "median_response_tokens": 170.5,
+      "median_word_count": 113.0,
+      "median_unique_word_ratio": 0.42961418143899893
+    },
+    {
+      "condition": "strong_fixed_controller",
+      "num_samples": 100,
+      "correct": 62,
+      "accuracy": 62.0,
+      "extraction_failures": 0,
+      "blank_responses": 0,
+      "repetitive_responses": 15,
+      "median_response_tokens": 206.0,
+      "median_word_count": 151.0,
+      "median_unique_word_ratio": 0.37537878787878787
+    }
+  ],
+  "incorrect_to_correct": 8,
+  "correct_to_incorrect": 14
+}

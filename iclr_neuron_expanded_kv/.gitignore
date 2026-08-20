@@ -1,0 +1,11 @@
+__pycache__/
+.DS_Store
+*.py[cod]
+evaluation_outputs/
+neuron_enhancement/outputs/
+neuron_deactivate/evaluation_data/strongreject_balanced_60.jsonl
+neuron_deactivate/evaluation_data/strongreject_balanced_60.metadata.json
+neuron_deactivate/evaluation_data/harm_behavior_first_100.jsonl
+neuron_deactivate/evaluation_data/harm_behavior_first_100.metadata.json
+neuron_detection/output_neurons/*
+!neuron_detection/output_neurons/Meta-Llama-3-8B-Instruct_zou_train_attn1000_ffn2000_kvexpanded_raw_vonly_200.txt

@@ -1,0 +1,45 @@
+{
+  "cost_dtype": "float32",
+  "cost_model": "/workspace/xcy/models/beaver-7b-v1.0-cost",
+  "gsm8k": {
+    "path": "/workspace/xcy/dataset/shared/gsm8k/main",
+    "selected": "first 100 test rows",
+    "test_arrow_sha256": "e3e13320550805e1c0ef9e0bb4e388a71f02fbec2bdb5b462692edb965f04cd9",
+    "test_count": 1319
+  },
+  "harmbench": {
+    "count": 200,
+    "path": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/table1_seed42_n200.jsonl",
+    "sha256": "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c"
+  },
+  "ifeval": {
+    "count": 200,
+    "instruction_type_count": 25,
+    "manifest_path": "/workspace/xcy/dataset/ifeval/subsets/ifeval_seed112_n200_manifest.json",
+    "manifest_sha256": "24b86e69af64b3776bb241333068434fbf1a399539bf5976aed1c29c630cb4be",
+    "path": "/workspace/xcy/dataset/ifeval/subsets/ifeval_seed112_n200.jsonl",
+    "scorer_root": "/workspace/xcy/dataset/ifeval",
+    "sha256": "d44779fcbe894edde7bf2936a51a2ead1cf70f3e8be0c639ee063d29f628356f"
+  },
+  "method": "sn_direct",
+  "mmlu": {
+    "dev_arrow_sha256": "73e81e5bf23bba71779ff3a5eb0c5afd8439a6e2c74095e6f354a262e695e6b7",
+    "dev_count": 285,
+    "manifest_sha256": "1f2d3a3a9cbc737b4d703db2d070ff829644e0e3a89ad9a32dbd7bdf5e3889c8",
+    "path": "/workspace/xcy/dataset/mmlu_balanced_5_per_subject/mmlu/all",
+    "subjects": 57,
+    "test_arrow_sha256": "49a2549db99e5935a94f4a08d9014979e27dca53f569ad5ac2d1162df4f6f2e9",
+    "test_count": 285
+  },
+  "prompt_protocol": {
+    "bbh": "official raw three-shot CoT text completion",
+    "beavertails": "raw question text",
+    "gsm8k": "zero-shot chat with step-by-step answer prefix",
+    "harmbench": "raw behavior text",
+    "ifeval": "task-native single-turn chat",
+    "math500": "publisher zero-shot CoT prompt in task-native chat",
+    "mmlu": "five-shot multi-turn chat with constrained next-token scoring"
+  },
+  "reward_dtype": "float32",
+  "reward_model": "/workspace/xcy/models/beaver-7b-v1.0-reward"
+}

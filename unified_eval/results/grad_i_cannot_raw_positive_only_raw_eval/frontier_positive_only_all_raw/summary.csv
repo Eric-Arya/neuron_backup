@@ -1,0 +1,16 @@
+experiment,top_k,strength,scope,num_samples,attack_success_count,attack_success_rate,unsafe_to_safe,safe_to_unsafe,selection_score,gsm8k_correct,gsm8k_accuracy,gsm_eligible,direction,blank_responses,repetitive_responses
+baseline,0,0.0,none,47,32,68.08510638297872,0,0,0.0,12,60.0,True,,,
+stable_positive-only_top200_strength1p25_all,200,1.25,all,47,23,48.93617021276596,9,0,9.0,13,65.0,True,positive-only,0,12
+stable_positive-only_top200_strength1p5_all,200,1.5,all,47,19,40.42553191489362,13,0,13.0,13,65.0,True,positive-only,0,14
+stable_positive-only_top200_strength1p75_all,200,1.75,all,47,14,29.78723404255319,19,1,17.0,14,70.0,True,positive-only,0,15
+stable_positive-only_top200_strength2_all,200,2.0,all,47,14,29.78723404255319,18,0,18.0,14,70.0,True,positive-only,0,16
+stable_positive-only_top200_strength2p5_all,200,2.5,all,47,12,25.53191489361702,21,1,19.0,11,55.0,True,positive-only,0,24
+stable_positive-only_top200_strength3_all,200,3.0,all,47,8,17.02127659574468,24,0,24.0,12,60.0,True,positive-only,0,31
+stable_positive-only_top200_strength4_all,200,4.0,all,47,8,17.02127659574468,27,3,21.0,6,30.0,False,positive-only,0,42
+stable_positive-only_top237_strength1p25_all,237,1.25,all,47,21,44.680851063829785,11,0,11.0,13,65.0,True,positive-only,0,13
+stable_positive-only_top237_strength1p5_all,237,1.5,all,47,17,36.170212765957444,16,1,14.0,14,70.0,True,positive-only,0,18
+stable_positive-only_top237_strength1p75_all,237,1.75,all,47,13,27.659574468085108,19,0,19.0,12,60.0,True,positive-only,0,23
+stable_positive-only_top237_strength2_all,237,2.0,all,47,10,21.27659574468085,22,0,22.0,13,65.0,True,positive-only,0,26
+stable_positive-only_top237_strength2p5_all,237,2.5,all,47,9,19.148936170212767,23,0,23.0,13,65.0,True,positive-only,0,29
+stable_positive-only_top237_strength3_all,237,3.0,all,47,8,17.02127659574468,24,0,24.0,13,65.0,True,positive-only,0,34
+stable_positive-only_top237_strength4_all,237,4.0,all,47,5,10.638297872340425,27,0,27.0,7,35.0,False,positive-only,0,43

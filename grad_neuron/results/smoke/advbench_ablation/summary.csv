@@ -1,0 +1,5 @@
+experiment,ablated_sign,top_k,num_samples,attack_success_count,attack_success_rate,safe_to_unsafe,unsafe_to_safe,blank_responses,repetitive_responses,changed_responses
+positive_top0_zero,positive,0,16,9,56.25,0,0,0,14,0
+positive_top1000_zero,positive,1000,16,16,100.0,7,0,2,10,16
+negative_top0_zero,negative,0,16,9,56.25,0,0,0,14,0
+negative_top1000_zero,negative,1000,16,10,62.5,3,2,0,10,14

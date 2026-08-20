@@ -1,0 +1,11 @@
+{
+  "gsm8k/responses.jsonl": "3573468e8e30f96f3242adc4dacdcf5e1d6fd9579fac8f93fc2fbab4c4309c1d",
+  "gsm8k/summary.json": "21c82eac3956902e17049c88c1b7509beea6c19267bef974d051be4af6b61e76",
+  "ifeval/responses.jsonl": "6e48d08d0f7a29e8e892d580d797a67e7dd6b2c4377327ad3dda2bfab461cec4",
+  "ifeval/scored_loose.jsonl": "231939f73743f5793b3aa9814325e532a00291372dfe9bb9e7a9682d67821e9d",
+  "ifeval/scored_strict.jsonl": "500e3663d9766a15ebffda1ad25d25797ea4462e698ed749f41493446b7b2aa0",
+  "ifeval/summary.json": "a57e6000592758c42405a17c31f5d919ec7435b16a5225a1ed447a2cef65a4fe",
+  "run_config.json": "016c78b4411aa9c5746d3b557425e9871f6fa34cea6ba86c47957d4a81d638cb",
+  "summary.json": "7ad2a480d3770247db34fe717abe47520efda8c18ea84189fdcba53b2c92e3c0",
+  "validation.json": "9be2cfa3c575a24dd0b0d95a6a2177aee58d428170886542e086812b16caa7d5"
+}

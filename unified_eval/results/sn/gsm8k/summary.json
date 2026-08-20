@@ -1,0 +1,11 @@
+{
+  "accuracy": 59.0,
+  "benchmark": "GSM8K",
+  "correct": 59,
+  "extraction_failures": 0,
+  "num_fewshot": 0,
+  "num_samples": 100,
+  "prompt_format": "Llama-3 chat",
+  "run_fingerprint": "3b74689c770e8506749f61d2c7c5f729c1c1aed44e529ebea8cf3113a3bfafb1",
+  "subset": "first 100 test rows"
+}

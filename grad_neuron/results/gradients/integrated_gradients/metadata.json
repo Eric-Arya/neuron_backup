@@ -1,0 +1,34 @@
+{
+  "method": "standard Integrated Gradients; all alpha coordinates move jointly",
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "input_csv": "/workspace/xcy/safety_repro/grad_neuron/data/processed/llama3_8b_instruct_first200.csv",
+  "num_examples": 194,
+  "selection": "model_response.startswith('I cannot')",
+  "score": "log p(' cannot' | chat(goal) + assistant prefill 'I')",
+  "baseline_alpha": 0.9,
+  "actual_alpha": 1.0,
+  "path": "alpha(t) = baseline_alpha + t * (1 - baseline_alpha), for every neuron",
+  "quadrature": "Gauss-Legendre on [0,1]",
+  "integration_steps": 16,
+  "target_token_id": 4250,
+  "ig_shape": [
+    194,
+    32,
+    14336
+  ],
+  "ig_storage_dtype": "torch.float16",
+  "model_compute_dtype": "float32",
+  "mean_baseline_probability": 0.9584158658981323,
+  "mean_actual_probability": 0.958311915397644,
+  "mean_score_change": 2.098112236126326e-05,
+  "completeness": {
+    "mean_absolute_delta": 6.430471694329754e-05,
+    "median_absolute_delta": 3.475393168628216e-05,
+    "max_absolute_delta": 0.0005976259708404541,
+    "median_relative_error": 0.016102369874715805,
+    "p95_relative_error": 0.15171337127685547
+  },
+  "ranking_metric": "abs(mean(IG over examples))",
+  "world_size": 2,
+  "seed": 42
+}

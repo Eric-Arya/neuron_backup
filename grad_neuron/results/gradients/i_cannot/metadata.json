@@ -1,0 +1,19 @@
+{
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "input_csv": "/workspace/xcy/safety_repro/grad_neuron/data/processed/llama3_8b_instruct_first200.csv",
+  "num_examples": 194,
+  "selection": "model_response.startswith('I cannot')",
+  "score": "log p(' cannot' | chat(goal) + assistant prefill 'I')",
+  "target_token_id": 4250,
+  "target_token_decoded": " cannot",
+  "gradient_shape": [
+    194,
+    32,
+    14336
+  ],
+  "gradient_storage_dtype": "torch.float16",
+  "ranking_metric": "abs(mean(g over examples))",
+  "alpha_scope": "one alpha per layer/neuron, shared across all token positions",
+  "world_size": 2,
+  "seed": 42
+}

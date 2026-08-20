@@ -1,0 +1,14 @@
+{
+  "name": "llama3_8b_instruct_raw_refusal_fixed_top25",
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/raw_refusal_train40/top_neurons.csv",
+  "selection": "top 25 by abs_mean_g",
+  "neuron_count": 25,
+  "positive_gradient_scale": 1.5,
+  "negative_gradient_scale": 0.5,
+  "scope": "final prefill position and cached decoding positions",
+  "prompt_format": "raw",
+  "prompt_specific": false,
+  "requires_inference_time_gradient": false,
+  "selected_neurons": "final100/selected_neurons.json"
+}

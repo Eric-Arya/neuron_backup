@@ -1,0 +1,15 @@
+{
+  "accuracy": 0.0,
+  "answer_extraction": "final #### <number>, exact numeric match; no fallback",
+  "benchmark": "GSM8K",
+  "correct": 0,
+  "extraction_failures": 5,
+  "format_compliance_count": 5,
+  "format_compliance_percent": 50.0,
+  "max_new_tokens": 1024,
+  "num_fewshot": 8,
+  "num_samples": 10,
+  "prompt_format": "Tulu chat",
+  "run_fingerprint": "54515be4e0918a42344ed98957690a1611294d3fadb9ca859a8186e9c60a3465",
+  "subset": "first 10 test rows"
+}

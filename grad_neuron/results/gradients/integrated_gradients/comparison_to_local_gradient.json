@@ -1,0 +1,33 @@
+{
+  "pearson_mean_signal": 0.9961878657341003,
+  "top_abs_signal_overlap": {
+    "10": {
+      "count": 9,
+      "fraction": 0.9
+    },
+    "25": {
+      "count": 24,
+      "fraction": 0.96
+    },
+    "50": {
+      "count": 47,
+      "fraction": 0.94
+    },
+    "100": {
+      "count": 95,
+      "fraction": 0.95
+    },
+    "500": {
+      "count": 485,
+      "fraction": 0.97
+    },
+    "1000": {
+      "count": 949,
+      "fraction": 0.949
+    },
+    "2000": {
+      "count": 1901,
+      "fraction": 0.9505
+    }
+  }
+}

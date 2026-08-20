@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "harmbench",
+  "dataset": "first real harmbench prompts",
+  "max_new_tokens": 16,
+  "method": "sn_direct",
+  "recommended_batch_size": 32,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 0.9401908116415143,
+      "examples_per_second": 8.508911064587519,
+      "peak_gpu_memory_gib": [
+        15.033546447753906
+      ],
+      "tokens_per_second": 136.1425770334003
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 0.5363304801285267,
+      "examples_per_second": 29.83235261245221,
+      "peak_gpu_memory_gib": [
+        15.099552154541016
+      ],
+      "tokens_per_second": 477.31764179923533
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 0.573343931697309,
+      "examples_per_second": 55.81292175757093,
+      "peak_gpu_memory_gib": [
+        15.266242980957031
+      ],
+      "tokens_per_second": 893.0067481211349
+    }
+  ],
+  "semantic_config_hash": "3ca5362ac1f8dd13abc177c10c02ff01b5bb539c5a969e910b3463101931bba0"
+}

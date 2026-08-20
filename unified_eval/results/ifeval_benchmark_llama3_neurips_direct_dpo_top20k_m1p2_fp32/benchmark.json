@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "ifeval",
+  "dataset": "first real ifeval prompts",
+  "max_new_tokens": 1024,
+  "method": "neurips_direct",
+  "recommended_batch_size": 32,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 15.344140690751374,
+      "examples_per_second": 0.5213716532736155,
+      "peak_gpu_memory_gib": [
+        32.51565647125244
+      ],
+      "tokens_per_second": 147.74369224641077
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 18.182418297976255,
+      "examples_per_second": 0.8799709553366087,
+      "peak_gpu_memory_gib": [
+        34.96807622909546
+      ],
+      "tokens_per_second": 194.80357023764174
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 28.735581390559673,
+      "examples_per_second": 1.113601968412331,
+      "peak_gpu_memory_gib": [
+        40.83407115936279
+      ],
+      "tokens_per_second": 291.8681159085694
+    }
+  ],
+  "semantic_config_hash": "d049471e36858d2765e37eace05feac85df7f70a3b5e6ea1923149689859d423"
+}

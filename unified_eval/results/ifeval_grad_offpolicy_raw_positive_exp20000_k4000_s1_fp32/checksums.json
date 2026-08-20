@@ -1,0 +1,9 @@
+{
+  "ifeval/responses.jsonl": "3cc715d97f24fe8c057b486642b93b50825d5d44203a2956cd0f23e982cb5c3b",
+  "ifeval/scored_loose.jsonl": "6e444cf5df4b363adad4be628f0a4aafa24ba9f47d826b075b39835cb1e785fa",
+  "ifeval/scored_strict.jsonl": "a3b27c7ef4422075defa197484ffe4ad30adc36ce4c72ae35049614ec8d9770c",
+  "ifeval/summary.json": "9a2b765f08247b752db11a5c88b22b3f0a46b18ab02f2f76f87b1c0777c51e6c",
+  "run_config.json": "737d94d5e1de528e69e425cac4eeb4a3cfef709b9e2cd33e99c25ec968929d46",
+  "summary.json": "931f1bc5a86de1e03129efb39392cec043f9218a58709608116c3cc6acc79ffb",
+  "validation.json": "e2d8874b02308110bac6cdf7d4db11db0e80121f236eb43b06578417631b954b"
+}

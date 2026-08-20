@@ -1,0 +1,22 @@
+{
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "prepared": "/workspace/xcy/safety_repro/iclr_neuron/neuron_deactivate/evaluation_data/harm_behavior_first_100.jsonl",
+  "baseline_scored": "/workspace/xcy/safety_repro/iclr_neuron_expanded_kv/neuron_deactivate/evaluation_outputs/table2_sn_tune/baseline/harm_behavior/scored.jsonl",
+  "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/raw_refusal_train40/top_neurons.csv",
+  "offset": 40,
+  "limit": 60,
+  "k_values": [
+    100
+  ],
+  "epsilons": [
+    0.5
+  ],
+  "scope": "last",
+  "intervention": "alpha_j = 1 + epsilon * sign(mean gradient)",
+  "prompt_format": "raw",
+  "dtype": "bfloat16",
+  "do_sample": false,
+  "batch_size": 16,
+  "max_new_tokens": 512,
+  "cuda_visible_devices": "1"
+}

@@ -1,0 +1,137 @@
+{
+  "runtime": {
+    "batch_sizes": {
+      "bbh": 8,
+      "beavertails": 16,
+      "cost": 16,
+      "gsm8k": 16,
+      "harmbench": 16,
+      "math500": 16,
+      "mmlu": 8,
+      "reward": 16
+    },
+    "cuda_visible_devices": "0",
+    "dtypes": {
+      "cost": "float32",
+      "grad": "float32",
+      "llama3_base": "float32",
+      "llama3_dpo": "float32",
+      "llama3_dpo_patch": "float32",
+      "llama3_sft": "float32",
+      "llama3_sft_patch": "float32",
+      "neurips": "float32",
+      "neurips_direct": "float32",
+      "reward": "float32",
+      "sn": "float32",
+      "sn_direct": "float32"
+    },
+    "floating_point_protocol": {
+      "cuda_matmul_allow_tf32": false,
+      "cudnn_allow_tf32": false,
+      "default_model_dtype": "float32",
+      "float32_matmul_precision": "highest"
+    },
+    "python": "3.10.12",
+    "torch": "2.7.0+cu126"
+  },
+  "semantic": {
+    "bbh_answer_protocol": "lm-evaluation-harness v4.0 case-sensitive 'the answer is' regex exact match",
+    "bbh_generation_stopping": "transformers StopStringCriteria with the harness stop strings",
+    "bbh_max_new_tokens": 1024,
+    "bbh_prompt_format": "official_3shot_cot_raw_completion",
+    "cost_model": "/workspace/xcy/models/beaver-7b-v1.0-cost",
+    "datasets": {
+      "bbh": {
+        "count": 200,
+        "evaluator_revision": "8a07e1110d060de48cfc7a9a7987b7659060b60b",
+        "evaluator_root": "/workspace/xcy/safety_repro/lm-evaluation-harness",
+        "evaluator_template_sha256": "7fb84f2c423dc4486103fc8209095862aa75bb6848432f27cc8c705d440e62b9",
+        "manifest_path": "/workspace/xcy/dataset/big_bench_hard/subsets/bbh_seed112_n200_manifest.json",
+        "manifest_sha256": "5004d6a0c2d33fb0c5c42569934d9437f78aa5b3664b8a121b75387d94c1f4c6",
+        "path": "/workspace/xcy/dataset/big_bench_hard/subsets/bbh_seed112_n200.jsonl",
+        "prompt_sha256_by_task": {
+          "boolean_expressions": "685affba97425cdf3549d5d313ba876caed2fa7c8a4cf1ea7549faf22179609d",
+          "causal_judgement": "14377e36cccb084b7d0fe73988d08696f7675d712b02d3ae1f5f7f12c77028ea",
+          "date_understanding": "a0a13c392f689a1828f5f6ffb9dee3d44483794490da5d92f0e2a723787b1cfb",
+          "disambiguation_qa": "794fd259297972a4c963a5d13a84dc221edde460de27fa5d8fd64299a2001597",
+          "dyck_languages": "b0836603007ec659ed685458647fb6d7543543304e7aca909b995d0c3aff22b2",
+          "formal_fallacies": "10c06cc362520e9b8dddfc4861e263ff668d228a52d958dcc69f09f1d224935a",
+          "geometric_shapes": "f36d9893507eb518d84f388fb677dc0226c74a98873700de0b556548d65d3f76",
+          "hyperbaton": "19898af91c35cb26bbdf5fdb6f6fb17e138677250332e2994005625ffb50b261",
+          "logical_deduction_five_objects": "4ed65246c0c1c4b0b4053d784181892b842bce19cf4358c976f34b1a434ef034",
+          "logical_deduction_seven_objects": "4ed65246c0c1c4b0b4053d784181892b842bce19cf4358c976f34b1a434ef034",
+          "logical_deduction_three_objects": "4ed65246c0c1c4b0b4053d784181892b842bce19cf4358c976f34b1a434ef034",
+          "movie_recommendation": "cdf765634713b057091d541b4773dd2c998f81447b0bd8564ae70be4cdf3f5d0",
+          "multistep_arithmetic_two": "a546e0b7cde09037bc144ae5c32c9cf78dafdfac929ae76e2051b2dd8f3671ce",
+          "navigate": "dc2fd733f1867b8c79685f15b83746064534a94bf73468341c2a9dd335be22fc",
+          "object_counting": "e51ffc03fd713a13a379a6c938a523dfc1c2f384f2a8447bd7a12d4458f18833",
+          "penguins_in_a_table": "33be137e76c2a6af0bbacd17a8e7a92801886c0202a45e35ea9c2a88c1f26d51",
+          "reasoning_about_colored_objects": "e4ea02d05b13e8ed9ccc3b0d878bc4df4c5a6fb76c65d39d48d6244f7ff0b9d5",
+          "ruin_names": "731446c6c66bb5258677af1417b599a6a5539be6d74a5afc02cf7a716444ea54",
+          "salient_translation_error_detection": "2c8367f75092202cc507fdbfaaf037b1c1eed38e91289084439738367f0785f7",
+          "snarks": "35084a2a0b86bc4008ab206b838c0b97dd425897dd72198137c3cefc499c0960",
+          "sports_understanding": "2058a9bed717a6edb8ca2f815e88851436a4ee14c8b0d504ccf464865c6d0295",
+          "temporal_sequences": "3e7ebf1e20abe3e219dc6514dcb7474d82db1b2c66acc733cd30af2e9e0b64b0",
+          "tracking_shuffled_objects_five_objects": "2ef54cb2a72052adc3484a76209cb6a6535f194d677e79bcec2e2e71cf3768af",
+          "tracking_shuffled_objects_seven_objects": "2ef54cb2a72052adc3484a76209cb6a6535f194d677e79bcec2e2e71cf3768af",
+          "tracking_shuffled_objects_three_objects": "2ef54cb2a72052adc3484a76209cb6a6535f194d677e79bcec2e2e71cf3768af",
+          "web_of_lies": "c8025ca65ab7f0897c243504c863bda043d04b6e873777536743e94023c929d0",
+          "word_sorting": "a2cdbcfe23abaa97b9787f7c03dbf49b1cfd0ff9e63197b7884bb5cd5a096ca6"
+        },
+        "sha256": "bbc2fdffae277f1a7bad4a041302b6e5568cd6a581d70fd0e820b49206a78d74",
+        "source_revision": "9ee07bd481feebf959a6b59d61ea57bdcf30964d",
+        "task_count": 27
+      },
+      "gsm8k": {
+        "path": "/workspace/xcy/dataset/shared/gsm8k/main",
+        "selected": "first 100 test rows",
+        "test_arrow_sha256": "e3e13320550805e1c0ef9e0bb4e388a71f02fbec2bdb5b462692edb965f04cd9",
+        "test_count": 1319
+      },
+      "harmbench": {
+        "count": 200,
+        "path": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/table1_seed42_n200.jsonl",
+        "sha256": "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c"
+      },
+      "mmlu": {
+        "dev_arrow_sha256": "73e81e5bf23bba71779ff3a5eb0c5afd8439a6e2c74095e6f354a262e695e6b7",
+        "dev_count": 285,
+        "manifest_sha256": "1f2d3a3a9cbc737b4d703db2d070ff829644e0e3a89ad9a32dbd7bdf5e3889c8",
+        "path": "/workspace/xcy/dataset/mmlu_balanced_5_per_subject/mmlu/all",
+        "subjects": 57,
+        "test_arrow_sha256": "49a2549db99e5935a94f4a08d9014979e27dca53f569ad5ac2d1162df4f6f2e9",
+        "test_count": 285
+      }
+    },
+    "decoding": "greedy",
+    "floating_point_protocol": {
+      "cuda_matmul_allow_tf32": false,
+      "cudnn_allow_tf32": false,
+      "default_model_dtype": "float32",
+      "float32_matmul_precision": "highest"
+    },
+    "gsm8k_answer_protocol": "flexible numeric exact match: final ####, final answer phrase, final equation RHS, then last-number fallback",
+    "gsm8k_hash_delimiter_requested": false,
+    "gsm8k_max_new_tokens": 256,
+    "harmbench_max_new_tokens": 128,
+    "intervention": {
+      "direction": "positive-only",
+      "dtype": "float32",
+      "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+      "model_config_sha256": "61f3de03a16ca8046b05dc777bce72717022bc8522152eee61a69072272ef54b",
+      "negative_multiplier": 1.0,
+      "positive_multiplier": 2.0,
+      "ranking": "/workspace/xcy/safety_repro/unified_eval/results/grad_onpolicy_sn_first256_refusal_sentence_all65_expanded20000/gradients/top_neurons_stable.csv",
+      "ranking_sha256": "def8241d2c15b61b7a98f669a443d1a7b31cb25adff74b436199374ba3c2be69",
+      "scope": "last",
+      "strength": 1.0,
+      "top_k": 1000
+    },
+    "method": "grad",
+    "metrics": [
+      "llm-attacks case-sensitive refusal-substring ASR",
+      "beaver-7b-v1.0-cost"
+    ],
+    "seed": 112
+  }
+}

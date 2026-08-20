@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "harmbench",
+  "dataset": "first real harmbench prompts",
+  "max_new_tokens": 16,
+  "method": "neurips_direct",
+  "recommended_batch_size": 32,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 0.7322714170441031,
+      "examples_per_second": 10.924910919359531,
+      "peak_gpu_memory_gib": [
+        25.864094257354736
+      ],
+      "tokens_per_second": 174.7985747097525
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 0.5566702829673886,
+      "examples_per_second": 28.742328249875925,
+      "peak_gpu_memory_gib": [
+        26.754368782043457
+      ],
+      "tokens_per_second": 459.8772519980148
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 0.8680078778415918,
+      "examples_per_second": 36.86602485633187,
+      "peak_gpu_memory_gib": [
+        28.546607971191406
+      ],
+      "tokens_per_second": 589.8563977013099
+    }
+  ],
+  "semantic_config_hash": "e08ee31d264cfb2fa04b4ff80da3070c230de514b96d662f9c8ccdb941104247"
+}

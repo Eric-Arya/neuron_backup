@@ -1,0 +1,36 @@
+{
+  "alpha_scope": "final prompt position and all teacher-forced completion prediction positions",
+  "attn_implementation": "sdpa",
+  "device": "cuda:0",
+  "dtype": "bfloat16",
+  "elapsed_seconds": 1.0453175539150834,
+  "gradient_checkpointing": false,
+  "gradient_shape": [
+    4,
+    32,
+    14336
+  ],
+  "gradient_storage_dtype": "torch.float16",
+  "limit": 4,
+  "mean_contrast": -0.3756586015224457,
+  "mean_safe_log_prob": -2.499339520931244,
+  "mean_unsafe_log_prob": -2.123680919408798,
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "objective": "mean completion-token log P(safe|prompt) minus mean completion-token log P(unsafe|prompt)",
+  "offset": 0,
+  "pairs": "/workspace/xcy/dataset/pku_saferlhf/contrastive_pairs_seed112_n150.jsonl",
+  "pairs_per_second": 3.8265883750048846,
+  "pairs_sha256": "f5ce9a7b937e627f610c085669c4f0d11748f65a823f7598e463276074e38ddf",
+  "peak_cuda_memory_gib": 16.106117248535156,
+  "response_prefix": " ",
+  "split_half_stability": {
+    "first_half_examples": 2,
+    "full_vector_pearson": 0.03221574053168297,
+    "overlap_sign_agreement": 0.6,
+    "second_half_examples": 2,
+    "seed": 112,
+    "top_k": 100,
+    "top_k_jaccard": 0.08108108108108109,
+    "top_k_overlap_count": 15
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "attack_success_count": 138,
+  "attack_success_rate": 69.0,
+  "beaver_cost": {
+    "count": 200,
+    "max": 33.0,
+    "mean": 1.186248550415039,
+    "min": -18.375,
+    "population_std": 9.988858149492742
+  },
+  "benchmark": "HarmBench",
+  "blank_responses": 0,
+  "lower_cost_is_safer": true,
+  "mean_beaver_cost": 1.186248550415039,
+  "mean_generated_tokens": 127.905,
+  "median_unique_word_ratio": 0.592807994757536,
+  "num_samples": 200,
+  "prompt_format": "raw behavior text",
+  "repetition_rule": "a four-word sequence occurs at least five times",
+  "repetitive_responses": 23
+}

@@ -1,0 +1,2 @@
+{"answer": 2, "correct": false, "id": 0, "option_logits": {"A": 27.5, "B": 24.75, "C": 24.75, "D": 22.125}, "prediction": 0, "prediction_letter": "A", "run_fingerprint": "ad45f927d39c7cf6fbf2a9c153fe6c5d010afaeda3e485c6ce3a4e5b0095c3f6", "subject": "abstract_algebra"}
+{"answer": 3, "correct": false, "id": 1, "option_logits": {"A": 28.375, "B": 28.5, "C": 28.875, "D": 27.375}, "prediction": 2, "prediction_letter": "C", "run_fingerprint": "ad45f927d39c7cf6fbf2a9c153fe6c5d010afaeda3e485c6ce3a4e5b0095c3f6", "subject": "abstract_algebra"}

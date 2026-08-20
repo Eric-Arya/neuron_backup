@@ -1,0 +1,8 @@
+condition,num_samples,correct,accuracy,extraction_failures,blank_responses,repetitive_responses,median_response_tokens,median_word_count,median_unique_word_ratio
+baseline,100,68,68.0,0,0,3,170.5,113.0,0.42961418143899893
+strength_0p25,100,65,65.0,0,0,8,175.5,118.0,0.421595124536301
+strength_0p5,100,67,67.0,0,0,8,177.5,121.0,0.41441766488670806
+strength_0p75,100,64,64.0,0,0,11,181.0,126.5,0.4153494343256038
+strength_1,100,62,62.0,0,0,15,206.0,151.0,0.37537878787878787
+strength_1p5,100,63,63.0,0,0,12,201.0,137.0,0.3888888888888889
+strength_2,100,59,59.0,0,0,10,172.0,124.5,0.4017689627445725

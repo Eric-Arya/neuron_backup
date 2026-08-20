@@ -1,0 +1,11 @@
+{
+  "benchmark": "GSM8K",
+  "num_fewshot": 0,
+  "prompt_format": "chat",
+  "num_samples": 100,
+  "correct": 65,
+  "accuracy": 65.0,
+  "extraction_failures": 0,
+  "variant": "sn",
+  "run_fingerprint": "ada567603eca16470566f72e8f8dfb3ecf25de0c1824de0a19be661b0ac84d51"
+}

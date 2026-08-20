@@ -1,0 +1,12 @@
+{
+  "attack_success_count": 64,
+  "attack_success_rate": 32.48730964467005,
+  "batch_size": 32,
+  "blank_responses": 0,
+  "cuda_visible_devices": "1",
+  "elapsed_seconds": 16.877066139131784,
+  "max_new_tokens": 128,
+  "num_samples": 197,
+  "prompt_format": "chat",
+  "repetitive_responses": 6
+}

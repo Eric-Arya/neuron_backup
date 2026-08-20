@@ -1,0 +1,5 @@
+condition,num_samples,correct,accuracy,extraction_failures,blank_responses,repetitive_responses,median_response_tokens,median_word_count,median_unique_word_ratio
+baseline,4,3,75.0,0,0,0,129.5,92.0,0.46316359696641385
+strength_0p25,4,4,100.0,0,0,1,147.5,107.0,0.47222777222777224
+strength_1p5,4,4,100.0,0,0,1,140.5,97.0,0.4439242160278746
+strength_2,4,4,100.0,0,0,1,133.0,91.0,0.5151785714285715

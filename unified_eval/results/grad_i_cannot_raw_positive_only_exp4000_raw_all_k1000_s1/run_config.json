@@ -1,0 +1,85 @@
+{
+  "runtime": {
+    "batch_sizes": {
+      "beavertails": 32,
+      "cost": 32,
+      "gsm8k": 16,
+      "harmbench": 32,
+      "mmlu": 8,
+      "reward": 32
+    },
+    "dtypes": {
+      "cost": "bfloat16",
+      "grad": "bfloat16",
+      "llama3_base": "bfloat16",
+      "llama3_dpo": "bfloat16",
+      "llama3_dpo_patch": "bfloat16",
+      "llama3_sft": "bfloat16",
+      "llama3_sft_patch": "bfloat16",
+      "neurips": "bfloat16",
+      "reward": "bfloat16",
+      "sn": "float32"
+    },
+    "python": "3.10.12",
+    "torch": "2.7.0+cu126"
+  },
+  "semantic": {
+    "beavertails_max_new_tokens": 128,
+    "beavertails_prompt_format": "llama3_raw",
+    "cost_model": "/workspace/xcy/models/beaver-7b-v1.0-cost",
+    "datasets": {
+      "beavertails": {
+        "count": 200,
+        "path": "/workspace/xcy/dataset/projects/neurips_neuron/beavertails/splits/figure2_seed42_n200.jsonl",
+        "prompt_only": true,
+        "selection": "seed 42 random.sample of 200 from the final 600 rows",
+        "sha256": "eb2272513b954bf097aa645b518ffc271ecb22ec815f8db4377276e19909c5e9",
+        "source_split": "PKU-Alignment/BeaverTails round0/330k/test"
+      },
+      "gsm8k": {
+        "path": "/workspace/xcy/dataset/shared/gsm8k/main",
+        "selected": "first 100 test rows",
+        "test_arrow_sha256": "e3e13320550805e1c0ef9e0bb4e388a71f02fbec2bdb5b462692edb965f04cd9",
+        "test_count": 1319
+      },
+      "harmbench": {
+        "count": 200,
+        "path": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/table1_seed42_n200.jsonl",
+        "sha256": "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c"
+      },
+      "mmlu": {
+        "dev_arrow_sha256": "73e81e5bf23bba71779ff3a5eb0c5afd8439a6e2c74095e6f354a262e695e6b7",
+        "dev_count": 285,
+        "manifest_sha256": "1f2d3a3a9cbc737b4d703db2d070ff829644e0e3a89ad9a32dbd7bdf5e3889c8",
+        "path": "/workspace/xcy/dataset/mmlu_balanced_5_per_subject/mmlu/all",
+        "subjects": 57,
+        "test_arrow_sha256": "49a2549db99e5935a94f4a08d9014979e27dca53f569ad5ac2d1162df4f6f2e9",
+        "test_count": 285
+      }
+    },
+    "decoding": "greedy",
+    "gsm8k_answer_protocol": "flexible numeric exact match: final ####, final answer phrase, final equation RHS, then last-number fallback",
+    "gsm8k_hash_delimiter_requested": false,
+    "gsm8k_max_new_tokens": 256,
+    "harmbench_max_new_tokens": 128,
+    "intervention": {
+      "direction": "positive-only",
+      "dtype": "bfloat16",
+      "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+      "model_config_sha256": "61f3de03a16ca8046b05dc777bce72717022bc8522152eee61a69072272ef54b",
+      "negative_multiplier": 1.0,
+      "positive_multiplier": 2.0,
+      "ranking": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_raw_extract_expanded_4000/corpus_gradients/top_neurons_stable.csv",
+      "ranking_sha256": "974c664e6520c32a96a942fae556763e6dcca6795e8ad56ee7fad29270ba6075",
+      "scope": "all",
+      "strength": 1.0,
+      "top_k": 1000
+    },
+    "method": "grad",
+    "metrics": [
+      "llm-attacks case-sensitive refusal-substring ASR",
+      "beaver-7b-v1.0-cost"
+    ],
+    "seed": 112
+  }
+}

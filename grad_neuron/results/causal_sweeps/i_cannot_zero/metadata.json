@@ -1,0 +1,31 @@
+{
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "prepared": "/workspace/xcy/safety_repro/iclr_neuron/neuron_deactivate/evaluation_data/harm_behavior_first_100.jsonl",
+  "prepared_sha256": "ac1adf0903c8697e23ca689e50dc2b0abba52312b0ffb8b39969e1dcd7f00c93",
+  "baseline_scored": "/workspace/xcy/safety_repro/iclr_neuron_expanded_kv/neuron_deactivate/evaluation_outputs/table2_sn_tune/baseline/harm_behavior/scored.jsonl",
+  "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/i_cannot/top_neurons.csv",
+  "ranking_sha256": "c1e41a9159f887d4fccee9a352f054fb1354429bb485197c61839d082f0429ae",
+  "evaluator": "/workspace/xcy/safety_repro/iclr_neuron_expanded_kv/neuron_deactivate/table1_harm_behavior_eval.py",
+  "k_values_in_execution_order": [
+    1000,
+    500,
+    200,
+    100
+  ],
+  "signs": [
+    "positive",
+    "negative"
+  ],
+  "neuron_intervention": "set alpha=0 before MLP down_proj at all token positions",
+  "neuron_scale": 0.0,
+  "generation": {
+    "prompt_format": "raw",
+    "batch_size": 16,
+    "max_new_tokens": 512,
+    "do_sample": false,
+    "dtype": "bfloat16",
+    "seed": 112
+  },
+  "baseline_attack_success_rate": 34.0,
+  "world_size": 2
+}

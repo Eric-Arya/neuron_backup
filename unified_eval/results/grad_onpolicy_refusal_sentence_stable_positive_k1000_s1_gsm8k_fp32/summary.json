@@ -1,0 +1,27 @@
+{
+  "gsm8k": {
+    "accuracy": 78.0,
+    "answer_extraction": "flexible numeric exact match: final ####, final answer phrase, final equation RHS, then last-number fallback",
+    "benchmark": "GSM8K",
+    "correct": 78,
+    "extraction_failures": 0,
+    "format_compliance_count": null,
+    "format_compliance_percent": null,
+    "max_new_tokens": 256,
+    "num_fewshot": 0,
+    "num_samples": 100,
+    "prediction_source_counts": {
+      "answer_phrase": 2,
+      "answer_phrase_equation_rhs": 0,
+      "final_equation_rhs": 96,
+      "hash_delimiter": 0,
+      "last_number_fallback": 2
+    },
+    "prompt_format": "Llama-3 chat",
+    "run_fingerprint": "f84a94df63c0125095a6f28e13c3531b249b157765f93765163c4df0594ccaf2",
+    "strict_accuracy": null,
+    "strict_correct": null,
+    "subset": "first 100 test rows"
+  },
+  "method": "grad_onpolicy_refusal_sentence_stable_positive_k1000_s1_gsm8k_fp32"
+}

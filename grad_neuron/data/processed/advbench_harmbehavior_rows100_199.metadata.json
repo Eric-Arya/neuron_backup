@@ -1,0 +1,11 @@
+{
+  "benchmark": "AdvBench Harm Behavior",
+  "source": "llm-attacks/data/advbench/harmful_behaviors.csv",
+  "source_path": "/workspace/xcy/dataset/shared/advbench/raw/harmful_behaviors.csv",
+  "source_sha256": "6cd1a5c63c07610d7eb67307772ee5606017ee950b5770ab288a2c487489d3e1",
+  "source_rows": 520,
+  "offset": 100,
+  "limit": 100,
+  "prepared_path": "/workspace/xcy/safety_repro/grad_neuron/data/processed/advbench_harmbehavior_rows100_199.jsonl",
+  "prepared_sha256": "a7e00f5a8d8f26dabf781c2664be9271aa9e3a00aaf12902c3724e7da4e25c1c"
+}

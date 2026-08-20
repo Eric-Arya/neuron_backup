@@ -1,0 +1,140 @@
+{
+  "cost_dtype": "float32",
+  "cost_model": "/workspace/xcy/models/beaver-7b-v1.0-cost",
+  "gsm8k": {
+    "path": "/workspace/xcy/dataset/shared/gsm8k/main",
+    "selected": "first 100 test rows",
+    "test_arrow_sha256": "e3e13320550805e1c0ef9e0bb4e388a71f02fbec2bdb5b462692edb965f04cd9",
+    "test_count": 1319
+  },
+  "harmbench": {
+    "count": 200,
+    "path": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/table1_seed42_n200.jsonl",
+    "sha256": "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c"
+  },
+  "math500": {
+    "count": 50,
+    "evaluator": {
+      "harness_commit": "8a07e1110d060de48cfc7a9a7987b7659060b60b",
+      "harness_path": "/workspace/xcy/safety_repro/lm-evaluation-harness",
+      "implementation": "math_verify.verify(gold=parse(solution), target=parse(generation))",
+      "metric": "math_verify",
+      "reference_task": "minerva_math500",
+      "task_yaml_sha256": "97e4131398d38905fd9478980f6bf77bff3d93a5b96d45d60a6ca100610688f6",
+      "uses_llm_judge": false,
+      "utils_sha256": "cf84cc3d8c089512fb40483a501481c1de54405db1e39d6ada45d5a36ab4cf15"
+    },
+    "evaluator_dependencies": {
+      "antlr4-python3-runtime": "4.9.3",
+      "installation_scope": "global",
+      "latex2sympy2_extended": "1.11.0",
+      "math_verify": "0.9.0",
+      "sympy": "1.14.0"
+    },
+    "path": "/workspace/xcy/dataset/math500/subsets/math500_l1_l3_seed112_n50",
+    "selection": {
+      "eligible_count": 238,
+      "levels": [
+        1,
+        2,
+        3
+      ],
+      "method": "seeded within-level sampling with largest-remainder allocation",
+      "samples_per_level": {
+        "1": 9,
+        "2": 19,
+        "3": 22
+      },
+      "seed": 112,
+      "selected_source_indices_by_level": {
+        "1": [
+          18,
+          65,
+          196,
+          237,
+          370,
+          406,
+          449,
+          472,
+          487
+        ],
+        "2": [
+          4,
+          5,
+          27,
+          54,
+          57,
+          76,
+          169,
+          191,
+          246,
+          265,
+          314,
+          316,
+          348,
+          399,
+          433,
+          452,
+          467,
+          476,
+          480
+        ],
+        "3": [
+          8,
+          19,
+          45,
+          56,
+          91,
+          99,
+          114,
+          176,
+          205,
+          208,
+          247,
+          322,
+          337,
+          342,
+          377,
+          389,
+          411,
+          429,
+          437,
+          451,
+          469,
+          477
+        ]
+      },
+      "source_count_per_level": {
+        "1": 43,
+        "2": 90,
+        "3": 105
+      }
+    },
+    "source_manifest": "/workspace/xcy/dataset/math500/subsets/math500_l1_l3_seed112_n50/SOURCE.json",
+    "source_manifest_sha256": "5ccb50bc46be077bd142acbe6a9ed0a29c0af2b7113d76125cb5523495f25cb7",
+    "source_revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+    "test_arrow_sha256": "8977556fbd7237ead5428daea85f9a50ffd2c8887bcd58acf24d11e182908efc"
+  },
+  "method": "sn",
+  "mmlu": {
+    "dev_arrow_sha256": "73e81e5bf23bba71779ff3a5eb0c5afd8439a6e2c74095e6f354a262e695e6b7",
+    "dev_count": 285,
+    "manifest_sha256": "1f2d3a3a9cbc737b4d703db2d070ff829644e0e3a89ad9a32dbd7bdf5e3889c8",
+    "path": "/workspace/xcy/dataset/mmlu_balanced_5_per_subject/mmlu/all",
+    "subjects": 57,
+    "test_arrow_sha256": "49a2549db99e5935a94f4a08d9014979e27dca53f569ad5ac2d1162df4f6f2e9",
+    "test_count": 285
+  },
+  "prompt_protocol": {
+    "bbh": "official raw three-shot CoT text completion",
+    "beavertails": "raw question text",
+    "gsm8k": "zero-shot chat with step-by-step answer prefix",
+    "harmbench": "raw behavior text",
+    "ifeval": "task-native single-turn chat",
+    "math500": "publisher zero-shot CoT prompt in task-native chat",
+    "mmlu": "five-shot multi-turn chat with constrained next-token scoring"
+  },
+  "reward_dtype": "float32",
+  "reward_model": "/workspace/xcy/models/beaver-7b-v1.0-reward",
+  "sn_alpha": 6.0
+}

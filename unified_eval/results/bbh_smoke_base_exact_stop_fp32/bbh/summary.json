@@ -1,0 +1,33 @@
+{
+  "accuracy": 0.0,
+  "accuracy_by_task": {
+    "boolean_expressions": 0.0
+  },
+  "answer_extraction": "(?<=the answer is )(.*)(?=.)",
+  "benchmark": "BIG-Bench Hard",
+  "blank_responses": 0,
+  "correct": 0,
+  "decoding": "greedy",
+  "evaluator": "EleutherAI lm-evaluation-harness BBH CoT few-shot v4.0",
+  "evaluator_revision": "8a07e1110d060de48cfc7a9a7987b7659060b60b",
+  "extraction_failures": 2,
+  "max_new_tokens": 1024,
+  "mean_generated_tokens": 7.5,
+  "median_unique_word_ratio": 0.9375,
+  "metric": "case-sensitive exact match",
+  "num_fewshot": 3,
+  "num_samples": 2,
+  "num_tasks": 1,
+  "prompt_format": "official three-shot CoT in task-native chat",
+  "repetition_rule": "a four-word sequence occurs at least five times",
+  "repetitive_responses": 0,
+  "responses_at_token_limit": 0,
+  "run_fingerprint": "efe1ef37aebcfae87c6d602e5632060f918f77c68b6b727b5872246580fb1997",
+  "subset": "seed-112 task-stratified subset; first 2 of 200 rows",
+  "task_macro_accuracy": 0.0,
+  "until": [
+    "</s>",
+    "Q",
+    "\n\n"
+  ]
+}

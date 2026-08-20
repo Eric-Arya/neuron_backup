@@ -1,0 +1,8008 @@
+{
+  "positive_top0_zero": [],
+  "positive_top1000_zero": [
+    {
+      "layer": 31,
+      "neuron": 9936
+    },
+    {
+      "layer": 16,
+      "neuron": 1241
+    },
+    {
+      "layer": 11,
+      "neuron": 11321
+    },
+    {
+      "layer": 13,
+      "neuron": 4208
+    },
+    {
+      "layer": 31,
+      "neuron": 4690
+    },
+    {
+      "layer": 20,
+      "neuron": 2204
+    },
+    {
+      "layer": 25,
+      "neuron": 8701
+    },
+    {
+      "layer": 7,
+      "neuron": 6673
+    },
+    {
+      "layer": 6,
+      "neuron": 5866
+    },
+    {
+      "layer": 11,
+      "neuron": 4258
+    },
+    {
+      "layer": 12,
+      "neuron": 13860
+    },
+    {
+      "layer": 20,
+      "neuron": 3972
+    },
+    {
+      "layer": 31,
+      "neuron": 13076
+    },
+    {
+      "layer": 9,
+      "neuron": 4255
+    },
+    {
+      "layer": 31,
+      "neuron": 14073
+    },
+    {
+      "layer": 22,
+      "neuron": 4821
+    },
+    {
+      "layer": 15,
+      "neuron": 11853
+    },
+    {
+      "layer": 15,
+      "neuron": 5679
+    },
+    {
+      "layer": 16,
+      "neuron": 6310
+    },
+    {
+      "layer": 18,
+      "neuron": 5964
+    },
+    {
+      "layer": 16,
+      "neuron": 4974
+    },
+    {
+      "layer": 31,
+      "neuron": 5099
+    },
+    {
+      "layer": 30,
+      "neuron": 3382
+    },
+    {
+      "layer": 19,
+      "neuron": 900
+    },
+    {
+      "layer": 26,
+      "neuron": 592
+    },
+    {
+      "layer": 15,
+      "neuron": 10757
+    },
+    {
+      "layer": 16,
+      "neuron": 12528
+    },
+    {
+      "layer": 28,
+      "neuron": 4130
+    },
+    {
+      "layer": 18,
+      "neuron": 7148
+    },
+    {
+      "layer": 10,
+      "neuron": 4789
+    },
+    {
+      "layer": 18,
+      "neuron": 7417
+    },
+    {
+      "layer": 26,
+      "neuron": 529
+    },
+    {
+      "layer": 27,
+      "neuron": 8140
+    },
+    {
+      "layer": 10,
+      "neuron": 11570
+    },
+    {
+      "layer": 16,
+      "neuron": 11277
+    },
+    {
+      "layer": 20,
+      "neuron": 1168
+    },
+    {
+      "layer": 13,
+      "neuron": 13879
+    },
+    {
+      "layer": 19,
+      "neuron": 8952
+    },
+    {
+      "layer": 31,
+      "neuron": 11999
+    },
+    {
+      "layer": 31,
+      "neuron": 12446
+    },
+    {
+      "layer": 31,
+      "neuron": 8591
+    },
+    {
+      "layer": 20,
+      "neuron": 5237
+    },
+    {
+      "layer": 18,
+      "neuron": 8592
+    },
+    {
+      "layer": 26,
+      "neuron": 11941
+    },
+    {
+      "layer": 17,
+      "neuron": 1632
+    },
+    {
+      "layer": 23,
+      "neuron": 2343
+    },
+    {
+      "layer": 24,
+      "neuron": 13102
+    },
+    {
+      "layer": 22,
+      "neuron": 7399
+    },
+    {
+      "layer": 28,
+      "neuron": 12743
+    },
+    {
+      "layer": 30,
+      "neuron": 12394
+    },
+    {
+      "layer": 18,
+      "neuron": 3236
+    },
+    {
+      "layer": 30,
+      "neuron": 11618
+    },
+    {
+      "layer": 28,
+      "neuron": 3057
+    },
+    {
+      "layer": 31,
+      "neuron": 2153
+    },
+    {
+      "layer": 15,
+      "neuron": 5080
+    },
+    {
+      "layer": 16,
+      "neuron": 6772
+    },
+    {
+      "layer": 14,
+      "neuron": 1406
+    },
+    {
+      "layer": 18,
+      "neuron": 11215
+    },
+    {
+      "layer": 28,
+      "neuron": 13790
+    },
+    {
+      "layer": 30,
+      "neuron": 7545
+    },
+    {
+      "layer": 28,
+      "neuron": 9628
+    },
+    {
+      "layer": 19,
+      "neuron": 14046
+    },
+    {
+      "layer": 16,
+      "neuron": 2995
+    },
+    {
+      "layer": 24,
+      "neuron": 9569
+    },
+    {
+      "layer": 28,
+      "neuron": 7737
+    },
+    {
+      "layer": 29,
+      "neuron": 90
+    },
+    {
+      "layer": 15,
+      "neuron": 6918
+    },
+    {
+      "layer": 23,
+      "neuron": 12181
+    },
+    {
+      "layer": 16,
+      "neuron": 3884
+    },
+    {
+      "layer": 23,
+      "neuron": 1498
+    },
+    {
+      "layer": 14,
+      "neuron": 12563
+    },
+    {
+      "layer": 20,
+      "neuron": 8323
+    },
+    {
+      "layer": 28,
+      "neuron": 10351
+    },
+    {
+      "layer": 27,
+      "neuron": 1686
+    },
+    {
+      "layer": 28,
+      "neuron": 7137
+    },
+    {
+      "layer": 31,
+      "neuron": 5178
+    },
+    {
+      "layer": 23,
+      "neuron": 4769
+    },
+    {
+      "layer": 31,
+      "neuron": 287
+    },
+    {
+      "layer": 25,
+      "neuron": 12046
+    },
+    {
+      "layer": 31,
+      "neuron": 10850
+    },
+    {
+      "layer": 16,
+      "neuron": 11992
+    },
+    {
+      "layer": 31,
+      "neuron": 7267
+    },
+    {
+      "layer": 19,
+      "neuron": 12151
+    },
+    {
+      "layer": 30,
+      "neuron": 1754
+    },
+    {
+      "layer": 1,
+      "neuron": 2427
+    },
+    {
+      "layer": 31,
+      "neuron": 10459
+    },
+    {
+      "layer": 20,
+      "neuron": 88
+    },
+    {
+      "layer": 31,
+      "neuron": 10014
+    },
+    {
+      "layer": 19,
+      "neuron": 10082
+    },
+    {
+      "layer": 17,
+      "neuron": 12927
+    },
+    {
+      "layer": 29,
+      "neuron": 8508
+    },
+    {
+      "layer": 19,
+      "neuron": 6804
+    },
+    {
+      "layer": 20,
+      "neuron": 4035
+    },
+    {
+      "layer": 18,
+      "neuron": 6431
+    },
+    {
+      "layer": 31,
+      "neuron": 7450
+    },
+    {
+      "layer": 16,
+      "neuron": 12860
+    },
+    {
+      "layer": 24,
+      "neuron": 8765
+    },
+    {
+      "layer": 29,
+      "neuron": 911
+    },
+    {
+      "layer": 22,
+      "neuron": 10842
+    },
+    {
+      "layer": 17,
+      "neuron": 4802
+    },
+    {
+      "layer": 12,
+      "neuron": 6358
+    },
+    {
+      "layer": 31,
+      "neuron": 7104
+    },
+    {
+      "layer": 28,
+      "neuron": 547
+    },
+    {
+      "layer": 29,
+      "neuron": 5764
+    },
+    {
+      "layer": 25,
+      "neuron": 13289
+    },
+    {
+      "layer": 23,
+      "neuron": 9380
+    },
+    {
+      "layer": 19,
+      "neuron": 10624
+    },
+    {
+      "layer": 14,
+      "neuron": 4589
+    },
+    {
+      "layer": 27,
+      "neuron": 13519
+    },
+    {
+      "layer": 16,
+      "neuron": 5547
+    },
+    {
+      "layer": 31,
+      "neuron": 12358
+    },
+    {
+      "layer": 30,
+      "neuron": 1443
+    },
+    {
+      "layer": 31,
+      "neuron": 8345
+    },
+    {
+      "layer": 14,
+      "neuron": 7642
+    },
+    {
+      "layer": 31,
+      "neuron": 4995
+    },
+    {
+      "layer": 24,
+      "neuron": 1956
+    },
+    {
+      "layer": 15,
+      "neuron": 1236
+    },
+    {
+      "layer": 21,
+      "neuron": 2485
+    },
+    {
+      "layer": 17,
+      "neuron": 11818
+    },
+    {
+      "layer": 30,
+      "neuron": 2049
+    },
+    {
+      "layer": 24,
+      "neuron": 10631
+    },
+    {
+      "layer": 31,
+      "neuron": 13599
+    },
+    {
+      "layer": 20,
+      "neuron": 4772
+    },
+    {
+      "layer": 22,
+      "neuron": 2958
+    },
+    {
+      "layer": 23,
+      "neuron": 13369
+    },
+    {
+      "layer": 31,
+      "neuron": 3691
+    },
+    {
+      "layer": 28,
+      "neuron": 11275
+    },
+    {
+      "layer": 20,
+      "neuron": 5957
+    },
+    {
+      "layer": 20,
+      "neuron": 13625
+    },
+    {
+      "layer": 30,
+      "neuron": 12764
+    },
+    {
+      "layer": 31,
+      "neuron": 2549
+    },
+    {
+      "layer": 30,
+      "neuron": 10669
+    },
+    {
+      "layer": 31,
+      "neuron": 3493
+    },
+    {
+      "layer": 18,
+      "neuron": 3876
+    },
+    {
+      "layer": 15,
+      "neuron": 12971
+    },
+    {
+      "layer": 16,
+      "neuron": 8827
+    },
+    {
+      "layer": 27,
+      "neuron": 14327
+    },
+    {
+      "layer": 14,
+      "neuron": 4484
+    },
+    {
+      "layer": 9,
+      "neuron": 12002
+    },
+    {
+      "layer": 28,
+      "neuron": 3182
+    },
+    {
+      "layer": 15,
+      "neuron": 1706
+    },
+    {
+      "layer": 16,
+      "neuron": 654
+    },
+    {
+      "layer": 31,
+      "neuron": 13271
+    },
+    {
+      "layer": 20,
+      "neuron": 3876
+    },
+    {
+      "layer": 30,
+      "neuron": 3175
+    },
+    {
+      "layer": 19,
+      "neuron": 4762
+    },
+    {
+      "layer": 4,
+      "neuron": 4391
+    },
+    {
+      "layer": 12,
+      "neuron": 5760
+    },
+    {
+      "layer": 13,
+      "neuron": 8310
+    },
+    {
+      "layer": 24,
+      "neuron": 6314
+    },
+    {
+      "layer": 28,
+      "neuron": 10999
+    },
+    {
+      "layer": 27,
+      "neuron": 5995
+    },
+    {
+      "layer": 31,
+      "neuron": 7791
+    },
+    {
+      "layer": 19,
+      "neuron": 10772
+    },
+    {
+      "layer": 30,
+      "neuron": 5974
+    },
+    {
+      "layer": 28,
+      "neuron": 12278
+    },
+    {
+      "layer": 24,
+      "neuron": 7928
+    },
+    {
+      "layer": 30,
+      "neuron": 1384
+    },
+    {
+      "layer": 17,
+      "neuron": 12441
+    },
+    {
+      "layer": 29,
+      "neuron": 4017
+    },
+    {
+      "layer": 22,
+      "neuron": 377
+    },
+    {
+      "layer": 25,
+      "neuron": 8519
+    },
+    {
+      "layer": 16,
+      "neuron": 6213
+    },
+    {
+      "layer": 26,
+      "neuron": 8722
+    },
+    {
+      "layer": 21,
+      "neuron": 1653
+    },
+    {
+      "layer": 15,
+      "neuron": 5095
+    },
+    {
+      "layer": 23,
+      "neuron": 12110
+    },
+    {
+      "layer": 16,
+      "neuron": 104
+    },
+    {
+      "layer": 27,
+      "neuron": 4121
+    },
+    {
+      "layer": 20,
+      "neuron": 6776
+    },
+    {
+      "layer": 31,
+      "neuron": 8254
+    },
+    {
+      "layer": 29,
+      "neuron": 13885
+    },
+    {
+      "layer": 17,
+      "neuron": 6950
+    },
+    {
+      "layer": 31,
+      "neuron": 12222
+    },
+    {
+      "layer": 31,
+      "neuron": 4096
+    },
+    {
+      "layer": 31,
+      "neuron": 12423
+    },
+    {
+      "layer": 25,
+      "neuron": 11921
+    },
+    {
+      "layer": 31,
+      "neuron": 8489
+    },
+    {
+      "layer": 15,
+      "neuron": 5367
+    },
+    {
+      "layer": 15,
+      "neuron": 764
+    },
+    {
+      "layer": 29,
+      "neuron": 10815
+    },
+    {
+      "layer": 31,
+      "neuron": 14304
+    },
+    {
+      "layer": 30,
+      "neuron": 13943
+    },
+    {
+      "layer": 30,
+      "neuron": 2614
+    },
+    {
+      "layer": 26,
+      "neuron": 7068
+    },
+    {
+      "layer": 16,
+      "neuron": 11949
+    },
+    {
+      "layer": 28,
+      "neuron": 1870
+    },
+    {
+      "layer": 31,
+      "neuron": 12606
+    },
+    {
+      "layer": 27,
+      "neuron": 13732
+    },
+    {
+      "layer": 19,
+      "neuron": 11795
+    },
+    {
+      "layer": 31,
+      "neuron": 13245
+    },
+    {
+      "layer": 31,
+      "neuron": 11691
+    },
+    {
+      "layer": 19,
+      "neuron": 9739
+    },
+    {
+      "layer": 27,
+      "neuron": 12821
+    },
+    {
+      "layer": 28,
+      "neuron": 5784
+    },
+    {
+      "layer": 25,
+      "neuron": 4293
+    },
+    {
+      "layer": 31,
+      "neuron": 5553
+    },
+    {
+      "layer": 19,
+      "neuron": 629
+    },
+    {
+      "layer": 19,
+      "neuron": 11092
+    },
+    {
+      "layer": 12,
+      "neuron": 7966
+    },
+    {
+      "layer": 19,
+      "neuron": 1479
+    },
+    {
+      "layer": 25,
+      "neuron": 9489
+    },
+    {
+      "layer": 24,
+      "neuron": 684
+    },
+    {
+      "layer": 18,
+      "neuron": 290
+    },
+    {
+      "layer": 20,
+      "neuron": 436
+    },
+    {
+      "layer": 20,
+      "neuron": 5771
+    },
+    {
+      "layer": 29,
+      "neuron": 4928
+    },
+    {
+      "layer": 12,
+      "neuron": 13954
+    },
+    {
+      "layer": 29,
+      "neuron": 8873
+    },
+    {
+      "layer": 27,
+      "neuron": 13710
+    },
+    {
+      "layer": 31,
+      "neuron": 10514
+    },
+    {
+      "layer": 30,
+      "neuron": 2549
+    },
+    {
+      "layer": 31,
+      "neuron": 5603
+    },
+    {
+      "layer": 27,
+      "neuron": 932
+    },
+    {
+      "layer": 19,
+      "neuron": 9759
+    },
+    {
+      "layer": 31,
+      "neuron": 12930
+    },
+    {
+      "layer": 27,
+      "neuron": 40
+    },
+    {
+      "layer": 29,
+      "neuron": 314
+    },
+    {
+      "layer": 21,
+      "neuron": 13134
+    },
+    {
+      "layer": 30,
+      "neuron": 5612
+    },
+    {
+      "layer": 17,
+      "neuron": 11833
+    },
+    {
+      "layer": 30,
+      "neuron": 5689
+    },
+    {
+      "layer": 17,
+      "neuron": 10460
+    },
+    {
+      "layer": 30,
+      "neuron": 8562
+    },
+    {
+      "layer": 21,
+      "neuron": 7892
+    },
+    {
+      "layer": 31,
+      "neuron": 2012
+    },
+    {
+      "layer": 30,
+      "neuron": 10521
+    },
+    {
+      "layer": 25,
+      "neuron": 4565
+    },
+    {
+      "layer": 21,
+      "neuron": 8624
+    },
+    {
+      "layer": 19,
+      "neuron": 484
+    },
+    {
+      "layer": 18,
+      "neuron": 13570
+    },
+    {
+      "layer": 22,
+      "neuron": 7977
+    },
+    {
+      "layer": 24,
+      "neuron": 6847
+    },
+    {
+      "layer": 16,
+      "neuron": 10820
+    },
+    {
+      "layer": 30,
+      "neuron": 2450
+    },
+    {
+      "layer": 15,
+      "neuron": 6692
+    },
+    {
+      "layer": 20,
+      "neuron": 133
+    },
+    {
+      "layer": 27,
+      "neuron": 8242
+    },
+    {
+      "layer": 31,
+      "neuron": 2474
+    },
+    {
+      "layer": 16,
+      "neuron": 1575
+    },
+    {
+      "layer": 0,
+      "neuron": 10902
+    },
+    {
+      "layer": 9,
+      "neuron": 9439
+    },
+    {
+      "layer": 27,
+      "neuron": 9862
+    },
+    {
+      "layer": 22,
+      "neuron": 13657
+    },
+    {
+      "layer": 28,
+      "neuron": 8272
+    },
+    {
+      "layer": 24,
+      "neuron": 9705
+    },
+    {
+      "layer": 16,
+      "neuron": 6127
+    },
+    {
+      "layer": 25,
+      "neuron": 3650
+    },
+    {
+      "layer": 21,
+      "neuron": 1832
+    },
+    {
+      "layer": 18,
+      "neuron": 5590
+    },
+    {
+      "layer": 29,
+      "neuron": 13368
+    },
+    {
+      "layer": 29,
+      "neuron": 2914
+    },
+    {
+      "layer": 17,
+      "neuron": 4581
+    },
+    {
+      "layer": 19,
+      "neuron": 9793
+    },
+    {
+      "layer": 24,
+      "neuron": 5102
+    },
+    {
+      "layer": 28,
+      "neuron": 14332
+    },
+    {
+      "layer": 31,
+      "neuron": 4983
+    },
+    {
+      "layer": 29,
+      "neuron": 12938
+    },
+    {
+      "layer": 11,
+      "neuron": 3621
+    },
+    {
+      "layer": 14,
+      "neuron": 8913
+    },
+    {
+      "layer": 29,
+      "neuron": 7959
+    },
+    {
+      "layer": 29,
+      "neuron": 12090
+    },
+    {
+      "layer": 22,
+      "neuron": 8713
+    },
+    {
+      "layer": 14,
+      "neuron": 6382
+    },
+    {
+      "layer": 27,
+      "neuron": 10884
+    },
+    {
+      "layer": 28,
+      "neuron": 6412
+    },
+    {
+      "layer": 25,
+      "neuron": 13395
+    },
+    {
+      "layer": 26,
+      "neuron": 5979
+    },
+    {
+      "layer": 10,
+      "neuron": 8238
+    },
+    {
+      "layer": 24,
+      "neuron": 12919
+    },
+    {
+      "layer": 24,
+      "neuron": 5249
+    },
+    {
+      "layer": 31,
+      "neuron": 11085
+    },
+    {
+      "layer": 14,
+      "neuron": 5932
+    },
+    {
+      "layer": 20,
+      "neuron": 243
+    },
+    {
+      "layer": 17,
+      "neuron": 1143
+    },
+    {
+      "layer": 29,
+      "neuron": 11947
+    },
+    {
+      "layer": 31,
+      "neuron": 47
+    },
+    {
+      "layer": 31,
+      "neuron": 3616
+    },
+    {
+      "layer": 19,
+      "neuron": 2418
+    },
+    {
+      "layer": 16,
+      "neuron": 2831
+    },
+    {
+      "layer": 14,
+      "neuron": 12639
+    },
+    {
+      "layer": 18,
+      "neuron": 6531
+    },
+    {
+      "layer": 22,
+      "neuron": 12913
+    },
+    {
+      "layer": 21,
+      "neuron": 2077
+    },
+    {
+      "layer": 16,
+      "neuron": 14256
+    },
+    {
+      "layer": 17,
+      "neuron": 8131
+    },
+    {
+      "layer": 23,
+      "neuron": 3252
+    },
+    {
+      "layer": 29,
+      "neuron": 14092
+    },
+    {
+      "layer": 31,
+      "neuron": 13738
+    },
+    {
+      "layer": 27,
+      "neuron": 2723
+    },
+    {
+      "layer": 18,
+      "neuron": 730
+    },
+    {
+      "layer": 17,
+      "neuron": 3258
+    },
+    {
+      "layer": 27,
+      "neuron": 9238
+    },
+    {
+      "layer": 12,
+      "neuron": 5006
+    },
+    {
+      "layer": 21,
+      "neuron": 14329
+    },
+    {
+      "layer": 17,
+      "neuron": 7285
+    },
+    {
+      "layer": 25,
+      "neuron": 14266
+    },
+    {
+      "layer": 24,
+      "neuron": 9812
+    },
+    {
+      "layer": 27,
+      "neuron": 2302
+    },
+    {
+      "layer": 21,
+      "neuron": 11574
+    },
+    {
+      "layer": 31,
+      "neuron": 8680
+    },
+    {
+      "layer": 15,
+      "neuron": 3738
+    },
+    {
+      "layer": 26,
+      "neuron": 8456
+    },
+    {
+      "layer": 24,
+      "neuron": 6529
+    },
+    {
+      "layer": 27,
+      "neuron": 4309
+    },
+    {
+      "layer": 23,
+      "neuron": 4077
+    },
+    {
+      "layer": 17,
+      "neuron": 5345
+    },
+    {
+      "layer": 17,
+      "neuron": 4093
+    },
+    {
+      "layer": 19,
+      "neuron": 635
+    },
+    {
+      "layer": 20,
+      "neuron": 6783
+    },
+    {
+      "layer": 23,
+      "neuron": 11026
+    },
+    {
+      "layer": 14,
+      "neuron": 5439
+    },
+    {
+      "layer": 15,
+      "neuron": 256
+    },
+    {
+      "layer": 18,
+      "neuron": 4164
+    },
+    {
+      "layer": 30,
+      "neuron": 8465
+    },
+    {
+      "layer": 25,
+      "neuron": 627
+    },
+    {
+      "layer": 28,
+      "neuron": 1016
+    },
+    {
+      "layer": 8,
+      "neuron": 3355
+    },
+    {
+      "layer": 3,
+      "neuron": 3271
+    },
+    {
+      "layer": 28,
+      "neuron": 9883
+    },
+    {
+      "layer": 26,
+      "neuron": 1396
+    },
+    {
+      "layer": 29,
+      "neuron": 6468
+    },
+    {
+      "layer": 20,
+      "neuron": 10540
+    },
+    {
+      "layer": 17,
+      "neuron": 8459
+    },
+    {
+      "layer": 21,
+      "neuron": 993
+    },
+    {
+      "layer": 23,
+      "neuron": 4985
+    },
+    {
+      "layer": 12,
+      "neuron": 4319
+    },
+    {
+      "layer": 30,
+      "neuron": 1124
+    },
+    {
+      "layer": 29,
+      "neuron": 10085
+    },
+    {
+      "layer": 31,
+      "neuron": 1209
+    },
+    {
+      "layer": 19,
+      "neuron": 2059
+    },
+    {
+      "layer": 17,
+      "neuron": 2299
+    },
+    {
+      "layer": 27,
+      "neuron": 2270
+    },
+    {
+      "layer": 26,
+      "neuron": 5578
+    },
+    {
+      "layer": 15,
+      "neuron": 1816
+    },
+    {
+      "layer": 31,
+      "neuron": 4852
+    },
+    {
+      "layer": 23,
+      "neuron": 7055
+    },
+    {
+      "layer": 25,
+      "neuron": 11654
+    },
+    {
+      "layer": 27,
+      "neuron": 5443
+    },
+    {
+      "layer": 14,
+      "neuron": 1441
+    },
+    {
+      "layer": 22,
+      "neuron": 10995
+    },
+    {
+      "layer": 17,
+      "neuron": 3931
+    },
+    {
+      "layer": 25,
+      "neuron": 1685
+    },
+    {
+      "layer": 22,
+      "neuron": 12691
+    },
+    {
+      "layer": 24,
+      "neuron": 4066
+    },
+    {
+      "layer": 31,
+      "neuron": 570
+    },
+    {
+      "layer": 16,
+      "neuron": 1754
+    },
+    {
+      "layer": 31,
+      "neuron": 11488
+    },
+    {
+      "layer": 28,
+      "neuron": 2344
+    },
+    {
+      "layer": 18,
+      "neuron": 2401
+    },
+    {
+      "layer": 26,
+      "neuron": 6361
+    },
+    {
+      "layer": 14,
+      "neuron": 3537
+    },
+    {
+      "layer": 19,
+      "neuron": 13544
+    },
+    {
+      "layer": 22,
+      "neuron": 8465
+    },
+    {
+      "layer": 15,
+      "neuron": 4722
+    },
+    {
+      "layer": 17,
+      "neuron": 5150
+    },
+    {
+      "layer": 31,
+      "neuron": 3260
+    },
+    {
+      "layer": 17,
+      "neuron": 9729
+    },
+    {
+      "layer": 21,
+      "neuron": 763
+    },
+    {
+      "layer": 16,
+      "neuron": 7644
+    },
+    {
+      "layer": 10,
+      "neuron": 6230
+    },
+    {
+      "layer": 24,
+      "neuron": 9306
+    },
+    {
+      "layer": 22,
+      "neuron": 12624
+    },
+    {
+      "layer": 27,
+      "neuron": 3755
+    },
+    {
+      "layer": 25,
+      "neuron": 8904
+    },
+    {
+      "layer": 31,
+      "neuron": 11077
+    },
+    {
+      "layer": 15,
+      "neuron": 3816
+    },
+    {
+      "layer": 19,
+      "neuron": 3931
+    },
+    {
+      "layer": 8,
+      "neuron": 9373
+    },
+    {
+      "layer": 24,
+      "neuron": 2372
+    },
+    {
+      "layer": 30,
+      "neuron": 2779
+    },
+    {
+      "layer": 16,
+      "neuron": 6364
+    },
+    {
+      "layer": 30,
+      "neuron": 2137
+    },
+    {
+      "layer": 22,
+      "neuron": 7652
+    },
+    {
+      "layer": 23,
+      "neuron": 600
+    },
+    {
+      "layer": 14,
+      "neuron": 8006
+    },
+    {
+      "layer": 18,
+      "neuron": 12138
+    },
+    {
+      "layer": 18,
+      "neuron": 14003
+    },
+    {
+      "layer": 28,
+      "neuron": 10181
+    },
+    {
+      "layer": 16,
+      "neuron": 9883
+    },
+    {
+      "layer": 31,
+      "neuron": 11750
+    },
+    {
+      "layer": 27,
+      "neuron": 3365
+    },
+    {
+      "layer": 29,
+      "neuron": 2233
+    },
+    {
+      "layer": 18,
+      "neuron": 14012
+    },
+    {
+      "layer": 29,
+      "neuron": 498
+    },
+    {
+      "layer": 30,
+      "neuron": 1171
+    },
+    {
+      "layer": 20,
+      "neuron": 10660
+    },
+    {
+      "layer": 11,
+      "neuron": 469
+    },
+    {
+      "layer": 29,
+      "neuron": 3716
+    },
+    {
+      "layer": 22,
+      "neuron": 7694
+    },
+    {
+      "layer": 17,
+      "neuron": 4796
+    },
+    {
+      "layer": 20,
+      "neuron": 8898
+    },
+    {
+      "layer": 0,
+      "neuron": 8092
+    },
+    {
+      "layer": 17,
+      "neuron": 9635
+    },
+    {
+      "layer": 31,
+      "neuron": 7096
+    },
+    {
+      "layer": 18,
+      "neuron": 11450
+    },
+    {
+      "layer": 26,
+      "neuron": 9907
+    },
+    {
+      "layer": 23,
+      "neuron": 8905
+    },
+    {
+      "layer": 30,
+      "neuron": 13251
+    },
+    {
+      "layer": 30,
+      "neuron": 12248
+    },
+    {
+      "layer": 30,
+      "neuron": 7433
+    },
+    {
+      "layer": 24,
+      "neuron": 9303
+    },
+    {
+      "layer": 31,
+      "neuron": 1332
+    },
+    {
+      "layer": 18,
+      "neuron": 10741
+    },
+    {
+      "layer": 20,
+      "neuron": 8083
+    },
+    {
+      "layer": 14,
+      "neuron": 174
+    },
+    {
+      "layer": 28,
+      "neuron": 14310
+    },
+    {
+      "layer": 26,
+      "neuron": 8460
+    },
+    {
+      "layer": 19,
+      "neuron": 7922
+    },
+    {
+      "layer": 26,
+      "neuron": 8392
+    },
+    {
+      "layer": 21,
+      "neuron": 6216
+    },
+    {
+      "layer": 14,
+      "neuron": 12647
+    },
+    {
+      "layer": 21,
+      "neuron": 4010
+    },
+    {
+      "layer": 19,
+      "neuron": 13484
+    },
+    {
+      "layer": 27,
+      "neuron": 2827
+    },
+    {
+      "layer": 29,
+      "neuron": 12471
+    },
+    {
+      "layer": 28,
+      "neuron": 8774
+    },
+    {
+      "layer": 29,
+      "neuron": 11608
+    },
+    {
+      "layer": 22,
+      "neuron": 7467
+    },
+    {
+      "layer": 17,
+      "neuron": 5610
+    },
+    {
+      "layer": 4,
+      "neuron": 1111
+    },
+    {
+      "layer": 20,
+      "neuron": 4357
+    },
+    {
+      "layer": 31,
+      "neuron": 740
+    },
+    {
+      "layer": 19,
+      "neuron": 7128
+    },
+    {
+      "layer": 30,
+      "neuron": 10840
+    },
+    {
+      "layer": 28,
+      "neuron": 6953
+    },
+    {
+      "layer": 24,
+      "neuron": 6813
+    },
+    {
+      "layer": 29,
+      "neuron": 2740
+    },
+    {
+      "layer": 23,
+      "neuron": 2240
+    },
+    {
+      "layer": 31,
+      "neuron": 5831
+    },
+    {
+      "layer": 31,
+      "neuron": 8154
+    },
+    {
+      "layer": 21,
+      "neuron": 6832
+    },
+    {
+      "layer": 16,
+      "neuron": 1666
+    },
+    {
+      "layer": 11,
+      "neuron": 6452
+    },
+    {
+      "layer": 16,
+      "neuron": 11010
+    },
+    {
+      "layer": 17,
+      "neuron": 9707
+    },
+    {
+      "layer": 21,
+      "neuron": 4675
+    },
+    {
+      "layer": 30,
+      "neuron": 11709
+    },
+    {
+      "layer": 16,
+      "neuron": 11065
+    },
+    {
+      "layer": 26,
+      "neuron": 11593
+    },
+    {
+      "layer": 17,
+      "neuron": 3588
+    },
+    {
+      "layer": 31,
+      "neuron": 12913
+    },
+    {
+      "layer": 16,
+      "neuron": 7904
+    },
+    {
+      "layer": 30,
+      "neuron": 8730
+    },
+    {
+      "layer": 14,
+      "neuron": 11861
+    },
+    {
+      "layer": 17,
+      "neuron": 8758
+    },
+    {
+      "layer": 20,
+      "neuron": 12953
+    },
+    {
+      "layer": 22,
+      "neuron": 336
+    },
+    {
+      "layer": 24,
+      "neuron": 1934
+    },
+    {
+      "layer": 17,
+      "neuron": 10664
+    },
+    {
+      "layer": 27,
+      "neuron": 13129
+    },
+    {
+      "layer": 31,
+      "neuron": 1159
+    },
+    {
+      "layer": 30,
+      "neuron": 12598
+    },
+    {
+      "layer": 21,
+      "neuron": 7208
+    },
+    {
+      "layer": 25,
+      "neuron": 1476
+    },
+    {
+      "layer": 21,
+      "neuron": 3382
+    },
+    {
+      "layer": 23,
+      "neuron": 13157
+    },
+    {
+      "layer": 28,
+      "neuron": 10816
+    },
+    {
+      "layer": 26,
+      "neuron": 10343
+    },
+    {
+      "layer": 20,
+      "neuron": 11241
+    },
+    {
+      "layer": 16,
+      "neuron": 3669
+    },
+    {
+      "layer": 17,
+      "neuron": 1281
+    },
+    {
+      "layer": 28,
+      "neuron": 11641
+    },
+    {
+      "layer": 23,
+      "neuron": 9335
+    },
+    {
+      "layer": 15,
+      "neuron": 8329
+    },
+    {
+      "layer": 22,
+      "neuron": 3334
+    },
+    {
+      "layer": 27,
+      "neuron": 6678
+    },
+    {
+      "layer": 23,
+      "neuron": 11273
+    },
+    {
+      "layer": 17,
+      "neuron": 12034
+    },
+    {
+      "layer": 23,
+      "neuron": 12583
+    },
+    {
+      "layer": 18,
+      "neuron": 6786
+    },
+    {
+      "layer": 21,
+      "neuron": 1222
+    },
+    {
+      "layer": 13,
+      "neuron": 12622
+    },
+    {
+      "layer": 30,
+      "neuron": 38
+    },
+    {
+      "layer": 23,
+      "neuron": 13376
+    },
+    {
+      "layer": 20,
+      "neuron": 12370
+    },
+    {
+      "layer": 29,
+      "neuron": 7001
+    },
+    {
+      "layer": 22,
+      "neuron": 3418
+    },
+    {
+      "layer": 24,
+      "neuron": 6041
+    },
+    {
+      "layer": 14,
+      "neuron": 8357
+    },
+    {
+      "layer": 6,
+      "neuron": 10666
+    },
+    {
+      "layer": 25,
+      "neuron": 11297
+    },
+    {
+      "layer": 1,
+      "neuron": 4053
+    },
+    {
+      "layer": 16,
+      "neuron": 5905
+    },
+    {
+      "layer": 17,
+      "neuron": 10066
+    },
+    {
+      "layer": 18,
+      "neuron": 1065
+    },
+    {
+      "layer": 19,
+      "neuron": 12000
+    },
+    {
+      "layer": 29,
+      "neuron": 10537
+    },
+    {
+      "layer": 0,
+      "neuron": 491
+    },
+    {
+      "layer": 23,
+      "neuron": 5917
+    },
+    {
+      "layer": 21,
+      "neuron": 7760
+    },
+    {
+      "layer": 24,
+      "neuron": 2417
+    },
+    {
+      "layer": 19,
+      "neuron": 10637
+    },
+    {
+      "layer": 18,
+      "neuron": 2120
+    },
+    {
+      "layer": 25,
+      "neuron": 6717
+    },
+    {
+      "layer": 17,
+      "neuron": 650
+    },
+    {
+      "layer": 15,
+      "neuron": 8759
+    },
+    {
+      "layer": 31,
+      "neuron": 4668
+    },
+    {
+      "layer": 16,
+      "neuron": 6363
+    },
+    {
+      "layer": 26,
+      "neuron": 13357
+    },
+    {
+      "layer": 28,
+      "neuron": 8102
+    },
+    {
+      "layer": 19,
+      "neuron": 12750
+    },
+    {
+      "layer": 30,
+      "neuron": 13145
+    },
+    {
+      "layer": 20,
+      "neuron": 11743
+    },
+    {
+      "layer": 17,
+      "neuron": 11456
+    },
+    {
+      "layer": 19,
+      "neuron": 4409
+    },
+    {
+      "layer": 10,
+      "neuron": 2015
+    },
+    {
+      "layer": 21,
+      "neuron": 8140
+    },
+    {
+      "layer": 26,
+      "neuron": 9583
+    },
+    {
+      "layer": 29,
+      "neuron": 4425
+    },
+    {
+      "layer": 31,
+      "neuron": 7195
+    },
+    {
+      "layer": 16,
+      "neuron": 946
+    },
+    {
+      "layer": 15,
+      "neuron": 11140
+    },
+    {
+      "layer": 18,
+      "neuron": 5421
+    },
+    {
+      "layer": 31,
+      "neuron": 6398
+    },
+    {
+      "layer": 19,
+      "neuron": 13125
+    },
+    {
+      "layer": 31,
+      "neuron": 1042
+    },
+    {
+      "layer": 21,
+      "neuron": 12033
+    },
+    {
+      "layer": 19,
+      "neuron": 1040
+    },
+    {
+      "layer": 28,
+      "neuron": 10965
+    },
+    {
+      "layer": 9,
+      "neuron": 884
+    },
+    {
+      "layer": 31,
+      "neuron": 13062
+    },
+    {
+      "layer": 20,
+      "neuron": 10996
+    },
+    {
+      "layer": 31,
+      "neuron": 12226
+    },
+    {
+      "layer": 31,
+      "neuron": 12946
+    },
+    {
+      "layer": 21,
+      "neuron": 5972
+    },
+    {
+      "layer": 24,
+      "neuron": 11848
+    },
+    {
+      "layer": 27,
+      "neuron": 5147
+    },
+    {
+      "layer": 20,
+      "neuron": 1617
+    },
+    {
+      "layer": 13,
+      "neuron": 7084
+    },
+    {
+      "layer": 27,
+      "neuron": 1544
+    },
+    {
+      "layer": 18,
+      "neuron": 13301
+    },
+    {
+      "layer": 15,
+      "neuron": 2463
+    },
+    {
+      "layer": 30,
+      "neuron": 670
+    },
+    {
+      "layer": 30,
+      "neuron": 11928
+    },
+    {
+      "layer": 19,
+      "neuron": 11694
+    },
+    {
+      "layer": 14,
+      "neuron": 5974
+    },
+    {
+      "layer": 13,
+      "neuron": 13922
+    },
+    {
+      "layer": 13,
+      "neuron": 13505
+    },
+    {
+      "layer": 29,
+      "neuron": 11482
+    },
+    {
+      "layer": 27,
+      "neuron": 11567
+    },
+    {
+      "layer": 31,
+      "neuron": 4512
+    },
+    {
+      "layer": 30,
+      "neuron": 6296
+    },
+    {
+      "layer": 15,
+      "neuron": 8860
+    },
+    {
+      "layer": 15,
+      "neuron": 10816
+    },
+    {
+      "layer": 23,
+      "neuron": 9907
+    },
+    {
+      "layer": 15,
+      "neuron": 3758
+    },
+    {
+      "layer": 31,
+      "neuron": 8936
+    },
+    {
+      "layer": 20,
+      "neuron": 14234
+    },
+    {
+      "layer": 13,
+      "neuron": 4642
+    },
+    {
+      "layer": 19,
+      "neuron": 8947
+    },
+    {
+      "layer": 31,
+      "neuron": 9658
+    },
+    {
+      "layer": 17,
+      "neuron": 4294
+    },
+    {
+      "layer": 18,
+      "neuron": 6375
+    },
+    {
+      "layer": 28,
+      "neuron": 8517
+    },
+    {
+      "layer": 30,
+      "neuron": 9250
+    },
+    {
+      "layer": 31,
+      "neuron": 5881
+    },
+    {
+      "layer": 31,
+      "neuron": 12373
+    },
+    {
+      "layer": 18,
+      "neuron": 2016
+    },
+    {
+      "layer": 25,
+      "neuron": 9166
+    },
+    {
+      "layer": 16,
+      "neuron": 8840
+    },
+    {
+      "layer": 22,
+      "neuron": 5315
+    },
+    {
+      "layer": 20,
+      "neuron": 448
+    },
+    {
+      "layer": 27,
+      "neuron": 7525
+    },
+    {
+      "layer": 21,
+      "neuron": 6128
+    },
+    {
+      "layer": 30,
+      "neuron": 2507
+    },
+    {
+      "layer": 21,
+      "neuron": 5101
+    },
+    {
+      "layer": 19,
+      "neuron": 6627
+    },
+    {
+      "layer": 20,
+      "neuron": 3416
+    },
+    {
+      "layer": 12,
+      "neuron": 8078
+    },
+    {
+      "layer": 30,
+      "neuron": 961
+    },
+    {
+      "layer": 23,
+      "neuron": 7665
+    },
+    {
+      "layer": 14,
+      "neuron": 12067
+    },
+    {
+      "layer": 30,
+      "neuron": 1604
+    },
+    {
+      "layer": 30,
+      "neuron": 14271
+    },
+    {
+      "layer": 26,
+      "neuron": 2135
+    },
+    {
+      "layer": 14,
+      "neuron": 12852
+    },
+    {
+      "layer": 27,
+      "neuron": 7629
+    },
+    {
+      "layer": 31,
+      "neuron": 4651
+    },
+    {
+      "layer": 30,
+      "neuron": 4761
+    },
+    {
+      "layer": 26,
+      "neuron": 2776
+    },
+    {
+      "layer": 27,
+      "neuron": 10102
+    },
+    {
+      "layer": 21,
+      "neuron": 2704
+    },
+    {
+      "layer": 24,
+      "neuron": 12608
+    },
+    {
+      "layer": 31,
+      "neuron": 14004
+    },
+    {
+      "layer": 20,
+      "neuron": 2989
+    },
+    {
+      "layer": 24,
+      "neuron": 7470
+    },
+    {
+      "layer": 20,
+      "neuron": 619
+    },
+    {
+      "layer": 29,
+      "neuron": 13274
+    },
+    {
+      "layer": 27,
+      "neuron": 1312
+    },
+    {
+      "layer": 18,
+      "neuron": 14009
+    },
+    {
+      "layer": 24,
+      "neuron": 6363
+    },
+    {
+      "layer": 29,
+      "neuron": 8231
+    },
+    {
+      "layer": 25,
+      "neuron": 10187
+    },
+    {
+      "layer": 18,
+      "neuron": 13390
+    },
+    {
+      "layer": 27,
+      "neuron": 11478
+    },
+    {
+      "layer": 23,
+      "neuron": 12148
+    },
+    {
+      "layer": 19,
+      "neuron": 7368
+    },
+    {
+      "layer": 31,
+      "neuron": 9193
+    },
+    {
+      "layer": 24,
+      "neuron": 5318
+    },
+    {
+      "layer": 22,
+      "neuron": 2728
+    },
+    {
+      "layer": 16,
+      "neuron": 118
+    },
+    {
+      "layer": 23,
+      "neuron": 2359
+    },
+    {
+      "layer": 12,
+      "neuron": 6262
+    },
+    {
+      "layer": 15,
+      "neuron": 11228
+    },
+    {
+      "layer": 24,
+      "neuron": 6230
+    },
+    {
+      "layer": 18,
+      "neuron": 6532
+    },
+    {
+      "layer": 10,
+      "neuron": 6759
+    },
+    {
+      "layer": 27,
+      "neuron": 5658
+    },
+    {
+      "layer": 23,
+      "neuron": 11744
+    },
+    {
+      "layer": 25,
+      "neuron": 5652
+    },
+    {
+      "layer": 15,
+      "neuron": 2315
+    },
+    {
+      "layer": 19,
+      "neuron": 3032
+    },
+    {
+      "layer": 19,
+      "neuron": 2290
+    },
+    {
+      "layer": 22,
+      "neuron": 1132
+    },
+    {
+      "layer": 19,
+      "neuron": 1038
+    },
+    {
+      "layer": 16,
+      "neuron": 7454
+    },
+    {
+      "layer": 29,
+      "neuron": 9380
+    },
+    {
+      "layer": 29,
+      "neuron": 4723
+    },
+    {
+      "layer": 21,
+      "neuron": 2249
+    },
+    {
+      "layer": 20,
+      "neuron": 3077
+    },
+    {
+      "layer": 24,
+      "neuron": 2504
+    },
+    {
+      "layer": 29,
+      "neuron": 3358
+    },
+    {
+      "layer": 4,
+      "neuron": 7578
+    },
+    {
+      "layer": 29,
+      "neuron": 12964
+    },
+    {
+      "layer": 17,
+      "neuron": 11191
+    },
+    {
+      "layer": 22,
+      "neuron": 13182
+    },
+    {
+      "layer": 20,
+      "neuron": 10890
+    },
+    {
+      "layer": 30,
+      "neuron": 1103
+    },
+    {
+      "layer": 29,
+      "neuron": 6196
+    },
+    {
+      "layer": 14,
+      "neuron": 4954
+    },
+    {
+      "layer": 30,
+      "neuron": 10945
+    },
+    {
+      "layer": 18,
+      "neuron": 9012
+    },
+    {
+      "layer": 14,
+      "neuron": 5616
+    },
+    {
+      "layer": 28,
+      "neuron": 11012
+    },
+    {
+      "layer": 14,
+      "neuron": 3444
+    },
+    {
+      "layer": 2,
+      "neuron": 12761
+    },
+    {
+      "layer": 30,
+      "neuron": 9672
+    },
+    {
+      "layer": 25,
+      "neuron": 9961
+    },
+    {
+      "layer": 19,
+      "neuron": 13481
+    },
+    {
+      "layer": 29,
+      "neuron": 10844
+    },
+    {
+      "layer": 27,
+      "neuron": 12493
+    },
+    {
+      "layer": 27,
+      "neuron": 8122
+    },
+    {
+      "layer": 31,
+      "neuron": 8893
+    },
+    {
+      "layer": 17,
+      "neuron": 5579
+    },
+    {
+      "layer": 30,
+      "neuron": 12619
+    },
+    {
+      "layer": 21,
+      "neuron": 6233
+    },
+    {
+      "layer": 0,
+      "neuron": 8268
+    },
+    {
+      "layer": 16,
+      "neuron": 4577
+    },
+    {
+      "layer": 13,
+      "neuron": 7554
+    },
+    {
+      "layer": 16,
+      "neuron": 4836
+    },
+    {
+      "layer": 15,
+      "neuron": 877
+    },
+    {
+      "layer": 29,
+      "neuron": 7859
+    },
+    {
+      "layer": 12,
+      "neuron": 6255
+    },
+    {
+      "layer": 28,
+      "neuron": 3143
+    },
+    {
+      "layer": 28,
+      "neuron": 7098
+    },
+    {
+      "layer": 13,
+      "neuron": 1378
+    },
+    {
+      "layer": 18,
+      "neuron": 7994
+    },
+    {
+      "layer": 31,
+      "neuron": 566
+    },
+    {
+      "layer": 29,
+      "neuron": 14206
+    },
+    {
+      "layer": 28,
+      "neuron": 9581
+    },
+    {
+      "layer": 27,
+      "neuron": 3842
+    },
+    {
+      "layer": 20,
+      "neuron": 9681
+    },
+    {
+      "layer": 17,
+      "neuron": 8936
+    },
+    {
+      "layer": 27,
+      "neuron": 8449
+    },
+    {
+      "layer": 19,
+      "neuron": 9843
+    },
+    {
+      "layer": 27,
+      "neuron": 2604
+    },
+    {
+      "layer": 30,
+      "neuron": 8664
+    },
+    {
+      "layer": 20,
+      "neuron": 13412
+    },
+    {
+      "layer": 15,
+      "neuron": 9949
+    },
+    {
+      "layer": 30,
+      "neuron": 9249
+    },
+    {
+      "layer": 21,
+      "neuron": 10983
+    },
+    {
+      "layer": 31,
+      "neuron": 6017
+    },
+    {
+      "layer": 19,
+      "neuron": 6798
+    },
+    {
+      "layer": 23,
+      "neuron": 5679
+    },
+    {
+      "layer": 29,
+      "neuron": 54
+    },
+    {
+      "layer": 15,
+      "neuron": 9221
+    },
+    {
+      "layer": 21,
+      "neuron": 14234
+    },
+    {
+      "layer": 14,
+      "neuron": 13470
+    },
+    {
+      "layer": 16,
+      "neuron": 10195
+    },
+    {
+      "layer": 24,
+      "neuron": 13724
+    },
+    {
+      "layer": 20,
+      "neuron": 8830
+    },
+    {
+      "layer": 28,
+      "neuron": 5568
+    },
+    {
+      "layer": 22,
+      "neuron": 10575
+    },
+    {
+      "layer": 31,
+      "neuron": 4935
+    },
+    {
+      "layer": 21,
+      "neuron": 11564
+    },
+    {
+      "layer": 20,
+      "neuron": 4836
+    },
+    {
+      "layer": 21,
+      "neuron": 5536
+    },
+    {
+      "layer": 22,
+      "neuron": 9155
+    },
+    {
+      "layer": 31,
+      "neuron": 11443
+    },
+    {
+      "layer": 22,
+      "neuron": 8699
+    },
+    {
+      "layer": 26,
+      "neuron": 8882
+    },
+    {
+      "layer": 20,
+      "neuron": 8105
+    },
+    {
+      "layer": 31,
+      "neuron": 11006
+    },
+    {
+      "layer": 29,
+      "neuron": 10391
+    },
+    {
+      "layer": 17,
+      "neuron": 4644
+    },
+    {
+      "layer": 28,
+      "neuron": 4234
+    },
+    {
+      "layer": 24,
+      "neuron": 5623
+    },
+    {
+      "layer": 16,
+      "neuron": 9919
+    },
+    {
+      "layer": 23,
+      "neuron": 4900
+    },
+    {
+      "layer": 13,
+      "neuron": 12230
+    },
+    {
+      "layer": 17,
+      "neuron": 3008
+    },
+    {
+      "layer": 12,
+      "neuron": 3275
+    },
+    {
+      "layer": 19,
+      "neuron": 1035
+    },
+    {
+      "layer": 22,
+      "neuron": 9222
+    },
+    {
+      "layer": 19,
+      "neuron": 7747
+    },
+    {
+      "layer": 16,
+      "neuron": 10882
+    },
+    {
+      "layer": 27,
+      "neuron": 3231
+    },
+    {
+      "layer": 16,
+      "neuron": 10996
+    },
+    {
+      "layer": 27,
+      "neuron": 6048
+    },
+    {
+      "layer": 21,
+      "neuron": 5504
+    },
+    {
+      "layer": 20,
+      "neuron": 5382
+    },
+    {
+      "layer": 21,
+      "neuron": 9244
+    },
+    {
+      "layer": 31,
+      "neuron": 13558
+    },
+    {
+      "layer": 19,
+      "neuron": 14180
+    },
+    {
+      "layer": 22,
+      "neuron": 5721
+    },
+    {
+      "layer": 28,
+      "neuron": 6048
+    },
+    {
+      "layer": 14,
+      "neuron": 7467
+    },
+    {
+      "layer": 23,
+      "neuron": 7833
+    },
+    {
+      "layer": 19,
+      "neuron": 3668
+    },
+    {
+      "layer": 30,
+      "neuron": 13607
+    },
+    {
+      "layer": 24,
+      "neuron": 9260
+    },
+    {
+      "layer": 24,
+      "neuron": 2964
+    },
+    {
+      "layer": 16,
+      "neuron": 12849
+    },
+    {
+      "layer": 17,
+      "neuron": 10618
+    },
+    {
+      "layer": 31,
+      "neuron": 2518
+    },
+    {
+      "layer": 15,
+      "neuron": 11604
+    },
+    {
+      "layer": 26,
+      "neuron": 1748
+    },
+    {
+      "layer": 16,
+      "neuron": 12072
+    },
+    {
+      "layer": 31,
+      "neuron": 12601
+    },
+    {
+      "layer": 22,
+      "neuron": 13610
+    },
+    {
+      "layer": 28,
+      "neuron": 11982
+    },
+    {
+      "layer": 27,
+      "neuron": 477
+    },
+    {
+      "layer": 15,
+      "neuron": 11492
+    },
+    {
+      "layer": 11,
+      "neuron": 10594
+    },
+    {
+      "layer": 19,
+      "neuron": 13424
+    },
+    {
+      "layer": 30,
+      "neuron": 3593
+    },
+    {
+      "layer": 31,
+      "neuron": 12861
+    },
+    {
+      "layer": 18,
+      "neuron": 7634
+    },
+    {
+      "layer": 19,
+      "neuron": 7479
+    },
+    {
+      "layer": 27,
+      "neuron": 8531
+    },
+    {
+      "layer": 12,
+      "neuron": 3327
+    },
+    {
+      "layer": 17,
+      "neuron": 2591
+    },
+    {
+      "layer": 17,
+      "neuron": 7593
+    },
+    {
+      "layer": 23,
+      "neuron": 12216
+    },
+    {
+      "layer": 30,
+      "neuron": 8026
+    },
+    {
+      "layer": 23,
+      "neuron": 10584
+    },
+    {
+      "layer": 20,
+      "neuron": 4576
+    },
+    {
+      "layer": 26,
+      "neuron": 3663
+    },
+    {
+      "layer": 22,
+      "neuron": 11066
+    },
+    {
+      "layer": 0,
+      "neuron": 13336
+    },
+    {
+      "layer": 26,
+      "neuron": 8554
+    },
+    {
+      "layer": 13,
+      "neuron": 8818
+    },
+    {
+      "layer": 27,
+      "neuron": 4672
+    },
+    {
+      "layer": 28,
+      "neuron": 165
+    },
+    {
+      "layer": 20,
+      "neuron": 2609
+    },
+    {
+      "layer": 15,
+      "neuron": 6520
+    },
+    {
+      "layer": 21,
+      "neuron": 1600
+    },
+    {
+      "layer": 22,
+      "neuron": 30
+    },
+    {
+      "layer": 16,
+      "neuron": 3562
+    },
+    {
+      "layer": 17,
+      "neuron": 13186
+    },
+    {
+      "layer": 20,
+      "neuron": 6638
+    },
+    {
+      "layer": 18,
+      "neuron": 2218
+    },
+    {
+      "layer": 31,
+      "neuron": 7841
+    },
+    {
+      "layer": 16,
+      "neuron": 7170
+    },
+    {
+      "layer": 30,
+      "neuron": 936
+    },
+    {
+      "layer": 24,
+      "neuron": 12981
+    },
+    {
+      "layer": 28,
+      "neuron": 2924
+    },
+    {
+      "layer": 25,
+      "neuron": 7407
+    },
+    {
+      "layer": 0,
+      "neuron": 5163
+    },
+    {
+      "layer": 22,
+      "neuron": 11805
+    },
+    {
+      "layer": 16,
+      "neuron": 13328
+    },
+    {
+      "layer": 18,
+      "neuron": 7075
+    },
+    {
+      "layer": 16,
+      "neuron": 8569
+    },
+    {
+      "layer": 26,
+      "neuron": 12780
+    },
+    {
+      "layer": 17,
+      "neuron": 11845
+    },
+    {
+      "layer": 22,
+      "neuron": 6783
+    },
+    {
+      "layer": 12,
+      "neuron": 1577
+    },
+    {
+      "layer": 28,
+      "neuron": 3713
+    },
+    {
+      "layer": 18,
+      "neuron": 1553
+    },
+    {
+      "layer": 31,
+      "neuron": 4518
+    },
+    {
+      "layer": 30,
+      "neuron": 2094
+    },
+    {
+      "layer": 22,
+      "neuron": 11634
+    },
+    {
+      "layer": 13,
+      "neuron": 4048
+    },
+    {
+      "layer": 28,
+      "neuron": 1642
+    },
+    {
+      "layer": 26,
+      "neuron": 4441
+    },
+    {
+      "layer": 29,
+      "neuron": 7997
+    },
+    {
+      "layer": 30,
+      "neuron": 3952
+    },
+    {
+      "layer": 15,
+      "neuron": 7882
+    },
+    {
+      "layer": 21,
+      "neuron": 7051
+    },
+    {
+      "layer": 28,
+      "neuron": 1709
+    },
+    {
+      "layer": 12,
+      "neuron": 3254
+    },
+    {
+      "layer": 20,
+      "neuron": 2806
+    },
+    {
+      "layer": 14,
+      "neuron": 10148
+    },
+    {
+      "layer": 24,
+      "neuron": 7892
+    },
+    {
+      "layer": 21,
+      "neuron": 12043
+    },
+    {
+      "layer": 22,
+      "neuron": 9988
+    },
+    {
+      "layer": 29,
+      "neuron": 8964
+    },
+    {
+      "layer": 18,
+      "neuron": 2646
+    },
+    {
+      "layer": 25,
+      "neuron": 6687
+    },
+    {
+      "layer": 17,
+      "neuron": 232
+    },
+    {
+      "layer": 14,
+      "neuron": 6551
+    },
+    {
+      "layer": 26,
+      "neuron": 9463
+    },
+    {
+      "layer": 31,
+      "neuron": 11233
+    },
+    {
+      "layer": 23,
+      "neuron": 4350
+    },
+    {
+      "layer": 19,
+      "neuron": 10627
+    },
+    {
+      "layer": 20,
+      "neuron": 12900
+    },
+    {
+      "layer": 30,
+      "neuron": 583
+    },
+    {
+      "layer": 23,
+      "neuron": 2713
+    },
+    {
+      "layer": 26,
+      "neuron": 9012
+    },
+    {
+      "layer": 18,
+      "neuron": 9362
+    },
+    {
+      "layer": 28,
+      "neuron": 5239
+    },
+    {
+      "layer": 28,
+      "neuron": 14127
+    },
+    {
+      "layer": 30,
+      "neuron": 4377
+    },
+    {
+      "layer": 16,
+      "neuron": 12478
+    },
+    {
+      "layer": 29,
+      "neuron": 11582
+    },
+    {
+      "layer": 27,
+      "neuron": 12756
+    },
+    {
+      "layer": 21,
+      "neuron": 5862
+    },
+    {
+      "layer": 17,
+      "neuron": 7561
+    },
+    {
+      "layer": 15,
+      "neuron": 8112
+    },
+    {
+      "layer": 19,
+      "neuron": 8664
+    },
+    {
+      "layer": 20,
+      "neuron": 11033
+    },
+    {
+      "layer": 14,
+      "neuron": 2455
+    },
+    {
+      "layer": 31,
+      "neuron": 4742
+    },
+    {
+      "layer": 31,
+      "neuron": 7585
+    },
+    {
+      "layer": 23,
+      "neuron": 5310
+    },
+    {
+      "layer": 16,
+      "neuron": 12813
+    },
+    {
+      "layer": 28,
+      "neuron": 11889
+    },
+    {
+      "layer": 18,
+      "neuron": 1121
+    },
+    {
+      "layer": 19,
+      "neuron": 5894
+    },
+    {
+      "layer": 17,
+      "neuron": 10046
+    },
+    {
+      "layer": 25,
+      "neuron": 2207
+    },
+    {
+      "layer": 21,
+      "neuron": 13320
+    },
+    {
+      "layer": 30,
+      "neuron": 459
+    },
+    {
+      "layer": 15,
+      "neuron": 5540
+    },
+    {
+      "layer": 23,
+      "neuron": 8249
+    },
+    {
+      "layer": 26,
+      "neuron": 12431
+    },
+    {
+      "layer": 16,
+      "neuron": 6034
+    },
+    {
+      "layer": 27,
+      "neuron": 12958
+    },
+    {
+      "layer": 21,
+      "neuron": 13997
+    },
+    {
+      "layer": 23,
+      "neuron": 5537
+    },
+    {
+      "layer": 22,
+      "neuron": 2572
+    },
+    {
+      "layer": 18,
+      "neuron": 11099
+    },
+    {
+      "layer": 24,
+      "neuron": 12543
+    },
+    {
+      "layer": 16,
+      "neuron": 12329
+    },
+    {
+      "layer": 25,
+      "neuron": 13638
+    },
+    {
+      "layer": 28,
+      "neuron": 3340
+    },
+    {
+      "layer": 24,
+      "neuron": 1076
+    },
+    {
+      "layer": 15,
+      "neuron": 7021
+    },
+    {
+      "layer": 29,
+      "neuron": 5757
+    },
+    {
+      "layer": 23,
+      "neuron": 8466
+    },
+    {
+      "layer": 28,
+      "neuron": 6940
+    },
+    {
+      "layer": 29,
+      "neuron": 10482
+    },
+    {
+      "layer": 25,
+      "neuron": 2639
+    },
+    {
+      "layer": 31,
+      "neuron": 10143
+    },
+    {
+      "layer": 30,
+      "neuron": 8586
+    },
+    {
+      "layer": 29,
+      "neuron": 5003
+    },
+    {
+      "layer": 20,
+      "neuron": 2800
+    },
+    {
+      "layer": 19,
+      "neuron": 9738
+    },
+    {
+      "layer": 18,
+      "neuron": 4698
+    },
+    {
+      "layer": 17,
+      "neuron": 8999
+    },
+    {
+      "layer": 21,
+      "neuron": 9703
+    },
+    {
+      "layer": 17,
+      "neuron": 7445
+    },
+    {
+      "layer": 31,
+      "neuron": 10200
+    },
+    {
+      "layer": 18,
+      "neuron": 6735
+    },
+    {
+      "layer": 9,
+      "neuron": 592
+    },
+    {
+      "layer": 28,
+      "neuron": 12346
+    },
+    {
+      "layer": 26,
+      "neuron": 3524
+    },
+    {
+      "layer": 24,
+      "neuron": 9405
+    },
+    {
+      "layer": 28,
+      "neuron": 415
+    },
+    {
+      "layer": 12,
+      "neuron": 5724
+    },
+    {
+      "layer": 25,
+      "neuron": 8160
+    },
+    {
+      "layer": 21,
+      "neuron": 3857
+    },
+    {
+      "layer": 14,
+      "neuron": 12614
+    },
+    {
+      "layer": 31,
+      "neuron": 5104
+    },
+    {
+      "layer": 25,
+      "neuron": 5975
+    },
+    {
+      "layer": 23,
+      "neuron": 8668
+    },
+    {
+      "layer": 2,
+      "neuron": 9968
+    },
+    {
+      "layer": 22,
+      "neuron": 1045
+    },
+    {
+      "layer": 15,
+      "neuron": 10396
+    },
+    {
+      "layer": 21,
+      "neuron": 6057
+    },
+    {
+      "layer": 17,
+      "neuron": 9787
+    },
+    {
+      "layer": 29,
+      "neuron": 11048
+    },
+    {
+      "layer": 16,
+      "neuron": 8993
+    },
+    {
+      "layer": 21,
+      "neuron": 6178
+    },
+    {
+      "layer": 26,
+      "neuron": 9238
+    },
+    {
+      "layer": 16,
+      "neuron": 7717
+    },
+    {
+      "layer": 16,
+      "neuron": 9184
+    },
+    {
+      "layer": 21,
+      "neuron": 1718
+    },
+    {
+      "layer": 16,
+      "neuron": 13509
+    },
+    {
+      "layer": 25,
+      "neuron": 8265
+    },
+    {
+      "layer": 20,
+      "neuron": 11580
+    },
+    {
+      "layer": 21,
+      "neuron": 5790
+    },
+    {
+      "layer": 17,
+      "neuron": 11137
+    },
+    {
+      "layer": 27,
+      "neuron": 11445
+    },
+    {
+      "layer": 24,
+      "neuron": 5627
+    },
+    {
+      "layer": 20,
+      "neuron": 379
+    },
+    {
+      "layer": 22,
+      "neuron": 9697
+    },
+    {
+      "layer": 15,
+      "neuron": 12169
+    },
+    {
+      "layer": 22,
+      "neuron": 13914
+    },
+    {
+      "layer": 24,
+      "neuron": 864
+    },
+    {
+      "layer": 17,
+      "neuron": 12398
+    },
+    {
+      "layer": 21,
+      "neuron": 9493
+    },
+    {
+      "layer": 30,
+      "neuron": 12418
+    },
+    {
+      "layer": 24,
+      "neuron": 4413
+    },
+    {
+      "layer": 31,
+      "neuron": 4074
+    },
+    {
+      "layer": 31,
+      "neuron": 1834
+    },
+    {
+      "layer": 25,
+      "neuron": 240
+    },
+    {
+      "layer": 14,
+      "neuron": 5011
+    },
+    {
+      "layer": 10,
+      "neuron": 10752
+    },
+    {
+      "layer": 17,
+      "neuron": 13555
+    },
+    {
+      "layer": 30,
+      "neuron": 1885
+    },
+    {
+      "layer": 30,
+      "neuron": 3979
+    },
+    {
+      "layer": 20,
+      "neuron": 12763
+    },
+    {
+      "layer": 17,
+      "neuron": 11142
+    },
+    {
+      "layer": 22,
+      "neuron": 2443
+    },
+    {
+      "layer": 30,
+      "neuron": 4075
+    },
+    {
+      "layer": 20,
+      "neuron": 3292
+    },
+    {
+      "layer": 27,
+      "neuron": 1683
+    },
+    {
+      "layer": 20,
+      "neuron": 6637
+    },
+    {
+      "layer": 15,
+      "neuron": 5132
+    },
+    {
+      "layer": 14,
+      "neuron": 7137
+    },
+    {
+      "layer": 17,
+      "neuron": 2097
+    },
+    {
+      "layer": 31,
+      "neuron": 1977
+    },
+    {
+      "layer": 28,
+      "neuron": 1851
+    },
+    {
+      "layer": 27,
+      "neuron": 3967
+    },
+    {
+      "layer": 16,
+      "neuron": 1677
+    },
+    {
+      "layer": 28,
+      "neuron": 3725
+    },
+    {
+      "layer": 21,
+      "neuron": 1917
+    },
+    {
+      "layer": 19,
+      "neuron": 7037
+    },
+    {
+      "layer": 31,
+      "neuron": 14107
+    },
+    {
+      "layer": 29,
+      "neuron": 4676
+    },
+    {
+      "layer": 31,
+      "neuron": 10695
+    },
+    {
+      "layer": 19,
+      "neuron": 3066
+    },
+    {
+      "layer": 21,
+      "neuron": 8719
+    },
+    {
+      "layer": 24,
+      "neuron": 10530
+    },
+    {
+      "layer": 15,
+      "neuron": 2675
+    },
+    {
+      "layer": 18,
+      "neuron": 9308
+    },
+    {
+      "layer": 22,
+      "neuron": 1118
+    },
+    {
+      "layer": 24,
+      "neuron": 970
+    },
+    {
+      "layer": 21,
+      "neuron": 1054
+    },
+    {
+      "layer": 14,
+      "neuron": 1002
+    },
+    {
+      "layer": 15,
+      "neuron": 8213
+    },
+    {
+      "layer": 17,
+      "neuron": 4843
+    },
+    {
+      "layer": 19,
+      "neuron": 12201
+    },
+    {
+      "layer": 15,
+      "neuron": 10418
+    },
+    {
+      "layer": 18,
+      "neuron": 2036
+    },
+    {
+      "layer": 17,
+      "neuron": 5313
+    },
+    {
+      "layer": 30,
+      "neuron": 4830
+    },
+    {
+      "layer": 24,
+      "neuron": 2756
+    },
+    {
+      "layer": 24,
+      "neuron": 9751
+    },
+    {
+      "layer": 21,
+      "neuron": 5453
+    },
+    {
+      "layer": 21,
+      "neuron": 3509
+    },
+    {
+      "layer": 21,
+      "neuron": 1117
+    },
+    {
+      "layer": 19,
+      "neuron": 5068
+    },
+    {
+      "layer": 29,
+      "neuron": 2997
+    },
+    {
+      "layer": 19,
+      "neuron": 12553
+    },
+    {
+      "layer": 20,
+      "neuron": 11817
+    },
+    {
+      "layer": 21,
+      "neuron": 8616
+    },
+    {
+      "layer": 15,
+      "neuron": 13821
+    },
+    {
+      "layer": 29,
+      "neuron": 13687
+    },
+    {
+      "layer": 29,
+      "neuron": 11573
+    },
+    {
+      "layer": 23,
+      "neuron": 4349
+    },
+    {
+      "layer": 16,
+      "neuron": 5275
+    },
+    {
+      "layer": 27,
+      "neuron": 5054
+    },
+    {
+      "layer": 25,
+      "neuron": 529
+    },
+    {
+      "layer": 16,
+      "neuron": 3796
+    },
+    {
+      "layer": 20,
+      "neuron": 3253
+    },
+    {
+      "layer": 15,
+      "neuron": 12371
+    },
+    {
+      "layer": 25,
+      "neuron": 4058
+    },
+    {
+      "layer": 29,
+      "neuron": 8390
+    },
+    {
+      "layer": 28,
+      "neuron": 3639
+    },
+    {
+      "layer": 26,
+      "neuron": 10761
+    },
+    {
+      "layer": 3,
+      "neuron": 11012
+    },
+    {
+      "layer": 12,
+      "neuron": 11481
+    },
+    {
+      "layer": 13,
+      "neuron": 7261
+    },
+    {
+      "layer": 13,
+      "neuron": 10963
+    },
+    {
+      "layer": 13,
+      "neuron": 10139
+    },
+    {
+      "layer": 2,
+      "neuron": 14246
+    },
+    {
+      "layer": 13,
+      "neuron": 2048
+    },
+    {
+      "layer": 12,
+      "neuron": 11804
+    },
+    {
+      "layer": 11,
+      "neuron": 2613
+    },
+    {
+      "layer": 13,
+      "neuron": 7240
+    },
+    {
+      "layer": 8,
+      "neuron": 5710
+    },
+    {
+      "layer": 12,
+      "neuron": 13973
+    },
+    {
+      "layer": 12,
+      "neuron": 231
+    },
+    {
+      "layer": 12,
+      "neuron": 12926
+    },
+    {
+      "layer": 12,
+      "neuron": 2916
+    },
+    {
+      "layer": 3,
+      "neuron": 5299
+    },
+    {
+      "layer": 12,
+      "neuron": 7202
+    },
+    {
+      "layer": 12,
+      "neuron": 10813
+    },
+    {
+      "layer": 7,
+      "neuron": 3720
+    },
+    {
+      "layer": 12,
+      "neuron": 12885
+    },
+    {
+      "layer": 13,
+      "neuron": 8022
+    },
+    {
+      "layer": 10,
+      "neuron": 9940
+    },
+    {
+      "layer": 12,
+      "neuron": 7997
+    },
+    {
+      "layer": 8,
+      "neuron": 8632
+    },
+    {
+      "layer": 13,
+      "neuron": 11854
+    },
+    {
+      "layer": 0,
+      "neuron": 8727
+    },
+    {
+      "layer": 13,
+      "neuron": 12467
+    }
+  ],
+  "negative_top0_zero": [],
+  "negative_top1000_zero": [
+    {
+      "layer": 30,
+      "neuron": 5341
+    },
+    {
+      "layer": 20,
+      "neuron": 5425
+    },
+    {
+      "layer": 27,
+      "neuron": 6070
+    },
+    {
+      "layer": 24,
+      "neuron": 5326
+    },
+    {
+      "layer": 23,
+      "neuron": 7812
+    },
+    {
+      "layer": 20,
+      "neuron": 6356
+    },
+    {
+      "layer": 31,
+      "neuron": 5041
+    },
+    {
+      "layer": 30,
+      "neuron": 13853
+    },
+    {
+      "layer": 22,
+      "neuron": 12959
+    },
+    {
+      "layer": 22,
+      "neuron": 8514
+    },
+    {
+      "layer": 30,
+      "neuron": 5905
+    },
+    {
+      "layer": 16,
+      "neuron": 2432
+    },
+    {
+      "layer": 31,
+      "neuron": 714
+    },
+    {
+      "layer": 10,
+      "neuron": 9064
+    },
+    {
+      "layer": 31,
+      "neuron": 9678
+    },
+    {
+      "layer": 12,
+      "neuron": 1481
+    },
+    {
+      "layer": 16,
+      "neuron": 6950
+    },
+    {
+      "layer": 14,
+      "neuron": 3917
+    },
+    {
+      "layer": 28,
+      "neuron": 5152
+    },
+    {
+      "layer": 16,
+      "neuron": 8987
+    },
+    {
+      "layer": 20,
+      "neuron": 9424
+    },
+    {
+      "layer": 14,
+      "neuron": 5718
+    },
+    {
+      "layer": 17,
+      "neuron": 4374
+    },
+    {
+      "layer": 24,
+      "neuron": 3804
+    },
+    {
+      "layer": 31,
+      "neuron": 10712
+    },
+    {
+      "layer": 10,
+      "neuron": 1084
+    },
+    {
+      "layer": 20,
+      "neuron": 13715
+    },
+    {
+      "layer": 24,
+      "neuron": 12782
+    },
+    {
+      "layer": 26,
+      "neuron": 13447
+    },
+    {
+      "layer": 20,
+      "neuron": 9623
+    },
+    {
+      "layer": 28,
+      "neuron": 4074
+    },
+    {
+      "layer": 31,
+      "neuron": 7944
+    },
+    {
+      "layer": 31,
+      "neuron": 10075
+    },
+    {
+      "layer": 17,
+      "neuron": 13532
+    },
+    {
+      "layer": 30,
+      "neuron": 11970
+    },
+    {
+      "layer": 18,
+      "neuron": 3031
+    },
+    {
+      "layer": 27,
+      "neuron": 8839
+    },
+    {
+      "layer": 26,
+      "neuron": 12639
+    },
+    {
+      "layer": 31,
+      "neuron": 11276
+    },
+    {
+      "layer": 20,
+      "neuron": 10080
+    },
+    {
+      "layer": 17,
+      "neuron": 8517
+    },
+    {
+      "layer": 31,
+      "neuron": 3611
+    },
+    {
+      "layer": 21,
+      "neuron": 13085
+    },
+    {
+      "layer": 16,
+      "neuron": 14185
+    },
+    {
+      "layer": 12,
+      "neuron": 1889
+    },
+    {
+      "layer": 17,
+      "neuron": 5245
+    },
+    {
+      "layer": 31,
+      "neuron": 3387
+    },
+    {
+      "layer": 27,
+      "neuron": 11269
+    },
+    {
+      "layer": 31,
+      "neuron": 10715
+    },
+    {
+      "layer": 28,
+      "neuron": 6033
+    },
+    {
+      "layer": 15,
+      "neuron": 630
+    },
+    {
+      "layer": 31,
+      "neuron": 5369
+    },
+    {
+      "layer": 22,
+      "neuron": 9265
+    },
+    {
+      "layer": 15,
+      "neuron": 1026
+    },
+    {
+      "layer": 18,
+      "neuron": 9102
+    },
+    {
+      "layer": 25,
+      "neuron": 12935
+    },
+    {
+      "layer": 15,
+      "neuron": 8697
+    },
+    {
+      "layer": 15,
+      "neuron": 1832
+    },
+    {
+      "layer": 15,
+      "neuron": 5862
+    },
+    {
+      "layer": 27,
+      "neuron": 4251
+    },
+    {
+      "layer": 17,
+      "neuron": 9255
+    },
+    {
+      "layer": 29,
+      "neuron": 9595
+    },
+    {
+      "layer": 30,
+      "neuron": 12336
+    },
+    {
+      "layer": 18,
+      "neuron": 3261
+    },
+    {
+      "layer": 31,
+      "neuron": 10716
+    },
+    {
+      "layer": 22,
+      "neuron": 3766
+    },
+    {
+      "layer": 14,
+      "neuron": 12421
+    },
+    {
+      "layer": 18,
+      "neuron": 9220
+    },
+    {
+      "layer": 29,
+      "neuron": 10790
+    },
+    {
+      "layer": 29,
+      "neuron": 841
+    },
+    {
+      "layer": 28,
+      "neuron": 6596
+    },
+    {
+      "layer": 31,
+      "neuron": 5441
+    },
+    {
+      "layer": 15,
+      "neuron": 8354
+    },
+    {
+      "layer": 14,
+      "neuron": 1559
+    },
+    {
+      "layer": 31,
+      "neuron": 124
+    },
+    {
+      "layer": 31,
+      "neuron": 11861
+    },
+    {
+      "layer": 23,
+      "neuron": 5722
+    },
+    {
+      "layer": 26,
+      "neuron": 9692
+    },
+    {
+      "layer": 15,
+      "neuron": 4768
+    },
+    {
+      "layer": 19,
+      "neuron": 6569
+    },
+    {
+      "layer": 15,
+      "neuron": 13318
+    },
+    {
+      "layer": 13,
+      "neuron": 2776
+    },
+    {
+      "layer": 16,
+      "neuron": 9495
+    },
+    {
+      "layer": 18,
+      "neuron": 11782
+    },
+    {
+      "layer": 21,
+      "neuron": 10170
+    },
+    {
+      "layer": 29,
+      "neuron": 4265
+    },
+    {
+      "layer": 24,
+      "neuron": 8362
+    },
+    {
+      "layer": 16,
+      "neuron": 6901
+    },
+    {
+      "layer": 14,
+      "neuron": 8131
+    },
+    {
+      "layer": 25,
+      "neuron": 5676
+    },
+    {
+      "layer": 21,
+      "neuron": 4502
+    },
+    {
+      "layer": 28,
+      "neuron": 435
+    },
+    {
+      "layer": 30,
+      "neuron": 2226
+    },
+    {
+      "layer": 28,
+      "neuron": 2570
+    },
+    {
+      "layer": 20,
+      "neuron": 5512
+    },
+    {
+      "layer": 24,
+      "neuron": 5048
+    },
+    {
+      "layer": 31,
+      "neuron": 2085
+    },
+    {
+      "layer": 31,
+      "neuron": 5883
+    },
+    {
+      "layer": 20,
+      "neuron": 11425
+    },
+    {
+      "layer": 27,
+      "neuron": 6091
+    },
+    {
+      "layer": 18,
+      "neuron": 7152
+    },
+    {
+      "layer": 19,
+      "neuron": 7875
+    },
+    {
+      "layer": 16,
+      "neuron": 3598
+    },
+    {
+      "layer": 30,
+      "neuron": 3843
+    },
+    {
+      "layer": 15,
+      "neuron": 7441
+    },
+    {
+      "layer": 22,
+      "neuron": 5804
+    },
+    {
+      "layer": 21,
+      "neuron": 11188
+    },
+    {
+      "layer": 31,
+      "neuron": 11817
+    },
+    {
+      "layer": 11,
+      "neuron": 2963
+    },
+    {
+      "layer": 29,
+      "neuron": 2252
+    },
+    {
+      "layer": 10,
+      "neuron": 11152
+    },
+    {
+      "layer": 26,
+      "neuron": 13873
+    },
+    {
+      "layer": 20,
+      "neuron": 13350
+    },
+    {
+      "layer": 15,
+      "neuron": 12099
+    },
+    {
+      "layer": 22,
+      "neuron": 6451
+    },
+    {
+      "layer": 31,
+      "neuron": 3402
+    },
+    {
+      "layer": 25,
+      "neuron": 11171
+    },
+    {
+      "layer": 21,
+      "neuron": 5287
+    },
+    {
+      "layer": 31,
+      "neuron": 13812
+    },
+    {
+      "layer": 19,
+      "neuron": 11716
+    },
+    {
+      "layer": 22,
+      "neuron": 6781
+    },
+    {
+      "layer": 26,
+      "neuron": 10933
+    },
+    {
+      "layer": 29,
+      "neuron": 6141
+    },
+    {
+      "layer": 31,
+      "neuron": 1157
+    },
+    {
+      "layer": 18,
+      "neuron": 12745
+    },
+    {
+      "layer": 31,
+      "neuron": 3935
+    },
+    {
+      "layer": 30,
+      "neuron": 11984
+    },
+    {
+      "layer": 0,
+      "neuron": 12829
+    },
+    {
+      "layer": 19,
+      "neuron": 13010
+    },
+    {
+      "layer": 25,
+      "neuron": 4868
+    },
+    {
+      "layer": 18,
+      "neuron": 5765
+    },
+    {
+      "layer": 17,
+      "neuron": 5191
+    },
+    {
+      "layer": 28,
+      "neuron": 5712
+    },
+    {
+      "layer": 9,
+      "neuron": 10216
+    },
+    {
+      "layer": 21,
+      "neuron": 5297
+    },
+    {
+      "layer": 31,
+      "neuron": 12850
+    },
+    {
+      "layer": 13,
+      "neuron": 3822
+    },
+    {
+      "layer": 26,
+      "neuron": 12922
+    },
+    {
+      "layer": 16,
+      "neuron": 10853
+    },
+    {
+      "layer": 28,
+      "neuron": 8219
+    },
+    {
+      "layer": 24,
+      "neuron": 8613
+    },
+    {
+      "layer": 23,
+      "neuron": 1043
+    },
+    {
+      "layer": 17,
+      "neuron": 7878
+    },
+    {
+      "layer": 27,
+      "neuron": 3387
+    },
+    {
+      "layer": 31,
+      "neuron": 3743
+    },
+    {
+      "layer": 23,
+      "neuron": 5263
+    },
+    {
+      "layer": 19,
+      "neuron": 29
+    },
+    {
+      "layer": 15,
+      "neuron": 13269
+    },
+    {
+      "layer": 26,
+      "neuron": 2589
+    },
+    {
+      "layer": 14,
+      "neuron": 12198
+    },
+    {
+      "layer": 21,
+      "neuron": 8760
+    },
+    {
+      "layer": 26,
+      "neuron": 3004
+    },
+    {
+      "layer": 25,
+      "neuron": 1907
+    },
+    {
+      "layer": 26,
+      "neuron": 8427
+    },
+    {
+      "layer": 18,
+      "neuron": 13518
+    },
+    {
+      "layer": 31,
+      "neuron": 1997
+    },
+    {
+      "layer": 16,
+      "neuron": 5924
+    },
+    {
+      "layer": 17,
+      "neuron": 1858
+    },
+    {
+      "layer": 15,
+      "neuron": 6063
+    },
+    {
+      "layer": 22,
+      "neuron": 9978
+    },
+    {
+      "layer": 25,
+      "neuron": 8858
+    },
+    {
+      "layer": 31,
+      "neuron": 39
+    },
+    {
+      "layer": 20,
+      "neuron": 12254
+    },
+    {
+      "layer": 15,
+      "neuron": 9296
+    },
+    {
+      "layer": 24,
+      "neuron": 5463
+    },
+    {
+      "layer": 25,
+      "neuron": 6384
+    },
+    {
+      "layer": 29,
+      "neuron": 12400
+    },
+    {
+      "layer": 31,
+      "neuron": 11222
+    },
+    {
+      "layer": 18,
+      "neuron": 13165
+    },
+    {
+      "layer": 17,
+      "neuron": 13012
+    },
+    {
+      "layer": 29,
+      "neuron": 13822
+    },
+    {
+      "layer": 24,
+      "neuron": 6802
+    },
+    {
+      "layer": 22,
+      "neuron": 2425
+    },
+    {
+      "layer": 31,
+      "neuron": 10100
+    },
+    {
+      "layer": 31,
+      "neuron": 12889
+    },
+    {
+      "layer": 30,
+      "neuron": 12996
+    },
+    {
+      "layer": 31,
+      "neuron": 9628
+    },
+    {
+      "layer": 18,
+      "neuron": 4228
+    },
+    {
+      "layer": 18,
+      "neuron": 4534
+    },
+    {
+      "layer": 17,
+      "neuron": 13031
+    },
+    {
+      "layer": 31,
+      "neuron": 4786
+    },
+    {
+      "layer": 17,
+      "neuron": 9331
+    },
+    {
+      "layer": 19,
+      "neuron": 6090
+    },
+    {
+      "layer": 19,
+      "neuron": 5488
+    },
+    {
+      "layer": 28,
+      "neuron": 459
+    },
+    {
+      "layer": 28,
+      "neuron": 4077
+    },
+    {
+      "layer": 31,
+      "neuron": 1418
+    },
+    {
+      "layer": 31,
+      "neuron": 6424
+    },
+    {
+      "layer": 21,
+      "neuron": 6243
+    },
+    {
+      "layer": 19,
+      "neuron": 7437
+    },
+    {
+      "layer": 20,
+      "neuron": 9634
+    },
+    {
+      "layer": 21,
+      "neuron": 5307
+    },
+    {
+      "layer": 28,
+      "neuron": 9431
+    },
+    {
+      "layer": 23,
+      "neuron": 5473
+    },
+    {
+      "layer": 31,
+      "neuron": 9922
+    },
+    {
+      "layer": 14,
+      "neuron": 2015
+    },
+    {
+      "layer": 21,
+      "neuron": 3002
+    },
+    {
+      "layer": 26,
+      "neuron": 7419
+    },
+    {
+      "layer": 21,
+      "neuron": 9236
+    },
+    {
+      "layer": 16,
+      "neuron": 7051
+    },
+    {
+      "layer": 19,
+      "neuron": 10739
+    },
+    {
+      "layer": 29,
+      "neuron": 6863
+    },
+    {
+      "layer": 31,
+      "neuron": 9360
+    },
+    {
+      "layer": 12,
+      "neuron": 8459
+    },
+    {
+      "layer": 15,
+      "neuron": 3580
+    },
+    {
+      "layer": 16,
+      "neuron": 12125
+    },
+    {
+      "layer": 31,
+      "neuron": 13741
+    },
+    {
+      "layer": 24,
+      "neuron": 7804
+    },
+    {
+      "layer": 12,
+      "neuron": 8951
+    },
+    {
+      "layer": 30,
+      "neuron": 4614
+    },
+    {
+      "layer": 28,
+      "neuron": 12031
+    },
+    {
+      "layer": 30,
+      "neuron": 3786
+    },
+    {
+      "layer": 20,
+      "neuron": 1788
+    },
+    {
+      "layer": 29,
+      "neuron": 142
+    },
+    {
+      "layer": 17,
+      "neuron": 179
+    },
+    {
+      "layer": 17,
+      "neuron": 10757
+    },
+    {
+      "layer": 25,
+      "neuron": 2849
+    },
+    {
+      "layer": 31,
+      "neuron": 5565
+    },
+    {
+      "layer": 31,
+      "neuron": 12917
+    },
+    {
+      "layer": 31,
+      "neuron": 8214
+    },
+    {
+      "layer": 30,
+      "neuron": 11097
+    },
+    {
+      "layer": 29,
+      "neuron": 8993
+    },
+    {
+      "layer": 26,
+      "neuron": 4692
+    },
+    {
+      "layer": 20,
+      "neuron": 9928
+    },
+    {
+      "layer": 31,
+      "neuron": 3034
+    },
+    {
+      "layer": 29,
+      "neuron": 10165
+    },
+    {
+      "layer": 31,
+      "neuron": 6266
+    },
+    {
+      "layer": 30,
+      "neuron": 5950
+    },
+    {
+      "layer": 27,
+      "neuron": 3739
+    },
+    {
+      "layer": 30,
+      "neuron": 10348
+    },
+    {
+      "layer": 19,
+      "neuron": 3480
+    },
+    {
+      "layer": 27,
+      "neuron": 4114
+    },
+    {
+      "layer": 21,
+      "neuron": 3593
+    },
+    {
+      "layer": 29,
+      "neuron": 3783
+    },
+    {
+      "layer": 31,
+      "neuron": 10620
+    },
+    {
+      "layer": 19,
+      "neuron": 10070
+    },
+    {
+      "layer": 16,
+      "neuron": 9987
+    },
+    {
+      "layer": 29,
+      "neuron": 3311
+    },
+    {
+      "layer": 17,
+      "neuron": 4209
+    },
+    {
+      "layer": 25,
+      "neuron": 4812
+    },
+    {
+      "layer": 27,
+      "neuron": 6455
+    },
+    {
+      "layer": 27,
+      "neuron": 14126
+    },
+    {
+      "layer": 12,
+      "neuron": 6776
+    },
+    {
+      "layer": 15,
+      "neuron": 12319
+    },
+    {
+      "layer": 30,
+      "neuron": 11920
+    },
+    {
+      "layer": 14,
+      "neuron": 9411
+    },
+    {
+      "layer": 31,
+      "neuron": 12776
+    },
+    {
+      "layer": 17,
+      "neuron": 9407
+    },
+    {
+      "layer": 30,
+      "neuron": 5183
+    },
+    {
+      "layer": 14,
+      "neuron": 2248
+    },
+    {
+      "layer": 19,
+      "neuron": 11877
+    },
+    {
+      "layer": 30,
+      "neuron": 669
+    },
+    {
+      "layer": 14,
+      "neuron": 10026
+    },
+    {
+      "layer": 18,
+      "neuron": 10716
+    },
+    {
+      "layer": 31,
+      "neuron": 12258
+    },
+    {
+      "layer": 24,
+      "neuron": 1222
+    },
+    {
+      "layer": 20,
+      "neuron": 11879
+    },
+    {
+      "layer": 31,
+      "neuron": 1981
+    },
+    {
+      "layer": 23,
+      "neuron": 4802
+    },
+    {
+      "layer": 22,
+      "neuron": 4544
+    },
+    {
+      "layer": 25,
+      "neuron": 10718
+    },
+    {
+      "layer": 28,
+      "neuron": 10304
+    },
+    {
+      "layer": 23,
+      "neuron": 3040
+    },
+    {
+      "layer": 18,
+      "neuron": 8435
+    },
+    {
+      "layer": 19,
+      "neuron": 7010
+    },
+    {
+      "layer": 30,
+      "neuron": 13029
+    },
+    {
+      "layer": 29,
+      "neuron": 6444
+    },
+    {
+      "layer": 17,
+      "neuron": 3651
+    },
+    {
+      "layer": 13,
+      "neuron": 12855
+    },
+    {
+      "layer": 19,
+      "neuron": 9047
+    },
+    {
+      "layer": 29,
+      "neuron": 254
+    },
+    {
+      "layer": 15,
+      "neuron": 13260
+    },
+    {
+      "layer": 26,
+      "neuron": 5326
+    },
+    {
+      "layer": 23,
+      "neuron": 13675
+    },
+    {
+      "layer": 27,
+      "neuron": 2478
+    },
+    {
+      "layer": 24,
+      "neuron": 10897
+    },
+    {
+      "layer": 19,
+      "neuron": 12390
+    },
+    {
+      "layer": 15,
+      "neuron": 7361
+    },
+    {
+      "layer": 29,
+      "neuron": 643
+    },
+    {
+      "layer": 25,
+      "neuron": 4322
+    },
+    {
+      "layer": 31,
+      "neuron": 14197
+    },
+    {
+      "layer": 25,
+      "neuron": 2181
+    },
+    {
+      "layer": 20,
+      "neuron": 1620
+    },
+    {
+      "layer": 30,
+      "neuron": 2361
+    },
+    {
+      "layer": 18,
+      "neuron": 4408
+    },
+    {
+      "layer": 29,
+      "neuron": 3319
+    },
+    {
+      "layer": 27,
+      "neuron": 2647
+    },
+    {
+      "layer": 30,
+      "neuron": 5947
+    },
+    {
+      "layer": 29,
+      "neuron": 5440
+    },
+    {
+      "layer": 31,
+      "neuron": 2406
+    },
+    {
+      "layer": 25,
+      "neuron": 1216
+    },
+    {
+      "layer": 30,
+      "neuron": 10308
+    },
+    {
+      "layer": 23,
+      "neuron": 3123
+    },
+    {
+      "layer": 25,
+      "neuron": 7837
+    },
+    {
+      "layer": 16,
+      "neuron": 13510
+    },
+    {
+      "layer": 25,
+      "neuron": 8692
+    },
+    {
+      "layer": 21,
+      "neuron": 9230
+    },
+    {
+      "layer": 8,
+      "neuron": 1261
+    },
+    {
+      "layer": 20,
+      "neuron": 14291
+    },
+    {
+      "layer": 29,
+      "neuron": 5400
+    },
+    {
+      "layer": 13,
+      "neuron": 3523
+    },
+    {
+      "layer": 18,
+      "neuron": 6894
+    },
+    {
+      "layer": 22,
+      "neuron": 4396
+    },
+    {
+      "layer": 17,
+      "neuron": 2519
+    },
+    {
+      "layer": 20,
+      "neuron": 12584
+    },
+    {
+      "layer": 30,
+      "neuron": 14244
+    },
+    {
+      "layer": 24,
+      "neuron": 4379
+    },
+    {
+      "layer": 26,
+      "neuron": 12789
+    },
+    {
+      "layer": 5,
+      "neuron": 14319
+    },
+    {
+      "layer": 22,
+      "neuron": 10194
+    },
+    {
+      "layer": 30,
+      "neuron": 8539
+    },
+    {
+      "layer": 26,
+      "neuron": 6423
+    },
+    {
+      "layer": 24,
+      "neuron": 2874
+    },
+    {
+      "layer": 15,
+      "neuron": 2753
+    },
+    {
+      "layer": 25,
+      "neuron": 12633
+    },
+    {
+      "layer": 13,
+      "neuron": 13608
+    },
+    {
+      "layer": 28,
+      "neuron": 3539
+    },
+    {
+      "layer": 24,
+      "neuron": 5457
+    },
+    {
+      "layer": 17,
+      "neuron": 6949
+    },
+    {
+      "layer": 16,
+      "neuron": 12032
+    },
+    {
+      "layer": 28,
+      "neuron": 4372
+    },
+    {
+      "layer": 26,
+      "neuron": 13641
+    },
+    {
+      "layer": 23,
+      "neuron": 13662
+    },
+    {
+      "layer": 30,
+      "neuron": 4799
+    },
+    {
+      "layer": 20,
+      "neuron": 8427
+    },
+    {
+      "layer": 31,
+      "neuron": 1123
+    },
+    {
+      "layer": 30,
+      "neuron": 1529
+    },
+    {
+      "layer": 12,
+      "neuron": 923
+    },
+    {
+      "layer": 20,
+      "neuron": 3796
+    },
+    {
+      "layer": 23,
+      "neuron": 4617
+    },
+    {
+      "layer": 25,
+      "neuron": 3071
+    },
+    {
+      "layer": 19,
+      "neuron": 3076
+    },
+    {
+      "layer": 29,
+      "neuron": 4104
+    },
+    {
+      "layer": 30,
+      "neuron": 4677
+    },
+    {
+      "layer": 26,
+      "neuron": 8671
+    },
+    {
+      "layer": 31,
+      "neuron": 11299
+    },
+    {
+      "layer": 19,
+      "neuron": 11420
+    },
+    {
+      "layer": 15,
+      "neuron": 5480
+    },
+    {
+      "layer": 19,
+      "neuron": 5106
+    },
+    {
+      "layer": 29,
+      "neuron": 11680
+    },
+    {
+      "layer": 28,
+      "neuron": 10332
+    },
+    {
+      "layer": 15,
+      "neuron": 1046
+    },
+    {
+      "layer": 24,
+      "neuron": 6081
+    },
+    {
+      "layer": 24,
+      "neuron": 5857
+    },
+    {
+      "layer": 28,
+      "neuron": 3341
+    },
+    {
+      "layer": 24,
+      "neuron": 1484
+    },
+    {
+      "layer": 11,
+      "neuron": 12239
+    },
+    {
+      "layer": 15,
+      "neuron": 3726
+    },
+    {
+      "layer": 18,
+      "neuron": 13565
+    },
+    {
+      "layer": 25,
+      "neuron": 351
+    },
+    {
+      "layer": 18,
+      "neuron": 8177
+    },
+    {
+      "layer": 23,
+      "neuron": 12611
+    },
+    {
+      "layer": 16,
+      "neuron": 10855
+    },
+    {
+      "layer": 22,
+      "neuron": 12322
+    },
+    {
+      "layer": 17,
+      "neuron": 7337
+    },
+    {
+      "layer": 21,
+      "neuron": 2568
+    },
+    {
+      "layer": 19,
+      "neuron": 1450
+    },
+    {
+      "layer": 26,
+      "neuron": 1515
+    },
+    {
+      "layer": 31,
+      "neuron": 13814
+    },
+    {
+      "layer": 21,
+      "neuron": 2449
+    },
+    {
+      "layer": 15,
+      "neuron": 2500
+    },
+    {
+      "layer": 23,
+      "neuron": 8851
+    },
+    {
+      "layer": 30,
+      "neuron": 14296
+    },
+    {
+      "layer": 23,
+      "neuron": 4089
+    },
+    {
+      "layer": 26,
+      "neuron": 1810
+    },
+    {
+      "layer": 29,
+      "neuron": 11848
+    },
+    {
+      "layer": 29,
+      "neuron": 1567
+    },
+    {
+      "layer": 25,
+      "neuron": 11658
+    },
+    {
+      "layer": 16,
+      "neuron": 5657
+    },
+    {
+      "layer": 29,
+      "neuron": 3852
+    },
+    {
+      "layer": 27,
+      "neuron": 1592
+    },
+    {
+      "layer": 16,
+      "neuron": 13124
+    },
+    {
+      "layer": 29,
+      "neuron": 969
+    },
+    {
+      "layer": 22,
+      "neuron": 5872
+    },
+    {
+      "layer": 23,
+      "neuron": 4291
+    },
+    {
+      "layer": 29,
+      "neuron": 8437
+    },
+    {
+      "layer": 18,
+      "neuron": 6422
+    },
+    {
+      "layer": 30,
+      "neuron": 559
+    },
+    {
+      "layer": 31,
+      "neuron": 13452
+    },
+    {
+      "layer": 17,
+      "neuron": 6842
+    },
+    {
+      "layer": 17,
+      "neuron": 13404
+    },
+    {
+      "layer": 28,
+      "neuron": 10407
+    },
+    {
+      "layer": 30,
+      "neuron": 4301
+    },
+    {
+      "layer": 27,
+      "neuron": 2886
+    },
+    {
+      "layer": 30,
+      "neuron": 5442
+    },
+    {
+      "layer": 8,
+      "neuron": 11939
+    },
+    {
+      "layer": 25,
+      "neuron": 12014
+    },
+    {
+      "layer": 22,
+      "neuron": 6812
+    },
+    {
+      "layer": 2,
+      "neuron": 10698
+    },
+    {
+      "layer": 0,
+      "neuron": 378
+    },
+    {
+      "layer": 29,
+      "neuron": 10544
+    },
+    {
+      "layer": 24,
+      "neuron": 10738
+    },
+    {
+      "layer": 17,
+      "neuron": 5460
+    },
+    {
+      "layer": 30,
+      "neuron": 1127
+    },
+    {
+      "layer": 15,
+      "neuron": 749
+    },
+    {
+      "layer": 17,
+      "neuron": 3428
+    },
+    {
+      "layer": 23,
+      "neuron": 11466
+    },
+    {
+      "layer": 17,
+      "neuron": 6469
+    },
+    {
+      "layer": 27,
+      "neuron": 7424
+    },
+    {
+      "layer": 14,
+      "neuron": 13298
+    },
+    {
+      "layer": 19,
+      "neuron": 13282
+    },
+    {
+      "layer": 22,
+      "neuron": 2061
+    },
+    {
+      "layer": 21,
+      "neuron": 7609
+    },
+    {
+      "layer": 14,
+      "neuron": 9164
+    },
+    {
+      "layer": 29,
+      "neuron": 13128
+    },
+    {
+      "layer": 16,
+      "neuron": 1038
+    },
+    {
+      "layer": 25,
+      "neuron": 2351
+    },
+    {
+      "layer": 16,
+      "neuron": 11405
+    },
+    {
+      "layer": 20,
+      "neuron": 8729
+    },
+    {
+      "layer": 28,
+      "neuron": 1504
+    },
+    {
+      "layer": 24,
+      "neuron": 1816
+    },
+    {
+      "layer": 20,
+      "neuron": 4595
+    },
+    {
+      "layer": 16,
+      "neuron": 10631
+    },
+    {
+      "layer": 14,
+      "neuron": 75
+    },
+    {
+      "layer": 19,
+      "neuron": 7322
+    },
+    {
+      "layer": 24,
+      "neuron": 4380
+    },
+    {
+      "layer": 29,
+      "neuron": 3237
+    },
+    {
+      "layer": 27,
+      "neuron": 2874
+    },
+    {
+      "layer": 4,
+      "neuron": 12934
+    },
+    {
+      "layer": 31,
+      "neuron": 13597
+    },
+    {
+      "layer": 27,
+      "neuron": 14202
+    },
+    {
+      "layer": 30,
+      "neuron": 8891
+    },
+    {
+      "layer": 30,
+      "neuron": 309
+    },
+    {
+      "layer": 19,
+      "neuron": 3982
+    },
+    {
+      "layer": 26,
+      "neuron": 6675
+    },
+    {
+      "layer": 29,
+      "neuron": 5951
+    },
+    {
+      "layer": 31,
+      "neuron": 9645
+    },
+    {
+      "layer": 26,
+      "neuron": 8035
+    },
+    {
+      "layer": 30,
+      "neuron": 13808
+    },
+    {
+      "layer": 30,
+      "neuron": 717
+    },
+    {
+      "layer": 23,
+      "neuron": 4124
+    },
+    {
+      "layer": 25,
+      "neuron": 12715
+    },
+    {
+      "layer": 19,
+      "neuron": 6217
+    },
+    {
+      "layer": 19,
+      "neuron": 2606
+    },
+    {
+      "layer": 23,
+      "neuron": 9544
+    },
+    {
+      "layer": 29,
+      "neuron": 7789
+    },
+    {
+      "layer": 31,
+      "neuron": 2305
+    },
+    {
+      "layer": 29,
+      "neuron": 166
+    },
+    {
+      "layer": 21,
+      "neuron": 13468
+    },
+    {
+      "layer": 15,
+      "neuron": 704
+    },
+    {
+      "layer": 30,
+      "neuron": 3935
+    },
+    {
+      "layer": 23,
+      "neuron": 5948
+    },
+    {
+      "layer": 17,
+      "neuron": 4
+    },
+    {
+      "layer": 16,
+      "neuron": 10676
+    },
+    {
+      "layer": 26,
+      "neuron": 12294
+    },
+    {
+      "layer": 19,
+      "neuron": 14292
+    },
+    {
+      "layer": 19,
+      "neuron": 397
+    },
+    {
+      "layer": 30,
+      "neuron": 10657
+    },
+    {
+      "layer": 21,
+      "neuron": 3626
+    },
+    {
+      "layer": 27,
+      "neuron": 12638
+    },
+    {
+      "layer": 26,
+      "neuron": 3426
+    },
+    {
+      "layer": 20,
+      "neuron": 4645
+    },
+    {
+      "layer": 31,
+      "neuron": 10088
+    },
+    {
+      "layer": 27,
+      "neuron": 7985
+    },
+    {
+      "layer": 22,
+      "neuron": 1612
+    },
+    {
+      "layer": 21,
+      "neuron": 3847
+    },
+    {
+      "layer": 30,
+      "neuron": 5025
+    },
+    {
+      "layer": 20,
+      "neuron": 10967
+    },
+    {
+      "layer": 15,
+      "neuron": 7962
+    },
+    {
+      "layer": 31,
+      "neuron": 636
+    },
+    {
+      "layer": 22,
+      "neuron": 13090
+    },
+    {
+      "layer": 31,
+      "neuron": 8990
+    },
+    {
+      "layer": 19,
+      "neuron": 1520
+    },
+    {
+      "layer": 15,
+      "neuron": 3366
+    },
+    {
+      "layer": 23,
+      "neuron": 1983
+    },
+    {
+      "layer": 26,
+      "neuron": 3280
+    },
+    {
+      "layer": 17,
+      "neuron": 7259
+    },
+    {
+      "layer": 15,
+      "neuron": 344
+    },
+    {
+      "layer": 20,
+      "neuron": 2651
+    },
+    {
+      "layer": 29,
+      "neuron": 1101
+    },
+    {
+      "layer": 29,
+      "neuron": 5038
+    },
+    {
+      "layer": 17,
+      "neuron": 7176
+    },
+    {
+      "layer": 24,
+      "neuron": 7661
+    },
+    {
+      "layer": 22,
+      "neuron": 2851
+    },
+    {
+      "layer": 31,
+      "neuron": 2816
+    },
+    {
+      "layer": 19,
+      "neuron": 11646
+    },
+    {
+      "layer": 22,
+      "neuron": 10324
+    },
+    {
+      "layer": 28,
+      "neuron": 2510
+    },
+    {
+      "layer": 28,
+      "neuron": 6442
+    },
+    {
+      "layer": 16,
+      "neuron": 10444
+    },
+    {
+      "layer": 22,
+      "neuron": 344
+    },
+    {
+      "layer": 22,
+      "neuron": 6493
+    },
+    {
+      "layer": 18,
+      "neuron": 4318
+    },
+    {
+      "layer": 28,
+      "neuron": 6624
+    },
+    {
+      "layer": 19,
+      "neuron": 7180
+    },
+    {
+      "layer": 29,
+      "neuron": 12431
+    },
+    {
+      "layer": 27,
+      "neuron": 14038
+    },
+    {
+      "layer": 19,
+      "neuron": 2567
+    },
+    {
+      "layer": 31,
+      "neuron": 8245
+    },
+    {
+      "layer": 13,
+      "neuron": 7549
+    },
+    {
+      "layer": 23,
+      "neuron": 8210
+    },
+    {
+      "layer": 28,
+      "neuron": 11285
+    },
+    {
+      "layer": 16,
+      "neuron": 5614
+    },
+    {
+      "layer": 22,
+      "neuron": 6366
+    },
+    {
+      "layer": 31,
+      "neuron": 1760
+    },
+    {
+      "layer": 29,
+      "neuron": 12911
+    },
+    {
+      "layer": 22,
+      "neuron": 4209
+    },
+    {
+      "layer": 26,
+      "neuron": 13342
+    },
+    {
+      "layer": 20,
+      "neuron": 12159
+    },
+    {
+      "layer": 25,
+      "neuron": 13462
+    },
+    {
+      "layer": 27,
+      "neuron": 4641
+    },
+    {
+      "layer": 29,
+      "neuron": 992
+    },
+    {
+      "layer": 19,
+      "neuron": 12738
+    },
+    {
+      "layer": 31,
+      "neuron": 3320
+    },
+    {
+      "layer": 29,
+      "neuron": 13152
+    },
+    {
+      "layer": 13,
+      "neuron": 5104
+    },
+    {
+      "layer": 31,
+      "neuron": 5371
+    },
+    {
+      "layer": 26,
+      "neuron": 445
+    },
+    {
+      "layer": 18,
+      "neuron": 1702
+    },
+    {
+      "layer": 18,
+      "neuron": 3223
+    },
+    {
+      "layer": 18,
+      "neuron": 6526
+    },
+    {
+      "layer": 14,
+      "neuron": 7839
+    },
+    {
+      "layer": 19,
+      "neuron": 9711
+    },
+    {
+      "layer": 18,
+      "neuron": 13697
+    },
+    {
+      "layer": 30,
+      "neuron": 1700
+    },
+    {
+      "layer": 29,
+      "neuron": 14262
+    },
+    {
+      "layer": 22,
+      "neuron": 12258
+    },
+    {
+      "layer": 24,
+      "neuron": 5163
+    },
+    {
+      "layer": 31,
+      "neuron": 5287
+    },
+    {
+      "layer": 22,
+      "neuron": 476
+    },
+    {
+      "layer": 28,
+      "neuron": 5216
+    },
+    {
+      "layer": 17,
+      "neuron": 11518
+    },
+    {
+      "layer": 20,
+      "neuron": 10000
+    },
+    {
+      "layer": 17,
+      "neuron": 4161
+    },
+    {
+      "layer": 29,
+      "neuron": 2096
+    },
+    {
+      "layer": 28,
+      "neuron": 9564
+    },
+    {
+      "layer": 16,
+      "neuron": 13567
+    },
+    {
+      "layer": 24,
+      "neuron": 8380
+    },
+    {
+      "layer": 24,
+      "neuron": 9748
+    },
+    {
+      "layer": 31,
+      "neuron": 14215
+    },
+    {
+      "layer": 21,
+      "neuron": 4473
+    },
+    {
+      "layer": 16,
+      "neuron": 5496
+    },
+    {
+      "layer": 31,
+      "neuron": 6688
+    },
+    {
+      "layer": 16,
+      "neuron": 2756
+    },
+    {
+      "layer": 29,
+      "neuron": 5060
+    },
+    {
+      "layer": 31,
+      "neuron": 12944
+    },
+    {
+      "layer": 24,
+      "neuron": 425
+    },
+    {
+      "layer": 18,
+      "neuron": 7364
+    },
+    {
+      "layer": 17,
+      "neuron": 10466
+    },
+    {
+      "layer": 24,
+      "neuron": 4234
+    },
+    {
+      "layer": 25,
+      "neuron": 13336
+    },
+    {
+      "layer": 17,
+      "neuron": 3526
+    },
+    {
+      "layer": 19,
+      "neuron": 3905
+    },
+    {
+      "layer": 11,
+      "neuron": 9513
+    },
+    {
+      "layer": 14,
+      "neuron": 13831
+    },
+    {
+      "layer": 18,
+      "neuron": 8746
+    },
+    {
+      "layer": 22,
+      "neuron": 13079
+    },
+    {
+      "layer": 25,
+      "neuron": 5108
+    },
+    {
+      "layer": 22,
+      "neuron": 12803
+    },
+    {
+      "layer": 25,
+      "neuron": 8998
+    },
+    {
+      "layer": 18,
+      "neuron": 10365
+    },
+    {
+      "layer": 30,
+      "neuron": 10321
+    },
+    {
+      "layer": 29,
+      "neuron": 11990
+    },
+    {
+      "layer": 16,
+      "neuron": 14271
+    },
+    {
+      "layer": 23,
+      "neuron": 9356
+    },
+    {
+      "layer": 13,
+      "neuron": 5017
+    },
+    {
+      "layer": 29,
+      "neuron": 11182
+    },
+    {
+      "layer": 17,
+      "neuron": 12932
+    },
+    {
+      "layer": 23,
+      "neuron": 2423
+    },
+    {
+      "layer": 27,
+      "neuron": 9494
+    },
+    {
+      "layer": 29,
+      "neuron": 5869
+    },
+    {
+      "layer": 25,
+      "neuron": 4109
+    },
+    {
+      "layer": 20,
+      "neuron": 11544
+    },
+    {
+      "layer": 23,
+      "neuron": 4176
+    },
+    {
+      "layer": 17,
+      "neuron": 11053
+    },
+    {
+      "layer": 14,
+      "neuron": 3937
+    },
+    {
+      "layer": 22,
+      "neuron": 11009
+    },
+    {
+      "layer": 11,
+      "neuron": 3677
+    },
+    {
+      "layer": 23,
+      "neuron": 13348
+    },
+    {
+      "layer": 31,
+      "neuron": 10210
+    },
+    {
+      "layer": 31,
+      "neuron": 3023
+    },
+    {
+      "layer": 29,
+      "neuron": 12268
+    },
+    {
+      "layer": 18,
+      "neuron": 6335
+    },
+    {
+      "layer": 24,
+      "neuron": 5024
+    },
+    {
+      "layer": 14,
+      "neuron": 714
+    },
+    {
+      "layer": 31,
+      "neuron": 10867
+    },
+    {
+      "layer": 16,
+      "neuron": 10835
+    },
+    {
+      "layer": 17,
+      "neuron": 10974
+    },
+    {
+      "layer": 15,
+      "neuron": 1871
+    },
+    {
+      "layer": 16,
+      "neuron": 3215
+    },
+    {
+      "layer": 20,
+      "neuron": 10952
+    },
+    {
+      "layer": 31,
+      "neuron": 3430
+    },
+    {
+      "layer": 30,
+      "neuron": 12257
+    },
+    {
+      "layer": 21,
+      "neuron": 6141
+    },
+    {
+      "layer": 30,
+      "neuron": 5697
+    },
+    {
+      "layer": 30,
+      "neuron": 9415
+    },
+    {
+      "layer": 18,
+      "neuron": 8284
+    },
+    {
+      "layer": 22,
+      "neuron": 1570
+    },
+    {
+      "layer": 31,
+      "neuron": 8350
+    },
+    {
+      "layer": 12,
+      "neuron": 9114
+    },
+    {
+      "layer": 17,
+      "neuron": 2244
+    },
+    {
+      "layer": 30,
+      "neuron": 8726
+    },
+    {
+      "layer": 29,
+      "neuron": 699
+    },
+    {
+      "layer": 21,
+      "neuron": 5622
+    },
+    {
+      "layer": 17,
+      "neuron": 14085
+    },
+    {
+      "layer": 30,
+      "neuron": 3364
+    },
+    {
+      "layer": 21,
+      "neuron": 10067
+    },
+    {
+      "layer": 7,
+      "neuron": 7756
+    },
+    {
+      "layer": 23,
+      "neuron": 13537
+    },
+    {
+      "layer": 28,
+      "neuron": 8240
+    },
+    {
+      "layer": 28,
+      "neuron": 12867
+    },
+    {
+      "layer": 22,
+      "neuron": 3871
+    },
+    {
+      "layer": 29,
+      "neuron": 430
+    },
+    {
+      "layer": 28,
+      "neuron": 10374
+    },
+    {
+      "layer": 31,
+      "neuron": 13705
+    },
+    {
+      "layer": 21,
+      "neuron": 9031
+    },
+    {
+      "layer": 21,
+      "neuron": 7712
+    },
+    {
+      "layer": 17,
+      "neuron": 13463
+    },
+    {
+      "layer": 19,
+      "neuron": 11306
+    },
+    {
+      "layer": 27,
+      "neuron": 840
+    },
+    {
+      "layer": 12,
+      "neuron": 9894
+    },
+    {
+      "layer": 18,
+      "neuron": 12254
+    },
+    {
+      "layer": 4,
+      "neuron": 13921
+    },
+    {
+      "layer": 21,
+      "neuron": 12164
+    },
+    {
+      "layer": 19,
+      "neuron": 6227
+    },
+    {
+      "layer": 24,
+      "neuron": 8606
+    },
+    {
+      "layer": 19,
+      "neuron": 2150
+    },
+    {
+      "layer": 20,
+      "neuron": 10804
+    },
+    {
+      "layer": 31,
+      "neuron": 12477
+    },
+    {
+      "layer": 20,
+      "neuron": 11285
+    },
+    {
+      "layer": 16,
+      "neuron": 3096
+    },
+    {
+      "layer": 15,
+      "neuron": 8452
+    },
+    {
+      "layer": 16,
+      "neuron": 8191
+    },
+    {
+      "layer": 19,
+      "neuron": 2902
+    },
+    {
+      "layer": 29,
+      "neuron": 9028
+    },
+    {
+      "layer": 31,
+      "neuron": 7591
+    },
+    {
+      "layer": 21,
+      "neuron": 13890
+    },
+    {
+      "layer": 26,
+      "neuron": 5335
+    },
+    {
+      "layer": 9,
+      "neuron": 12078
+    },
+    {
+      "layer": 19,
+      "neuron": 8709
+    },
+    {
+      "layer": 26,
+      "neuron": 12463
+    },
+    {
+      "layer": 25,
+      "neuron": 13973
+    },
+    {
+      "layer": 29,
+      "neuron": 11558
+    },
+    {
+      "layer": 17,
+      "neuron": 10671
+    },
+    {
+      "layer": 17,
+      "neuron": 5328
+    },
+    {
+      "layer": 28,
+      "neuron": 10927
+    },
+    {
+      "layer": 27,
+      "neuron": 8178
+    },
+    {
+      "layer": 25,
+      "neuron": 8371
+    },
+    {
+      "layer": 14,
+      "neuron": 12629
+    },
+    {
+      "layer": 20,
+      "neuron": 10731
+    },
+    {
+      "layer": 19,
+      "neuron": 10040
+    },
+    {
+      "layer": 9,
+      "neuron": 520
+    },
+    {
+      "layer": 25,
+      "neuron": 4746
+    },
+    {
+      "layer": 30,
+      "neuron": 12395
+    },
+    {
+      "layer": 26,
+      "neuron": 9795
+    },
+    {
+      "layer": 20,
+      "neuron": 11263
+    },
+    {
+      "layer": 29,
+      "neuron": 10660
+    },
+    {
+      "layer": 19,
+      "neuron": 2811
+    },
+    {
+      "layer": 31,
+      "neuron": 10180
+    },
+    {
+      "layer": 29,
+      "neuron": 7583
+    },
+    {
+      "layer": 11,
+      "neuron": 4210
+    },
+    {
+      "layer": 26,
+      "neuron": 1751
+    },
+    {
+      "layer": 7,
+      "neuron": 2165
+    },
+    {
+      "layer": 29,
+      "neuron": 4148
+    },
+    {
+      "layer": 17,
+      "neuron": 8778
+    },
+    {
+      "layer": 31,
+      "neuron": 8082
+    },
+    {
+      "layer": 22,
+      "neuron": 6521
+    },
+    {
+      "layer": 4,
+      "neuron": 10275
+    },
+    {
+      "layer": 25,
+      "neuron": 6915
+    },
+    {
+      "layer": 30,
+      "neuron": 2087
+    },
+    {
+      "layer": 25,
+      "neuron": 12076
+    },
+    {
+      "layer": 21,
+      "neuron": 1011
+    },
+    {
+      "layer": 14,
+      "neuron": 10884
+    },
+    {
+      "layer": 15,
+      "neuron": 6996
+    },
+    {
+      "layer": 23,
+      "neuron": 6270
+    },
+    {
+      "layer": 29,
+      "neuron": 2715
+    },
+    {
+      "layer": 20,
+      "neuron": 10076
+    },
+    {
+      "layer": 31,
+      "neuron": 4436
+    },
+    {
+      "layer": 28,
+      "neuron": 10497
+    },
+    {
+      "layer": 18,
+      "neuron": 6581
+    },
+    {
+      "layer": 17,
+      "neuron": 7584
+    },
+    {
+      "layer": 14,
+      "neuron": 8147
+    },
+    {
+      "layer": 29,
+      "neuron": 1703
+    },
+    {
+      "layer": 29,
+      "neuron": 4951
+    },
+    {
+      "layer": 16,
+      "neuron": 226
+    },
+    {
+      "layer": 19,
+      "neuron": 1664
+    },
+    {
+      "layer": 23,
+      "neuron": 8597
+    },
+    {
+      "layer": 13,
+      "neuron": 7283
+    },
+    {
+      "layer": 16,
+      "neuron": 11293
+    },
+    {
+      "layer": 18,
+      "neuron": 272
+    },
+    {
+      "layer": 16,
+      "neuron": 12008
+    },
+    {
+      "layer": 14,
+      "neuron": 7797
+    },
+    {
+      "layer": 26,
+      "neuron": 10873
+    },
+    {
+      "layer": 31,
+      "neuron": 12835
+    },
+    {
+      "layer": 24,
+      "neuron": 1600
+    },
+    {
+      "layer": 29,
+      "neuron": 2822
+    },
+    {
+      "layer": 6,
+      "neuron": 10642
+    },
+    {
+      "layer": 18,
+      "neuron": 13306
+    },
+    {
+      "layer": 28,
+      "neuron": 2488
+    },
+    {
+      "layer": 22,
+      "neuron": 6406
+    },
+    {
+      "layer": 26,
+      "neuron": 4392
+    },
+    {
+      "layer": 20,
+      "neuron": 10811
+    },
+    {
+      "layer": 16,
+      "neuron": 11446
+    },
+    {
+      "layer": 20,
+      "neuron": 11209
+    },
+    {
+      "layer": 20,
+      "neuron": 8651
+    },
+    {
+      "layer": 26,
+      "neuron": 7376
+    },
+    {
+      "layer": 17,
+      "neuron": 4343
+    },
+    {
+      "layer": 19,
+      "neuron": 3264
+    },
+    {
+      "layer": 3,
+      "neuron": 6390
+    },
+    {
+      "layer": 22,
+      "neuron": 8231
+    },
+    {
+      "layer": 17,
+      "neuron": 162
+    },
+    {
+      "layer": 27,
+      "neuron": 2327
+    },
+    {
+      "layer": 28,
+      "neuron": 497
+    },
+    {
+      "layer": 24,
+      "neuron": 7683
+    },
+    {
+      "layer": 20,
+      "neuron": 2367
+    },
+    {
+      "layer": 21,
+      "neuron": 13353
+    },
+    {
+      "layer": 30,
+      "neuron": 1777
+    },
+    {
+      "layer": 16,
+      "neuron": 1172
+    },
+    {
+      "layer": 19,
+      "neuron": 12247
+    },
+    {
+      "layer": 15,
+      "neuron": 2012
+    },
+    {
+      "layer": 19,
+      "neuron": 8345
+    },
+    {
+      "layer": 24,
+      "neuron": 11576
+    },
+    {
+      "layer": 31,
+      "neuron": 10951
+    },
+    {
+      "layer": 31,
+      "neuron": 7487
+    },
+    {
+      "layer": 23,
+      "neuron": 11168
+    },
+    {
+      "layer": 15,
+      "neuron": 13258
+    },
+    {
+      "layer": 27,
+      "neuron": 5737
+    },
+    {
+      "layer": 24,
+      "neuron": 9587
+    },
+    {
+      "layer": 21,
+      "neuron": 12274
+    },
+    {
+      "layer": 16,
+      "neuron": 723
+    },
+    {
+      "layer": 31,
+      "neuron": 4364
+    },
+    {
+      "layer": 20,
+      "neuron": 2443
+    },
+    {
+      "layer": 30,
+      "neuron": 4593
+    },
+    {
+      "layer": 22,
+      "neuron": 11889
+    },
+    {
+      "layer": 25,
+      "neuron": 7849
+    },
+    {
+      "layer": 18,
+      "neuron": 763
+    },
+    {
+      "layer": 10,
+      "neuron": 14295
+    },
+    {
+      "layer": 16,
+      "neuron": 2284
+    },
+    {
+      "layer": 30,
+      "neuron": 7826
+    },
+    {
+      "layer": 20,
+      "neuron": 3123
+    },
+    {
+      "layer": 30,
+      "neuron": 3020
+    },
+    {
+      "layer": 0,
+      "neuron": 10729
+    },
+    {
+      "layer": 30,
+      "neuron": 8952
+    },
+    {
+      "layer": 31,
+      "neuron": 14071
+    },
+    {
+      "layer": 27,
+      "neuron": 635
+    },
+    {
+      "layer": 23,
+      "neuron": 11278
+    },
+    {
+      "layer": 28,
+      "neuron": 7677
+    },
+    {
+      "layer": 25,
+      "neuron": 11681
+    },
+    {
+      "layer": 18,
+      "neuron": 9933
+    },
+    {
+      "layer": 31,
+      "neuron": 1513
+    },
+    {
+      "layer": 22,
+      "neuron": 3913
+    },
+    {
+      "layer": 27,
+      "neuron": 7017
+    },
+    {
+      "layer": 23,
+      "neuron": 10571
+    },
+    {
+      "layer": 23,
+      "neuron": 7621
+    },
+    {
+      "layer": 15,
+      "neuron": 5019
+    },
+    {
+      "layer": 25,
+      "neuron": 1155
+    },
+    {
+      "layer": 16,
+      "neuron": 5561
+    },
+    {
+      "layer": 28,
+      "neuron": 3382
+    },
+    {
+      "layer": 31,
+      "neuron": 6831
+    },
+    {
+      "layer": 19,
+      "neuron": 3056
+    },
+    {
+      "layer": 30,
+      "neuron": 4048
+    },
+    {
+      "layer": 16,
+      "neuron": 7308
+    },
+    {
+      "layer": 21,
+      "neuron": 11384
+    },
+    {
+      "layer": 30,
+      "neuron": 7332
+    },
+    {
+      "layer": 26,
+      "neuron": 10723
+    },
+    {
+      "layer": 19,
+      "neuron": 64
+    },
+    {
+      "layer": 15,
+      "neuron": 13963
+    },
+    {
+      "layer": 27,
+      "neuron": 12194
+    },
+    {
+      "layer": 27,
+      "neuron": 3657
+    },
+    {
+      "layer": 18,
+      "neuron": 2945
+    },
+    {
+      "layer": 28,
+      "neuron": 8714
+    },
+    {
+      "layer": 26,
+      "neuron": 8070
+    },
+    {
+      "layer": 16,
+      "neuron": 1662
+    },
+    {
+      "layer": 27,
+      "neuron": 9054
+    },
+    {
+      "layer": 18,
+      "neuron": 4479
+    },
+    {
+      "layer": 17,
+      "neuron": 4282
+    },
+    {
+      "layer": 23,
+      "neuron": 2132
+    },
+    {
+      "layer": 15,
+      "neuron": 12102
+    },
+    {
+      "layer": 26,
+      "neuron": 11380
+    },
+    {
+      "layer": 19,
+      "neuron": 20
+    },
+    {
+      "layer": 18,
+      "neuron": 4299
+    },
+    {
+      "layer": 13,
+      "neuron": 9215
+    },
+    {
+      "layer": 21,
+      "neuron": 464
+    },
+    {
+      "layer": 26,
+      "neuron": 9335
+    },
+    {
+      "layer": 15,
+      "neuron": 12921
+    },
+    {
+      "layer": 13,
+      "neuron": 9457
+    },
+    {
+      "layer": 28,
+      "neuron": 735
+    },
+    {
+      "layer": 30,
+      "neuron": 5459
+    },
+    {
+      "layer": 15,
+      "neuron": 8240
+    },
+    {
+      "layer": 1,
+      "neuron": 2829
+    },
+    {
+      "layer": 25,
+      "neuron": 4438
+    },
+    {
+      "layer": 17,
+      "neuron": 8977
+    },
+    {
+      "layer": 7,
+      "neuron": 7198
+    },
+    {
+      "layer": 24,
+      "neuron": 4777
+    },
+    {
+      "layer": 15,
+      "neuron": 4454
+    },
+    {
+      "layer": 17,
+      "neuron": 8034
+    },
+    {
+      "layer": 23,
+      "neuron": 2217
+    },
+    {
+      "layer": 12,
+      "neuron": 7877
+    },
+    {
+      "layer": 24,
+      "neuron": 10067
+    },
+    {
+      "layer": 17,
+      "neuron": 5304
+    },
+    {
+      "layer": 19,
+      "neuron": 4897
+    },
+    {
+      "layer": 25,
+      "neuron": 5311
+    },
+    {
+      "layer": 19,
+      "neuron": 11630
+    },
+    {
+      "layer": 19,
+      "neuron": 3846
+    },
+    {
+      "layer": 26,
+      "neuron": 10144
+    },
+    {
+      "layer": 31,
+      "neuron": 9171
+    },
+    {
+      "layer": 18,
+      "neuron": 5646
+    },
+    {
+      "layer": 31,
+      "neuron": 13214
+    },
+    {
+      "layer": 31,
+      "neuron": 7906
+    },
+    {
+      "layer": 17,
+      "neuron": 13143
+    },
+    {
+      "layer": 31,
+      "neuron": 6094
+    },
+    {
+      "layer": 17,
+      "neuron": 5921
+    },
+    {
+      "layer": 21,
+      "neuron": 3054
+    },
+    {
+      "layer": 27,
+      "neuron": 1721
+    },
+    {
+      "layer": 18,
+      "neuron": 922
+    },
+    {
+      "layer": 23,
+      "neuron": 11475
+    },
+    {
+      "layer": 22,
+      "neuron": 3312
+    },
+    {
+      "layer": 17,
+      "neuron": 2614
+    },
+    {
+      "layer": 29,
+      "neuron": 10116
+    },
+    {
+      "layer": 27,
+      "neuron": 6752
+    },
+    {
+      "layer": 18,
+      "neuron": 5810
+    },
+    {
+      "layer": 29,
+      "neuron": 13310
+    },
+    {
+      "layer": 11,
+      "neuron": 4052
+    },
+    {
+      "layer": 11,
+      "neuron": 5147
+    },
+    {
+      "layer": 14,
+      "neuron": 11799
+    },
+    {
+      "layer": 30,
+      "neuron": 13047
+    },
+    {
+      "layer": 31,
+      "neuron": 7687
+    },
+    {
+      "layer": 25,
+      "neuron": 6393
+    },
+    {
+      "layer": 20,
+      "neuron": 8584
+    },
+    {
+      "layer": 20,
+      "neuron": 6887
+    },
+    {
+      "layer": 19,
+      "neuron": 413
+    },
+    {
+      "layer": 25,
+      "neuron": 346
+    },
+    {
+      "layer": 24,
+      "neuron": 11188
+    },
+    {
+      "layer": 14,
+      "neuron": 1938
+    },
+    {
+      "layer": 17,
+      "neuron": 8148
+    },
+    {
+      "layer": 19,
+      "neuron": 845
+    },
+    {
+      "layer": 23,
+      "neuron": 5179
+    },
+    {
+      "layer": 28,
+      "neuron": 14182
+    },
+    {
+      "layer": 27,
+      "neuron": 2846
+    },
+    {
+      "layer": 30,
+      "neuron": 5799
+    },
+    {
+      "layer": 19,
+      "neuron": 118
+    },
+    {
+      "layer": 28,
+      "neuron": 6862
+    },
+    {
+      "layer": 25,
+      "neuron": 660
+    },
+    {
+      "layer": 27,
+      "neuron": 1958
+    },
+    {
+      "layer": 16,
+      "neuron": 13272
+    },
+    {
+      "layer": 30,
+      "neuron": 5098
+    },
+    {
+      "layer": 23,
+      "neuron": 13424
+    },
+    {
+      "layer": 31,
+      "neuron": 11752
+    },
+    {
+      "layer": 29,
+      "neuron": 5947
+    },
+    {
+      "layer": 17,
+      "neuron": 4412
+    },
+    {
+      "layer": 26,
+      "neuron": 7088
+    },
+    {
+      "layer": 29,
+      "neuron": 2594
+    },
+    {
+      "layer": 22,
+      "neuron": 12203
+    },
+    {
+      "layer": 16,
+      "neuron": 9219
+    },
+    {
+      "layer": 30,
+      "neuron": 1891
+    },
+    {
+      "layer": 27,
+      "neuron": 7732
+    },
+    {
+      "layer": 30,
+      "neuron": 10685
+    },
+    {
+      "layer": 24,
+      "neuron": 2019
+    },
+    {
+      "layer": 18,
+      "neuron": 2300
+    },
+    {
+      "layer": 15,
+      "neuron": 12333
+    },
+    {
+      "layer": 26,
+      "neuron": 6488
+    },
+    {
+      "layer": 31,
+      "neuron": 4107
+    },
+    {
+      "layer": 12,
+      "neuron": 6165
+    },
+    {
+      "layer": 30,
+      "neuron": 10174
+    },
+    {
+      "layer": 13,
+      "neuron": 2655
+    },
+    {
+      "layer": 29,
+      "neuron": 6665
+    },
+    {
+      "layer": 16,
+      "neuron": 12418
+    },
+    {
+      "layer": 17,
+      "neuron": 3884
+    },
+    {
+      "layer": 7,
+      "neuron": 14192
+    },
+    {
+      "layer": 26,
+      "neuron": 11352
+    },
+    {
+      "layer": 30,
+      "neuron": 8098
+    },
+    {
+      "layer": 18,
+      "neuron": 6933
+    },
+    {
+      "layer": 16,
+      "neuron": 11873
+    },
+    {
+      "layer": 15,
+      "neuron": 10312
+    },
+    {
+      "layer": 18,
+      "neuron": 10824
+    },
+    {
+      "layer": 23,
+      "neuron": 13919
+    },
+    {
+      "layer": 22,
+      "neuron": 2472
+    },
+    {
+      "layer": 20,
+      "neuron": 12009
+    },
+    {
+      "layer": 18,
+      "neuron": 11041
+    },
+    {
+      "layer": 21,
+      "neuron": 12181
+    },
+    {
+      "layer": 24,
+      "neuron": 1538
+    },
+    {
+      "layer": 29,
+      "neuron": 7590
+    },
+    {
+      "layer": 29,
+      "neuron": 12180
+    },
+    {
+      "layer": 17,
+      "neuron": 7605
+    },
+    {
+      "layer": 22,
+      "neuron": 6229
+    },
+    {
+      "layer": 21,
+      "neuron": 9576
+    },
+    {
+      "layer": 14,
+      "neuron": 11560
+    },
+    {
+      "layer": 19,
+      "neuron": 9505
+    },
+    {
+      "layer": 19,
+      "neuron": 10301
+    },
+    {
+      "layer": 24,
+      "neuron": 9352
+    },
+    {
+      "layer": 20,
+      "neuron": 12554
+    },
+    {
+      "layer": 22,
+      "neuron": 2839
+    },
+    {
+      "layer": 31,
+      "neuron": 11041
+    },
+    {
+      "layer": 18,
+      "neuron": 11457
+    },
+    {
+      "layer": 25,
+      "neuron": 11114
+    },
+    {
+      "layer": 18,
+      "neuron": 10963
+    },
+    {
+      "layer": 17,
+      "neuron": 8747
+    },
+    {
+      "layer": 28,
+      "neuron": 1401
+    },
+    {
+      "layer": 26,
+      "neuron": 10440
+    },
+    {
+      "layer": 26,
+      "neuron": 13503
+    },
+    {
+      "layer": 17,
+      "neuron": 3110
+    },
+    {
+      "layer": 27,
+      "neuron": 6765
+    },
+    {
+      "layer": 28,
+      "neuron": 1579
+    },
+    {
+      "layer": 17,
+      "neuron": 852
+    },
+    {
+      "layer": 18,
+      "neuron": 13709
+    },
+    {
+      "layer": 21,
+      "neuron": 1471
+    },
+    {
+      "layer": 20,
+      "neuron": 7272
+    },
+    {
+      "layer": 18,
+      "neuron": 10237
+    },
+    {
+      "layer": 4,
+      "neuron": 7053
+    },
+    {
+      "layer": 29,
+      "neuron": 9588
+    },
+    {
+      "layer": 27,
+      "neuron": 8723
+    },
+    {
+      "layer": 31,
+      "neuron": 11695
+    },
+    {
+      "layer": 23,
+      "neuron": 5002
+    },
+    {
+      "layer": 31,
+      "neuron": 9704
+    },
+    {
+      "layer": 21,
+      "neuron": 11352
+    },
+    {
+      "layer": 23,
+      "neuron": 14275
+    },
+    {
+      "layer": 13,
+      "neuron": 11924
+    },
+    {
+      "layer": 28,
+      "neuron": 7734
+    },
+    {
+      "layer": 10,
+      "neuron": 13540
+    },
+    {
+      "layer": 17,
+      "neuron": 4527
+    },
+    {
+      "layer": 22,
+      "neuron": 3009
+    },
+    {
+      "layer": 25,
+      "neuron": 3295
+    },
+    {
+      "layer": 29,
+      "neuron": 13755
+    },
+    {
+      "layer": 23,
+      "neuron": 6958
+    },
+    {
+      "layer": 16,
+      "neuron": 9050
+    },
+    {
+      "layer": 24,
+      "neuron": 2312
+    },
+    {
+      "layer": 16,
+      "neuron": 9605
+    },
+    {
+      "layer": 23,
+      "neuron": 12931
+    },
+    {
+      "layer": 21,
+      "neuron": 9036
+    },
+    {
+      "layer": 12,
+      "neuron": 6062
+    },
+    {
+      "layer": 22,
+      "neuron": 12237
+    },
+    {
+      "layer": 30,
+      "neuron": 11659
+    },
+    {
+      "layer": 16,
+      "neuron": 11581
+    },
+    {
+      "layer": 19,
+      "neuron": 7053
+    },
+    {
+      "layer": 22,
+      "neuron": 35
+    },
+    {
+      "layer": 21,
+      "neuron": 2032
+    },
+    {
+      "layer": 20,
+      "neuron": 7620
+    },
+    {
+      "layer": 18,
+      "neuron": 3363
+    },
+    {
+      "layer": 19,
+      "neuron": 11149
+    },
+    {
+      "layer": 16,
+      "neuron": 8853
+    },
+    {
+      "layer": 29,
+      "neuron": 8961
+    },
+    {
+      "layer": 27,
+      "neuron": 5509
+    },
+    {
+      "layer": 16,
+      "neuron": 9394
+    },
+    {
+      "layer": 19,
+      "neuron": 7133
+    },
+    {
+      "layer": 12,
+      "neuron": 13464
+    },
+    {
+      "layer": 12,
+      "neuron": 3477
+    },
+    {
+      "layer": 16,
+      "neuron": 1844
+    },
+    {
+      "layer": 31,
+      "neuron": 7633
+    },
+    {
+      "layer": 27,
+      "neuron": 9665
+    },
+    {
+      "layer": 17,
+      "neuron": 5071
+    },
+    {
+      "layer": 12,
+      "neuron": 5972
+    },
+    {
+      "layer": 16,
+      "neuron": 11727
+    },
+    {
+      "layer": 15,
+      "neuron": 9635
+    },
+    {
+      "layer": 20,
+      "neuron": 8363
+    },
+    {
+      "layer": 29,
+      "neuron": 9302
+    },
+    {
+      "layer": 27,
+      "neuron": 1363
+    },
+    {
+      "layer": 16,
+      "neuron": 3319
+    },
+    {
+      "layer": 20,
+      "neuron": 7
+    },
+    {
+      "layer": 20,
+      "neuron": 4671
+    },
+    {
+      "layer": 31,
+      "neuron": 10233
+    },
+    {
+      "layer": 28,
+      "neuron": 624
+    },
+    {
+      "layer": 22,
+      "neuron": 10287
+    },
+    {
+      "layer": 31,
+      "neuron": 5766
+    },
+    {
+      "layer": 24,
+      "neuron": 9871
+    },
+    {
+      "layer": 23,
+      "neuron": 518
+    },
+    {
+      "layer": 28,
+      "neuron": 12994
+    },
+    {
+      "layer": 25,
+      "neuron": 13151
+    },
+    {
+      "layer": 14,
+      "neuron": 5424
+    },
+    {
+      "layer": 16,
+      "neuron": 13302
+    },
+    {
+      "layer": 17,
+      "neuron": 9793
+    },
+    {
+      "layer": 17,
+      "neuron": 13422
+    },
+    {
+      "layer": 13,
+      "neuron": 10476
+    },
+    {
+      "layer": 13,
+      "neuron": 11685
+    },
+    {
+      "layer": 20,
+      "neuron": 13707
+    },
+    {
+      "layer": 16,
+      "neuron": 2012
+    },
+    {
+      "layer": 29,
+      "neuron": 10259
+    },
+    {
+      "layer": 12,
+      "neuron": 10719
+    },
+    {
+      "layer": 22,
+      "neuron": 9789
+    },
+    {
+      "layer": 27,
+      "neuron": 5747
+    },
+    {
+      "layer": 28,
+      "neuron": 1430
+    },
+    {
+      "layer": 15,
+      "neuron": 13959
+    },
+    {
+      "layer": 22,
+      "neuron": 3427
+    },
+    {
+      "layer": 17,
+      "neuron": 12976
+    },
+    {
+      "layer": 28,
+      "neuron": 7973
+    },
+    {
+      "layer": 28,
+      "neuron": 10212
+    },
+    {
+      "layer": 27,
+      "neuron": 2212
+    },
+    {
+      "layer": 20,
+      "neuron": 597
+    },
+    {
+      "layer": 28,
+      "neuron": 4285
+    },
+    {
+      "layer": 28,
+      "neuron": 1983
+    },
+    {
+      "layer": 20,
+      "neuron": 10600
+    },
+    {
+      "layer": 26,
+      "neuron": 1039
+    },
+    {
+      "layer": 24,
+      "neuron": 3541
+    },
+    {
+      "layer": 21,
+      "neuron": 8818
+    },
+    {
+      "layer": 22,
+      "neuron": 9892
+    },
+    {
+      "layer": 31,
+      "neuron": 12207
+    },
+    {
+      "layer": 15,
+      "neuron": 9388
+    },
+    {
+      "layer": 29,
+      "neuron": 8099
+    },
+    {
+      "layer": 24,
+      "neuron": 12538
+    },
+    {
+      "layer": 26,
+      "neuron": 7092
+    },
+    {
+      "layer": 27,
+      "neuron": 73
+    },
+    {
+      "layer": 24,
+      "neuron": 4628
+    },
+    {
+      "layer": 29,
+      "neuron": 12950
+    },
+    {
+      "layer": 13,
+      "neuron": 13321
+    },
+    {
+      "layer": 31,
+      "neuron": 9365
+    },
+    {
+      "layer": 20,
+      "neuron": 4367
+    },
+    {
+      "layer": 31,
+      "neuron": 1940
+    },
+    {
+      "layer": 15,
+      "neuron": 8403
+    },
+    {
+      "layer": 28,
+      "neuron": 7393
+    },
+    {
+      "layer": 30,
+      "neuron": 11752
+    },
+    {
+      "layer": 27,
+      "neuron": 11966
+    }
+  ]
+}

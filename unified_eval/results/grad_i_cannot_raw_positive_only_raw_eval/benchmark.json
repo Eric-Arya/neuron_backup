@@ -1,0 +1,36 @@
+{
+  "cuda_visible_devices": "0",
+  "device": "cuda:0",
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "prompt_format": "raw",
+  "recommended_batch_size": 32,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 1.6265238672494888,
+      "error": null,
+      "examples": 32,
+      "examples_per_second": 19.673858247228285,
+      "max_new_tokens": 16,
+      "peak_memory_gib": 15.044878482818604
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 0.6469754632562399,
+      "error": null,
+      "examples": 32,
+      "examples_per_second": 49.46091748046114,
+      "max_new_tokens": 16,
+      "peak_memory_gib": 15.102969646453857
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 0.33080482203513384,
+      "error": null,
+      "examples": 32,
+      "examples_per_second": 96.73377734681682,
+      "max_new_tokens": 16,
+      "peak_memory_gib": 15.214757442474365
+    }
+  ]
+}

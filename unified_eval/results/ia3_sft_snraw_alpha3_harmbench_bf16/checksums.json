@@ -1,0 +1,10 @@
+{
+  "harmbench/asr_scored.jsonl": "379f92f9b30a0154a150ed000cdafc52cd2149c800fd39922b59296e9804654d",
+  "harmbench/cost_direction.json": "f819182a7759a4b7f3640f3bfc8f47a77308d6009186a249cb06d2b2026bd742",
+  "harmbench/costs.jsonl": "2551e0a25bc03c02316bdcc4fba29502dcf8f56dee528486155154c6a4b0d58c",
+  "harmbench/responses.jsonl": "f539ca60af71072604c41b7aff1c5e66740e88bfbe3a0a2edd2e24b96f99e7d8",
+  "harmbench/summary.json": "f43c0b9a43569f34bce6f7aface6b6e2c6cd025d838c4513c742f13358863a4a",
+  "run_config.json": "a6c1621642491e8f20c72d93db8ff3aa9851e630f60f1cfd8f83ae7ab50b7327",
+  "summary.json": "203aaf13e9aa38663eeb55828aaa6f82fa25b6e3ea917d6af2774c09a7b2cb29",
+  "validation.json": "54e7452fea410f9b1e3816f2d9ed0b5eb757048cbeda2f0f768d34af5e5eda03"
+}

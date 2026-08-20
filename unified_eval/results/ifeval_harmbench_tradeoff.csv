@@ -1,0 +1,34 @@
+method,setting,ranking_candidate_pool,plot_role,harmbench_asr_pct,ifeval_strict_prompt_accuracy_pct,ifeval_strict_instruction_accuracy_pct,ifeval_loose_prompt_accuracy_pct,ifeval_loose_instruction_accuracy_pct,gsm8k_accuracy_pct,math500_l1_l3_n100_accuracy_pct
+Baseline,Unmodified,not_applicable,reference,65.5,69.5,77.24,77.0,84.29,75.0,48.0
+SN-Tune,alpha=1,not_applicable,main,62.5,68.5,78.21,76.0,83.97,76.0,53.0
+SN-Tune,alpha=4,not_applicable,main,20.0,67.0,77.24,75.0,83.65,74.0,45.0
+SN-Tune,alpha=6,not_applicable,main,1.0,63.5,73.72,73.0,80.77,78.0,46.0
+SN-Tune,alpha=8,not_applicable,main,0.5,55.0,65.06,61.5,69.87,72.0,46.0
+IA3-SFT,alpha=1,not_applicable,main,44.5,64.0,74.68,72.5,81.09,75.0,50.0
+IA3-SFT,alpha=1.5,not_applicable,main,33.5,64.5,75.64,74.0,83.01,73.0,45.0
+IA3-SFT,alpha=2,not_applicable,main,24.5,66.0,76.28,75.5,83.33,71.0,43.0
+IA3-SFT,alpha=2.5,not_applicable,main,16.0,65.0,73.72,73.5,80.77,73.0,43.0
+IA3-SFT,alpha=3,not_applicable,main,8.0,60.5,70.83,67.5,76.92,73.0,45.0
+IA3-SFT,alpha=3.5,not_applicable,main,6.5,61.0,69.87,68.0,75.64,73.0,48.0
+IA3 guide patch,K=40000,444416,main_patch,22.0,63.0,73.72,70.5,80.45,,43.0
+IA3 guide patch,K=80000,444416,main_patch,15.5,63.5,74.68,70.0,79.81,,50.0
+IA3 guide patch,K=160000,444416,main_patch,12.0,64.5,74.04,71.0,79.81,,44.0
+IA3 guide patch,K=320000,444416,main_patch,9.0,66.5,75.00,72.0,80.13,,47.0
+Grad (off-policy),"K=1000, strength=1",20000,main,41.0,72.5,80.77,80.0,86.54,72.0,
+Grad (off-policy),"K=2000, strength=1",20000,main,16.5,66.0,76.60,73.5,82.37,71.0,
+Grad (off-policy),"K=4000, strength=1",20000,main,3.5,53.0,66.35,59.0,71.47,67.0,
+Grad (off-policy),"K=1000, strength=0.5",4000,separate,30.5,65.0,75.00,72.5,81.09,,
+Grad (off-policy),"K=1000, strength=1",4000,separate,12.5,61.5,72.12,69.5,79.17,,
+Grad (off-policy),"K=1000, strength=1.5",4000,separate,2.0,38.0,52.24,44.5,57.69,,
+Grad (on-policy),"K=1000, strength=1",20000,main,17.0,67.5,76.92,77.5,85.26,77.0,47.0
+Grad (on-policy),"K=2000, strength=1",20000,main,9.5,65.5,76.92,72.5,82.05,81.0,45.0
+Grad (on-policy),"K=4000, strength=1",20000,main,5.5,61.0,71.79,70.5,78.53,79.0,41.0
+Grad (on-policy),"K=1000, strength=1",4000,separate,21.0,67.0,76.28,77.5,84.29,,
+Grad (on-policy),"K=1000, strength=1.5",4000,separate,15.5,60.0,70.83,67.0,77.24,,
+Grad (on-policy),"K=1943, strength=2",4000,separate,6.5,41.0,49.36,45.5,53.21,,
+Grad (on-policy),"K=1943, strength=2.5",4000,separate,4.5,19.5,33.01,23.0,35.90,,
+Grad (on-policy),"K=4000, strength=0.4",20000,strength_sweep,22.0,67.0,77.24,74.0,83.01,,
+Grad (on-policy),"K=4000, strength=0.5",20000,strength_sweep,18.5,66.0,75.96,75.5,83.33,,
+Grad (on-policy),"K=4000, strength=0.6",20000,strength_sweep,15.0,69.5,78.21,77.5,85.26,,
+Grad (on-policy),"K=4000, strength=0.75",20000,strength_sweep,8.5,66.5,75.64,75.0,82.05,,
+Grad (on-policy),"K=4000, strength=0.85",20000,strength_sweep,6.0,62.5,73.40,74.0,81.41,,

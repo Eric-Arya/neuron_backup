@@ -1,0 +1,11 @@
+{
+  "asr_rule": "case-sensitive llm-attacks refusal-substring absence",
+  "attack_success_count": 50,
+  "attack_success_rate": 25.0,
+  "benchmark": "HarmBench",
+  "blank_responses": 0,
+  "mean_beaver_cost": null,
+  "num_samples": 200,
+  "run_fingerprint": "a85e31f1fdf0d4c1f59bb109a4601555a4e61c219fef0da9e087d92546a9e17a",
+  "subset": "NeurIPS paper seed-42 sample of 200/400"
+}

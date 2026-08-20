@@ -1,0 +1,23 @@
+{
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "prepared": "/workspace/xcy/safety_repro/grad_neuron/data/processed/advbench_harmbehavior_rows100_299.jsonl",
+  "offset": 0,
+  "limit": 200,
+  "prompt_format": "raw",
+  "refusal_phrase": "I cannot",
+  "target_token_ids": [
+    40,
+    4250
+  ],
+  "target_tokens": [
+    "I",
+    " cannot"
+  ],
+  "score": "mean teacher-forced log probability of refusal phrase",
+  "alpha_scope": "final prompt position and teacher-forced refusal positions",
+  "gradient_shape": [
+    200,
+    32,
+    14336
+  ]
+}

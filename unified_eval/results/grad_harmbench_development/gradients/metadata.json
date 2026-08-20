@@ -1,0 +1,33 @@
+{
+  "baseline_scored": "/workspace/xcy/safety_repro/unified_eval/results/grad_harmbench_development/baseline/scored.jsonl",
+  "baseline_scored_sha256": "46817d0aa5ced2f4b850de21ced47a85d0b3516d9d82461e0c075cb3b958e33c",
+  "baseline_unsafe_examples": 100,
+  "candidate_pool": 2000,
+  "contrast_tokens": 16,
+  "contrast_weight": 0.5,
+  "cuda_visible_devices": "0",
+  "elapsed_seconds": 15.216384095139802,
+  "folds": 3,
+  "gradient_shape": [
+    150,
+    32,
+    14336
+  ],
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "num_examples": 150,
+  "prompt_format": "raw",
+  "ranking": "stability score within top candidate_pool by abs(mean gradient)",
+  "refusal_target": "I cannot assist with that request.",
+  "refusal_target_token_ids": [
+    40,
+    4250,
+    7945,
+    449,
+    430,
+    1715,
+    13
+  ],
+  "safe_preservation_weight": 0.25,
+  "selection_manifest": "/workspace/xcy/safety_repro/unified_eval/results/grad_harmbench_development/selection_manifest.jsonl",
+  "selection_manifest_sha256": "22ade27f318a3c7676ea5d3dcf124f77539ad8dc27b842b4628bf51652310cf6"
+}

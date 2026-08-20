@@ -1,0 +1,15 @@
+{
+  "accuracy": 20.0,
+  "accuracy_by_subject": {
+    "abstract_algebra": 0.0,
+    "anatomy": 40.0
+  },
+  "benchmark": "MMLU",
+  "correct": 2,
+  "num_fewshot": 0,
+  "num_samples": 10,
+  "prompt_format": "single-turn Tulu chat with assistant answer prefix",
+  "run_fingerprint": "741f2860144b01d40a89661b47641f7d5e8fe838262b5dc25c734a50b95f542a",
+  "subject_macro_accuracy": 20.0,
+  "subset": "seed-112, 5 test questions per 57 subjects"
+}

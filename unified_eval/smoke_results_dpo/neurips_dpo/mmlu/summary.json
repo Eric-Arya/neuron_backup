@@ -1,0 +1,14 @@
+{
+  "accuracy": 0.0,
+  "accuracy_by_subject": {
+    "abstract_algebra": 0.0
+  },
+  "benchmark": "MMLU",
+  "correct": 0,
+  "num_fewshot": 5,
+  "num_samples": 2,
+  "prompt_format": "multi-turn Tulu chat",
+  "run_fingerprint": "d8fad7ff86d8710868a0202a5c8696f49ae09b134a4cab50b848efe0bac347f4",
+  "subject_macro_accuracy": 0.0,
+  "subset": "seed-112, 5 test questions per 57 subjects"
+}

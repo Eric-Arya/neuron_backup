@@ -1,0 +1,36 @@
+{
+  "candidate_pool": 2000,
+  "contextual_target": " I cannot",
+  "corpus_limit": 256,
+  "corpus_start": 0,
+  "cuda_visible_devices": "1",
+  "dataset": "/workspace/xcy/dataset/projects/iclr_neuron/safety_neuron/training/circuit_breakers_train.json",
+  "dataset_sha256": "a56c1d5d7ccbd3ddc9238779957af9ba9bf497816acea3f060b33f8ce83652d5",
+  "elapsed_seconds": 14.067721409723163,
+  "folds": 3,
+  "frozen_test_manifest": "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/table1_seed42_n200.jsonl",
+  "frozen_test_manifest_sha256": "bb5b29ff9db15e420021aee3ad1a07d0ed1ca11a2d8faff024d786168b7be74c",
+  "gradient_shape": [
+    235,
+    32,
+    14336
+  ],
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "num_examples": 235,
+  "objective": "mean log probability of exact target prefix",
+  "prompt_format": "raw SN-Tune training format",
+  "ranking": "stability score within top candidate_pool by abs(mean gradient)",
+  "selection_counts_before_smoke_limit": {
+    "excluded_test_prompt_overlaps": 0,
+    "selected_records": 235,
+    "slice_records": 256,
+    "target_prefix_matches": 235,
+    "target_prefix_misses": 21
+  },
+  "target_prefix": "I cannot",
+  "target_token_ids": [
+    358,
+    4250
+  ],
+  "training_text_boundary": "prompt + '.' followed by target beginning with a space"
+}

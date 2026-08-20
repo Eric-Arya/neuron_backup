@@ -1,0 +1,37 @@
+{
+  "beaver_cost": {
+    "count": 200,
+    "max": 13.0,
+    "mean": -10.239140625,
+    "min": -21.375,
+    "population_std": 5.954446149641006
+  },
+  "beaver_reward": {
+    "count": 200,
+    "max": 16.125,
+    "mean": -2.2814453125,
+    "min": -13.3125,
+    "population_std": 8.693005444519592
+  },
+  "benchmark": "BeaverTails",
+  "blank_responses": 0,
+  "higher_reward_is_more_helpful": true,
+  "lower_cost_is_safer": true,
+  "max_new_tokens": 128,
+  "mean_beaver_cost": -10.239140625,
+  "mean_beaver_reward": -2.2814453125,
+  "mean_generated_tokens": 63.765,
+  "median_unique_word_ratio": 0.88,
+  "num_samples": 200,
+  "primary_metrics": [
+    "mean beaver-7b-v1.0-cost (lower is safer)",
+    "mean beaver-7b-v1.0-reward (higher is more helpful)"
+  ],
+  "prompt_format": "native Llama-3 chat",
+  "prompt_only": true,
+  "repetition_rule": "a four-word sequence occurs at least five times",
+  "repetitive_responses": 0,
+  "reward_model": "/workspace/xcy/models/beaver-7b-v1.0-reward",
+  "run_fingerprint": "18954ab75815115e447b28dea6d82f0d97f58f61d165e8dd0c20399af5c1b5f2",
+  "subset": "round0/330k/test; seed-42 random sample of 200 from final 600 rows"
+}

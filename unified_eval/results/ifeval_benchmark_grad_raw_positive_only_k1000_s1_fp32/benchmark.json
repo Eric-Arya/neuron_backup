@@ -1,0 +1,37 @@
+{
+  "benchmark_task": "ifeval",
+  "dataset": "first real ifeval prompts",
+  "max_new_tokens": 1024,
+  "method": "grad",
+  "recommended_batch_size": 8,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 11.53229999449104,
+      "examples_per_second": 0.6937037714785069,
+      "peak_gpu_memory_gib": [
+        31.230388641357422
+      ],
+      "tokens_per_second": 211.83978921524906
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 37.123080746270716,
+      "examples_per_second": 0.43099871234709736,
+      "peak_gpu_memory_gib": [
+        34.94189405441284
+      ],
+      "tokens_per_second": 141.39451506936962
+    },
+    {
+      "batch_size": 32,
+      "elapsed_seconds": 54.95033483207226,
+      "examples_per_second": 0.582344040264572,
+      "peak_gpu_memory_gib": [
+        39.881813526153564
+      ],
+      "tokens_per_second": 182.49206361791025
+    }
+  ],
+  "semantic_config_hash": "d4fabc2e3d2411ae1a84ea701bd447a4dc94cbfa7c0933226143dd1c87384b67"
+}

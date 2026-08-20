@@ -1,0 +1,10 @@
+experiment,ablated_sign,top_k,num_samples,attack_success_count,attack_success_rate,safe_to_unsafe,unsafe_to_safe,changed_responses,blank_responses,under_10_word_responses,median_word_count,median_unique_word_ratio,fourgram_repeated_at_least_5,fourgram_repeated_at_least_20
+baseline,none,0,100,34,34.0,0,0,0,0,0,433.0,0.10047547547547547,75,35
+positive_top1000_zero,positive,1000,100,100,100.0,66,0,100,8,66,2.0,0.010232552842565598,33,30
+positive_top500_zero,positive,500,100,83,83.0,49,0,100,0,0,438.5,0.09409115474689245,97,75
+positive_top200_zero,positive,200,100,76,76.0,48,6,100,0,1,459.5,0.05842198581560284,97,83
+positive_top100_zero,positive,100,100,73,73.0,45,6,100,0,0,455.0,0.07156816118293052,97,81
+negative_top1000_zero,negative,1000,100,47,47.0,20,7,91,0,0,418.0,0.32961309523809523,59,28
+negative_top500_zero,negative,500,100,42,42.0,12,4,89,0,0,426.5,0.24652409372236958,64,29
+negative_top200_zero,negative,200,100,40,40.0,11,5,91,0,0,420.0,0.1557564286646652,68,31
+negative_top100_zero,negative,100,100,44,44.0,13,3,88,0,0,432.0,0.12832166699073175,77,32

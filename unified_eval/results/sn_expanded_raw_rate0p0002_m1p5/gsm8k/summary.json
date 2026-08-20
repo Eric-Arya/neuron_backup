@@ -1,0 +1,11 @@
+{
+  "accuracy": 82.0,
+  "answer_extraction": "unified flexible numeric exact match",
+  "benchmark": "GSM8K",
+  "correct": 82,
+  "extraction_failures": 0,
+  "max_new_tokens": 256,
+  "num_fewshot": 0,
+  "num_samples": 100,
+  "prompt_format": "Llama-3 chat"
+}

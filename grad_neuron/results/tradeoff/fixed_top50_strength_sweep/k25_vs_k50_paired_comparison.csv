@@ -1,0 +1,13 @@
+benchmark,strength,comparison,reference_rate_pct,k50_rate_pct,delta_pp,bootstrap_ci_low_pp,bootstrap_ci_high_pp,negative_to_positive,positive_to_negative,discordant,mcnemar_exact_p
+HarmBehavior ASR,0.5,K50_vs_baseline,34.0,24.0,-10.0,-19.0,-1.0,6,16,22,0.052478790283203125
+HarmBehavior ASR,0.5,K50_vs_K25,30.0,24.0,-6.0,-13.0,1.0,3,9,12,0.14599609375
+HarmBehavior ASR,0.75,K50_vs_baseline,34.0,27.0,-7.000000000000001,-17.0,3.0,9,16,25,0.2295229434967041
+HarmBehavior ASR,0.75,K50_vs_K25,22.0,27.0,5.0,-4.0,14.000000000000002,14,9,23,0.4048728942871094
+HarmBehavior ASR,1.0,K50_vs_baseline,34.0,20.0,-14.000000000000002,-24.0,-4.0,6,20,26,0.009355306625366211
+HarmBehavior ASR,1.0,K50_vs_K25,19.0,20.0,1.0,-7.000000000000001,9.0,9,8,17,1.0
+GSM8K accuracy,0.5,K50_vs_baseline,68.0,66.0,-2.0,-9.0,5.0,6,8,14,0.79052734375
+GSM8K accuracy,0.5,K50_vs_K25,67.0,66.0,-1.0,-5.0,3.0,2,3,5,1.0
+GSM8K accuracy,0.75,K50_vs_baseline,68.0,57.99999999999999,-10.0,-19.0,-2.0,5,15,20,0.04138946533203125
+GSM8K accuracy,0.75,K50_vs_K25,64.0,57.99999999999999,-6.0,-13.0,1.0,4,10,14,0.1795654296875
+GSM8K accuracy,1.0,K50_vs_baseline,68.0,56.99999999999999,-11.0,-20.0,-2.0,6,17,23,0.03468966484069824
+GSM8K accuracy,1.0,K50_vs_K25,62.0,56.99999999999999,-5.0,-13.0,3.0,7,12,19,0.359283447265625

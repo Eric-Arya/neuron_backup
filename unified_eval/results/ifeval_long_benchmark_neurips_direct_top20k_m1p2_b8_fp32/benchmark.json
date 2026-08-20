@@ -1,0 +1,19 @@
+{
+  "benchmark_task": "ifeval",
+  "dataset": "first real ifeval prompts",
+  "max_new_tokens": 1024,
+  "method": "neurips_direct",
+  "recommended_batch_size": 8,
+  "results": [
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 37.813473822548985,
+      "examples_per_second": 0.21156479929726604,
+      "peak_gpu_memory_gib": [
+        42.76061725616455
+      ],
+      "tokens_per_second": 216.64235448040043
+    }
+  ],
+  "semantic_config_hash": "e08ee31d264cfb2fa04b4ff80da3070c230de514b96d662f9c8ccdb941104247"
+}

@@ -1,0 +1,22 @@
+{
+  "capability/gsm8k/sn_rate0p0002_scale1p1_chat_0shot/responses.jsonl": "67096c882737bc57743569b8e1ce5343a879c68036c027b52a56d8d68a6b0445",
+  "capability/gsm8k/sn_rate0p0002_scale1p1_chat_0shot/run.json": "e56ce62af295516880ab076407ce0a816cac1780326e367c92b10d5d2ac90b39",
+  "capability/gsm8k/sn_rate0p0002_scale1p1_chat_0shot/summary.json": "f0ad2e56ec3d1b60ddfb5c48671d9b3ccb81c617fd6d8793215da27672927565",
+  "capability/mmlu/sn_rate0p0002_scale1p1_chat_5shot/responses.jsonl": "0ad02f6b44f1bb1c583517695761b5f8116dbc74692aef144f2518c8ef819f4e",
+  "capability/mmlu/sn_rate0p0002_scale1p1_chat_5shot/run.json": "8a97ff9552475d2f98cf687f5878a587451b9a81090b3623c1c8cde9617e47e4",
+  "capability/mmlu/sn_rate0p0002_scale1p1_chat_5shot/summary.json": "458ca3dc5da85e49f741c8fecba9a1df181781fc80d3db29ec45897f0aed2203",
+  "gsm8k/responses.jsonl": "0a3ff2116c11130b375a92cfd25a0adf7acd909378754b8619d92a5dbc27c31f",
+  "gsm8k/summary.json": "794f8c0c75a0bb20fee32010969771ecc538feb3048da3074f803aceaa43e955",
+  "harmbench/asr_scored.jsonl": "61f6409f9770ba0dc4a6f8fa31856fb675c5d965024b0e375014082f2730f789",
+  "harmbench/cost_direction.json": "f819182a7759a4b7f3640f3bfc8f47a77308d6009186a249cb06d2b2026bd742",
+  "harmbench/costs.jsonl": "28e9a3e5213cc0a2467f21700353cb31940bd4bc36153f0c04dd2eeed80e1b7b",
+  "harmbench/overlay_responses.jsonl": "6731280649ac13ef7fce972d5ba168ebf04e408c010dd4fc08a35b05bc406659",
+  "harmbench/overlay_run.json": "4b4aaf7c59601626e0e8fac224d5732d0be225824b733263a5ffdb4658f4af87",
+  "harmbench/overlay_scored.jsonl": "db0771c7cb0e378c02f3b68279b55cc6f2c39cde6eb4a95eb23d71e89c6a9530",
+  "harmbench/overlay_summary.json": "144c32ee9a480f1dd3cd76008e71832c421f805574df23e90416d3e38ac2cbf5",
+  "harmbench/responses.jsonl": "61f6409f9770ba0dc4a6f8fa31856fb675c5d965024b0e375014082f2730f789",
+  "harmbench/summary.json": "d324047ddf9b348ade1ad5183741035cc2b06e45ca715765bcdc0fa58d8a7f52",
+  "mmlu/responses.jsonl": "4ffb6577f6a6e0f53a2fe12516ea9f32295d8de022cd53dd12de774837264f67",
+  "mmlu/summary.json": "ed6a551accaeb8071d8b2e9a949569397f515495fec1db03faa71fbcabd984bd",
+  "summary.json": "e3875f8721ba11eedcc393e884e5b4f8ede97038b0a0287c2bea28fa514c4b01"
+}

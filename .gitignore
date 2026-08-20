@@ -1,0 +1,47 @@
+# Nested repositories keep their own Git metadata locally. The umbrella backup
+# stores their working-tree contents instead.
+.git*/
+
+# Local credentials and machine-specific environments.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python/editor caches and local environments.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.venv/
+venv/
+.vscode/
+.idea/
+.DS_Store
+
+# Experiment trackers and logs.
+wandb/
+*.log
+
+# Model checkpoints, tensor dumps, and other heavyweight binary artifacts.
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.arrow
+*.parquet
+
+# Raw ShareGPT copies exceed GitHub's per-file size limit and are reproducible
+# from the data-preparation scripts.
+neurips_neuron/data/raw_train/sharegpt/
+neurips_neuron/data/processed/sharegpt/

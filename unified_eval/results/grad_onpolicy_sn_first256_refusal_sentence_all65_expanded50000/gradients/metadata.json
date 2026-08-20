@@ -1,0 +1,14 @@
+{
+  "candidate_pool": 50000,
+  "eligible_positive_rows": 24850,
+  "folds": 3,
+  "gradient_shape": [
+    65,
+    32,
+    14336
+  ],
+  "ranking": "stability score within candidate pool selected by abs(mean gradient)",
+  "saved_ranking_rows": 50000,
+  "source_per_example_gradients": "/workspace/xcy/safety_repro/unified_eval/results/grad_onpolicy_sn_first256_refusal_sentence_all65/gradients/per_example_g.pt",
+  "source_per_example_gradients_sha256": "bc24778636dcf824782d628030eb34bff9a2e1412900e90ceb8f8f2e21328e51"
+}

@@ -1,0 +1,26 @@
+{
+  "alpha_scope": "final prefill position and refusal-target positions",
+  "candidate_pool": 4000,
+  "cuda_visible_devices": "0",
+  "elapsed_seconds": 4.818105163052678,
+  "folds": 3,
+  "gradient_shape": [
+    65,
+    32,
+    14336
+  ],
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "objective": "mean teacher-forced log probability of the first generated refusal sentence, conditioned on the raw prompt plus its on-policy response prefix",
+  "prompt_format": "raw",
+  "ranking": "stability score within candidate pool selected by abs(mean gradient)",
+  "refusal_phrase": "I cannot",
+  "repetitive_selected_rows": 51,
+  "response_column": "model_response",
+  "responses_path": "/workspace/xcy/dataset/projects/iclr_neuron/safety_neuron/training/circuit_breakers_train_first256_llama3_raw_regenerated_bf16_greedy256.jsonl",
+  "responses_sha256": "cc9a47ca6dc7e6ad6b477312b85fdde6878a57ef5ba46f3d7932e49559c7625a",
+  "safe_only": true,
+  "saved_ranking_rows": 4000,
+  "selected_rows": 65,
+  "source_rows": 256,
+  "source_safe_rows": 116
+}

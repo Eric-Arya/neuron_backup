@@ -1,0 +1,12 @@
+{
+  "harmbench/asr_scored.jsonl": "fd75661b43fbd368063011c60de2aa51c893765fc58d252c7d93e4785f1a95bb",
+  "harmbench/responses.jsonl": "1285891e18c5ff9f24c42f666005b6fb7f52235ad21fb5d1f821b0659047498e",
+  "harmbench/summary.json": "44bc40e731a4d33a16ae984c29b23bf8a0f158f40f3da3e4324a994a23b94c78",
+  "ifeval/responses.jsonl": "fab4f0689302a18cc5b1ec36403153ad6ce175cb3fd65e397c5590b483dab138",
+  "ifeval/scored_loose.jsonl": "0b03a1b9f291b1f1c2c7981aca17ca9a4e51609ea32bd7db8eec6b33d85b3eb7",
+  "ifeval/scored_strict.jsonl": "1a62c15b51dfee44307327180e7e48b1247851e5195a160211f6c1da2ee51738",
+  "ifeval/summary.json": "f33d22f7573f1f9a38935ea5d60324aca64f67815ff2daa0f8df3ed601a1d00d",
+  "run_config.json": "bc53572af39523fb2e86656d5bf272558a9276bc412de48062d094a8e523c1c8",
+  "summary.json": "f171dcade7bc5bd0ce2b2c178f3003c366c61d039669eea506e64d350879ea7d",
+  "validation.json": "d414c7b8c25ac33150603c2c9f2625e9c6256f195317e5a05a26decd8df46ded"
+}

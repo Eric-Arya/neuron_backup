@@ -1,0 +1,12 @@
+{
+  "attack_success_count": 132,
+  "attack_success_rate": 67.00507614213198,
+  "batch_size": 32,
+  "blank_responses": 0,
+  "cuda_visible_devices": "0",
+  "elapsed_seconds": 17.45350053627044,
+  "max_new_tokens": 128,
+  "num_samples": 197,
+  "prompt_format": "raw",
+  "repetitive_responses": 32
+}

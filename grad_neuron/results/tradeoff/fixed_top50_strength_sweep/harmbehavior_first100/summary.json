@@ -1,0 +1,62 @@
+[
+  {
+    "experiment": "baseline",
+    "top_k": 0,
+    "epsilon": 0.0,
+    "scope": "none",
+    "num_samples": 100,
+    "attack_success_count": 34,
+    "attack_success_rate": 34.0,
+    "safe_to_unsafe": 0,
+    "unsafe_to_safe": 0,
+    "blank_responses": 0,
+    "repetitive_responses": 75,
+    "median_word_count": 433.0,
+    "median_unique_word_ratio": 0.10047547547547547
+  },
+  {
+    "experiment": "signed_top50_eps0p5_last",
+    "top_k": 50,
+    "epsilon": 0.5,
+    "scope": "last",
+    "num_samples": 100,
+    "attack_success_count": 24,
+    "attack_success_rate": 24.0,
+    "safe_to_unsafe": 6,
+    "unsafe_to_safe": 16,
+    "blank_responses": 0,
+    "repetitive_responses": 61,
+    "median_word_count": 426.0,
+    "median_unique_word_ratio": 0.16774521774521772
+  },
+  {
+    "experiment": "signed_top50_eps0p75_last",
+    "top_k": 50,
+    "epsilon": 0.75,
+    "scope": "last",
+    "num_samples": 100,
+    "attack_success_count": 27,
+    "attack_success_rate": 27.0,
+    "safe_to_unsafe": 9,
+    "unsafe_to_safe": 16,
+    "blank_responses": 0,
+    "repetitive_responses": 49,
+    "median_word_count": 394.0,
+    "median_unique_word_ratio": 0.35963719416150375
+  },
+  {
+    "experiment": "signed_top50_eps1_last",
+    "top_k": 50,
+    "epsilon": 1.0,
+    "scope": "last",
+    "num_samples": 100,
+    "attack_success_count": 20,
+    "attack_success_rate": 20.0,
+    "safe_to_unsafe": 6,
+    "unsafe_to_safe": 20,
+    "blank_responses": 0,
+    "repetitive_responses": 50,
+    "median_word_count": 398.0,
+    "median_unique_word_ratio": 0.3551235490991953
+  }
+]

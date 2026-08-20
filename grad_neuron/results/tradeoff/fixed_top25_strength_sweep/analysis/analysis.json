@@ -1,0 +1,43 @@
+{
+  "design": {
+    "controller": "fixed global top-25 neurons selected on disjoint AdvBench rows 100-299",
+    "scaling": "positive = 1+s; negative = max(0, 1-s)",
+    "safety": "same first 100 HarmBehavior examples at every strength",
+    "capability": "same first 100 GSM8K test examples at every strength",
+    "decoding": "greedy",
+    "uncertainty": "Wilson 95% intervals for rates; paired bootstrap percentile 95% intervals for changes",
+    "hypothesis_tests": "two-sided exact McNemar/binomial tests with Holm correction within each benchmark",
+    "bootstrap_samples": 20000,
+    "permutation_samples": 50000,
+    "seed": 112
+  },
+  "trends": {
+    "matched_binary_omnibus": {
+      "safety_cochran_q": 28.69090909090909,
+      "safety_p": 6.960142566681796e-05,
+      "capability_cochran_q": 5.547169811320755,
+      "capability_p": 0.47577402565774984,
+      "degrees_of_freedom": 6
+    },
+    "paired_permutation_linear_trend": {
+      "safety_slope_pp_per_strength": -7.137724550898206,
+      "safety_two_sided_p": 3.999920001599968e-05,
+      "capability_slope_pp_per_strength": -3.940119760479038,
+      "capability_two_sided_p": 0.03373932521349573,
+      "permutations": 50000
+    },
+    "strength_vs_safety_asr": {
+      "spearman_rho": -0.8214285714285715,
+      "exact_permutation_p": 0.034126984126984124
+    },
+    "strength_vs_gsm8k_accuracy": {
+      "spearman_rho": -0.9285714285714288,
+      "exact_permutation_p": 0.006746031746031746
+    },
+    "safety_gain_vs_capability_loss_across_strengths": {
+      "spearman_rho": 0.8928571428571429,
+      "exact_permutation_p": 0.012301587301587301,
+      "note": "Descriptive dose-level association; strength conditions are not independent samples."
+    }
+  }
+}

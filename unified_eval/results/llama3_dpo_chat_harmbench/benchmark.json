@@ -1,0 +1,45 @@
+{
+  "dataset": "first real HarmBench prompts",
+  "max_new_tokens": 8,
+  "method": "llama3_dpo",
+  "recommended_batch_size": 16,
+  "results": [
+    {
+      "batch_size": 2,
+      "elapsed_seconds": 0.6289431545883417,
+      "examples_per_second": 3.179937622994001,
+      "peak_gpu_memory_gib": [
+        15.004329681396484
+      ],
+      "tokens_per_second": 25.43950098395201
+    },
+    {
+      "batch_size": 4,
+      "elapsed_seconds": 0.16607607249170542,
+      "examples_per_second": 24.085347997374985,
+      "peak_gpu_memory_gib": [
+        15.028449058532715
+      ],
+      "tokens_per_second": 192.68278397899988
+    },
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 0.17496861424297094,
+      "examples_per_second": 45.722485913335085,
+      "peak_gpu_memory_gib": [
+        15.066477298736572
+      ],
+      "tokens_per_second": 365.7798873066807
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 0.18117761425673962,
+      "examples_per_second": 88.31113085155782,
+      "peak_gpu_memory_gib": [
+        15.169342517852783
+      ],
+      "tokens_per_second": 706.4890468124626
+    }
+  ],
+  "semantic_config_hash": "3a5ad7c9910d5894c24cf939b75d5e34f00e23e280bc3bfd6fca4d3a33211941"
+}

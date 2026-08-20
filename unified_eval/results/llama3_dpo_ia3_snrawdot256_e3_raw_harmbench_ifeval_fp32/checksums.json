@@ -1,0 +1,14 @@
+{
+  "harmbench/asr_scored.jsonl": "921e786d8f546c11785d1f33223b61e464131b9e67441a5a1bbb1c5e8dc31542",
+  "harmbench/cost_direction.json": "e39c6a83c21aba30d322e14bc00bbfe6c20795b027f1d93fceeef12df6d5b850",
+  "harmbench/costs.jsonl": "ec34017c1f0f5a1d1e0eb35947a654c950e1d33798eedc6a1785ee2dc3be4c0c",
+  "harmbench/responses.jsonl": "b7f3e780efa09744233ecc132b3f96c676b1a218a5f9e59e87d59baedc4e6493",
+  "harmbench/summary.json": "e0f2a0224b6126c7261b9097ec586ce0ac9e2f7010e9fb9accce1d9ad0d33385",
+  "ifeval/responses.jsonl": "11277535a6eef92da4b7f0a8dd1f994ebc2f272da5228ca26c75266b01b8a0a6",
+  "ifeval/scored_loose.jsonl": "2f52cbf4e19a2a90f9a0f4071523e6137f3d25467d760e9af582635f24f4ae72",
+  "ifeval/scored_strict.jsonl": "d69814df1a4c5cc219125a3dc7327d41460d8f967de8f61d11dad04dd7152043",
+  "ifeval/summary.json": "059765fc897d484fdea4904d9ddb09cb5aee4799221a9103f45b1ae553622568",
+  "run_config.json": "585c1a0ed90bf00685c9ff51025752801015788a04c9328c364c4ccb7869ec75",
+  "summary.json": "94763bee950ad9841bdc7797280e5a62f188dc5231c809b16c836584eb35516a",
+  "validation.json": "6be34815e28c0c16915efc4bcf8d60a14c09b6f791ef0548059912a292718573"
+}

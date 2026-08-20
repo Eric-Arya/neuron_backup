@@ -1,0 +1,11 @@
+{
+  "accuracy": 7.0,
+  "benchmark": "GSM8K",
+  "correct": 7,
+  "extraction_failures": 0,
+  "num_fewshot": 0,
+  "num_samples": 100,
+  "prompt_format": "Tulu chat",
+  "run_fingerprint": "545955a2fe5f8978a862466a43162056628c5c5f6908f3893f111e7470cef5c3",
+  "subset": "first 100 test rows"
+}

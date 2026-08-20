@@ -1,0 +1,18 @@
+{
+  "name": "llama3_8b_instruct_raw_refusal_fixed_top25_disjoint_advbench",
+  "model": "/workspace/xcy/models/Meta-Llama-3-8B-Instruct",
+  "selection_prompts": "AdvBench HarmBehavior source rows 100-299",
+  "evaluation_prompts": "AdvBench HarmBehavior source rows 0-99",
+  "selection_evaluation_index_overlap": 0,
+  "selection_evaluation_exact_prompt_overlap": 0,
+  "ranking": "/workspace/xcy/safety_repro/grad_neuron/results/gradients/raw_refusal_advbench_rows100_299/top_neurons.csv",
+  "selection": "top 25 by abs_mean_g",
+  "neuron_count": 25,
+  "positive_gradient_scale": 2.0,
+  "negative_gradient_scale": 0.0,
+  "scope": "final prefill position and cached decoding positions",
+  "prompt_format": "raw",
+  "prompt_specific": false,
+  "requires_inference_time_gradient": false,
+  "selected_neurons": "final100/selected_neurons.json"
+}

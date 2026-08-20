@@ -1,0 +1,36 @@
+{
+  "seed": 42,
+  "first_half_examples": 97,
+  "second_half_examples": 97,
+  "pearson_all_neurons": 0.9932737946510315,
+  "top_abs_mean_overlap": {
+    "10": {
+      "count": 9,
+      "fraction": 0.9
+    },
+    "25": {
+      "count": 24,
+      "fraction": 0.96
+    },
+    "50": {
+      "count": 46,
+      "fraction": 0.92
+    },
+    "100": {
+      "count": 95,
+      "fraction": 0.95
+    },
+    "500": {
+      "count": 478,
+      "fraction": 0.956
+    },
+    "1000": {
+      "count": 941,
+      "fraction": 0.941
+    },
+    "2000": {
+      "count": 1859,
+      "fraction": 0.9295
+    }
+  }
+}

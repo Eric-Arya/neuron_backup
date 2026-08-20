@@ -1,0 +1,49 @@
+{
+  "dataset": "first real HarmBench prompts",
+  "max_new_tokens": 8,
+  "method": "llama3_dpo_patch",
+  "recommended_batch_size": 16,
+  "results": [
+    {
+      "batch_size": 2,
+      "elapsed_seconds": 0.7685475274920464,
+      "examples_per_second": 2.6023114101042992,
+      "peak_gpu_memory_gib": [
+        15.136265754699707,
+        15.135869026184082
+      ],
+      "tokens_per_second": 20.818491280834394
+    },
+    {
+      "batch_size": 4,
+      "elapsed_seconds": 0.39098505210131407,
+      "examples_per_second": 10.230570142010185,
+      "peak_gpu_memory_gib": [
+        15.187101364135742,
+        15.18584156036377
+      ],
+      "tokens_per_second": 81.84456113608148
+    },
+    {
+      "batch_size": 8,
+      "elapsed_seconds": 0.37051261495798826,
+      "examples_per_second": 21.591707480478377,
+      "peak_gpu_memory_gib": [
+        15.25944995880127,
+        15.256938934326172
+      ],
+      "tokens_per_second": 172.733659843827
+    },
+    {
+      "batch_size": 16,
+      "elapsed_seconds": 0.4694019202142954,
+      "examples_per_second": 34.0859278817938,
+      "peak_gpu_memory_gib": [
+        15.472858428955078,
+        15.467628479003906
+      ],
+      "tokens_per_second": 272.6874230543504
+    }
+  ],
+  "semantic_config_hash": "4150ca5b0a8c4fa8b6f937decd92eb5b15f199aa180426d8581e40b8956b6d99"
+}
