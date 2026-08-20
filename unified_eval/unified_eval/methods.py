@@ -5,6 +5,7 @@ import csv
 import gc
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 from typing import Any, Sequence
@@ -273,6 +274,7 @@ class GradMethod(StandardMethod):
         max_batch_size: int,
         device: str,
         dtype_name: str,
+        scale_path: Path | None = None,
     ) -> None:
         super().__init__("grad", model_path, device, dtype_name, "raw")
         if (
@@ -297,6 +299,33 @@ class GradMethod(StandardMethod):
         self.strength = strength
         self.scope = scope
         self.direction = direction
+        self.scale_path = scale_path.resolve() if scale_path is not None else None
+        self.scale_mode = None
+        scale_rows = None
+        if self.scale_path is not None:
+            payload = json.loads(self.scale_path.read_text(encoding="utf-8"))
+            if (
+                payload.get("schema") != "fisher_grad_scales_v1"
+                or payload.get("top_k") != top_k
+                or payload.get("direction") != direction
+                or payload.get("scope") != scope
+            ):
+                raise ValueError("Fisher Grad scale artifact is incompatible with the run")
+            scale_rows = payload.get("rows")
+            if not isinstance(scale_rows, list) or len(scale_rows) != top_k:
+                raise ValueError("Fisher Grad scale artifact has the wrong row count")
+            for ranking_row, scale_row in zip(ranking[:top_k], scale_rows):
+                if (
+                    int(ranking_row["layer"]) != int(scale_row["layer"])
+                    or int(ranking_row["neuron"]) != int(scale_row["neuron"])
+                ):
+                    raise ValueError("Fisher Grad scale artifact does not match ranking order")
+                multiplier = float(scale_row["multiplier"])
+                if not math.isfinite(multiplier) or multiplier < 1.0:
+                    raise ValueError(
+                        "Positive-only Fisher Grad multipliers must be finite and >= 1"
+                    )
+            self.scale_mode = str(payload.get("mode"))
         self.masks: list[torch.Tensor] = []
         self.handles: list[Any] = []
         for layer in self.model.model.layers:
@@ -322,9 +351,12 @@ class GradMethod(StandardMethod):
             self.handles.append(layer.mlp.down_proj.register_forward_pre_hook(scale_input))
         for mask in self.masks:
             mask.fill_(1)
-        for row in ranking[:top_k]:
-            direction = 1.0 if float(row["mean_g"]) > 0 else -1.0
-            multiplier = max(0.0, 1.0 + strength * direction)
+        for index, row in enumerate(ranking[:top_k]):
+            if scale_rows is None:
+                row_direction = 1.0 if float(row["mean_g"]) > 0 else -1.0
+                multiplier = max(0.0, 1.0 + strength * row_direction)
+            else:
+                multiplier = float(scale_rows[index]["multiplier"])
             self.masks[int(row["layer"])][:, int(row["neuron"])] = multiplier
 
     def close(self) -> None:
@@ -734,7 +766,7 @@ def build_method(args, max_batch_size: int) -> Method:
         return GradMethod(
             args.llama3_model, args.grad_ranking, args.grad_top_k,
             args.grad_strength, args.grad_scope, args.grad_direction, max_batch_size,
-            args.device, args.grad_dtype,
+            args.device, args.grad_dtype, args.grad_scale_file,
         )
     if args.method == "sn":
         return StandardMethod(

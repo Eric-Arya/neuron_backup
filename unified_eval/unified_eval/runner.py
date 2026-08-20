@@ -227,6 +227,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--grad-ranking", type=Path, default=DEFAULT_GRAD_RANKING)
     parser.add_argument("--grad-top-k", type=int, default=25)
     parser.add_argument("--grad-strength", type=float, default=1.0)
+    parser.add_argument(
+        "--grad-scale-file",
+        type=Path,
+        help=(
+            "Optional fisher_grad_scales_v1 artifact providing one multiplier per "
+            "selected Grad neuron; replaces the uniform --grad-strength multiplier."
+        ),
+    )
     parser.add_argument("--grad-scope", choices=("last", "all"), default="last")
     parser.add_argument(
         "--grad-direction",
@@ -474,6 +482,8 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
         )
     elif args.method == "grad":
         required.extend((args.llama3_model / "config.json", args.grad_ranking))
+        if args.grad_scale_file is not None:
+            required.append(args.grad_scale_file)
     elif args.method == "sn":
         required.append(args.sn_model / "config.json")
         if args.sn_alpha is None:
@@ -810,7 +820,7 @@ def semantic_config(
             "dtype": args.llama3_sft_patch_dtype,
         }
     elif args.method == "grad":
-        common["intervention"] = {
+        intervention = {
             "model": str(args.llama3_model.resolve()),
             "model_config_sha256": sha256_file(args.llama3_model / "config.json"),
             "ranking": str(args.grad_ranking.resolve()),
@@ -827,6 +837,23 @@ def semantic_config(
             "scope": args.grad_scope,
             "dtype": args.grad_dtype,
         }
+        if args.grad_scale_file is not None:
+            scale_payload = json.loads(args.grad_scale_file.read_text(encoding="utf-8"))
+            multipliers = [float(row["multiplier"]) for row in scale_payload["rows"]]
+            intervention.update(
+                {
+                    "scale_file": str(args.grad_scale_file.resolve()),
+                    "scale_file_sha256": sha256_file(args.grad_scale_file),
+                    "scale_schema": scale_payload.get("schema"),
+                    "scale_mode": scale_payload.get("mode"),
+                    "multiplier_min": min(multipliers),
+                    "multiplier_median": statistics.median(multipliers),
+                    "multiplier_max": max(multipliers),
+                    "strength": None,
+                    "positive_multiplier": None,
+                }
+            )
+        common["intervention"] = intervention
     elif args.method == "sn":
         scale_path = args.sn_model / "delta_scale_config.json"
         common["intervention"] = {
