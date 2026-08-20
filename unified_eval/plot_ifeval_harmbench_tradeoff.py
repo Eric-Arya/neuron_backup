@@ -14,7 +14,13 @@ ROOT = Path(__file__).resolve().parent
 DATA_PATH = ROOT / "results" / "ifeval_harmbench_tradeoff.csv"
 OUTPUT_DIR = ROOT / "figures"
 
-METHODS = ("SN-Tune", "IA3-SFT", "Grad (off-policy)", "Grad (on-policy)")
+METHODS = (
+    "SN-Tune",
+    "IA3-SFT",
+    "Grad (off-policy)",
+    "Grad (on-policy)",
+    "Grad (first-cue, n=256)",
+)
 MAIN_ONLY_METHODS = ("SN-Tune", "IA3-SFT", "IA3 guide patch", "Grad (on-policy)")
 COLORS = {
     "SN-Tune": "#0072B2",
@@ -22,6 +28,7 @@ COLORS = {
     "IA3 guide patch": "#E69F00",
     "Grad (off-policy)": "#D55E00",
     "Grad (on-policy)": "#009E73",
+    "Grad (first-cue, n=256)": "#56B4E9",
 }
 MARKERS = {
     "SN-Tune": "o",
@@ -29,6 +36,7 @@ MARKERS = {
     "IA3 guide patch": "P",
     "Grad (off-policy)": "s",
     "Grad (on-policy)": "D",
+    "Grad (first-cue, n=256)": "X",
 }
 
 
@@ -67,7 +75,7 @@ def annotate_rows(
 ) -> None:
     for row in rows:
         key = (row["method"], row["setting"])
-        if key not in labels:
+        if key not in labels or not row.get(x_field):
             continue
         ax.annotate(
             labels[key],
@@ -77,6 +85,20 @@ def annotate_rows(
             color=COLORS[row["method"]],
             fontsize=8.8,
         )
+
+
+def normalize_svg(path: Path) -> None:
+    """Remove Matplotlib's path-data trailing spaces for clean git diffs."""
+    lines = path.read_text(encoding="utf-8").splitlines()
+    path.write_text("\n".join(line.rstrip() for line in lines) + "\n", encoding="utf-8")
+
+
+def save_figure(fig: plt.Figure, stem: str) -> None:
+    for extension in ("png", "pdf", "svg"):
+        path = OUTPUT_DIR / f"{stem}.{extension}"
+        fig.savefig(path, bbox_inches="tight")
+        if extension == "svg":
+            normalize_svg(path)
 
 
 def main() -> None:
@@ -119,7 +141,7 @@ def main() -> None:
     main_ax.set_xlim(50, 75)
     other_ax.set_xlim(17, 72.5)
     main_ax.set_ylabel("HarmBench attack success rate (%)  ↓")
-    main_ax.set_title("Main trajectories\nGrad: strength = 1, candidate pool = 20,000")
+    main_ax.set_title("Main trajectories\nGrad K sweeps at strength = 1")
     other_ax.set_title("Other measured settings\nGrad: candidate pool = 4,000")
 
     # Only rows explicitly marked as main are connected. Thus each Grad line
@@ -172,6 +194,9 @@ def main() -> None:
         ("Grad (on-policy)", "K=4000, strength=0.6"): r"$s=0.6$",
         ("Grad (on-policy)", "K=4000, strength=0.75"): r"$s=0.75$",
         ("Grad (on-policy)", "K=4000, strength=0.85"): r"$s=0.85$",
+        ("Grad (first-cue, n=256)", "K=1000, strength=1"): r"$K=1000$",
+        ("Grad (first-cue, n=256)", "K=2000, strength=1"): r"$K=2000$",
+        ("Grad (first-cue, n=256)", "K=4000, strength=1"): r"$K=4000$",
     }
     main_offsets = {
         ("SN-Tune", "alpha=1"): (-50, -18),
@@ -197,6 +222,9 @@ def main() -> None:
         ("Grad (on-policy)", "K=4000, strength=0.6"): (7, 7),
         ("Grad (on-policy)", "K=4000, strength=0.75"): (7, 7),
         ("Grad (on-policy)", "K=4000, strength=0.85"): (7, 7),
+        ("Grad (first-cue, n=256)", "K=1000, strength=1"): (-2, 10),
+        ("Grad (first-cue, n=256)", "K=2000, strength=1"): (-56, 8),
+        ("Grad (first-cue, n=256)", "K=4000, strength=1"): (8, -15),
     }
     annotate_rows(main_ax, main_rows, main_labels, main_offsets)
     main_ax.annotate(
@@ -272,6 +300,13 @@ def main() -> None:
         Line2D(
             [],
             [],
+            marker="X",
+            color=COLORS["Grad (first-cue, n=256)"],
+            label="Grad (first-cue, n=256)",
+        ),
+        Line2D(
+            [],
+            [],
             marker="o",
             linestyle="none",
             markerfacecolor="none",
@@ -284,16 +319,12 @@ def main() -> None:
         frameon=False,
         loc="lower center",
         bbox_to_anchor=(0.5, -0.035),
-        ncol=6,
+        ncol=4,
     )
     fig.suptitle("Safety–instruction-following trade-off", fontsize=14)
 
     OUTPUT_DIR.mkdir(exist_ok=True)
-    for extension in ("png", "pdf", "svg"):
-        fig.savefig(
-            OUTPUT_DIR / f"ifeval_harmbench_tradeoff.{extension}",
-            bbox_inches="tight",
-        )
+    save_figure(fig, "ifeval_harmbench_tradeoff")
     plt.close(fig)
 
     # Publication-friendly view containing only the controlled main
@@ -420,11 +451,7 @@ def main() -> None:
         bbox_to_anchor=(0.5, -0.22),
         ncol=3,
     )
-    for extension in ("png", "pdf", "svg"):
-        main_only_fig.savefig(
-            OUTPUT_DIR / f"ifeval_harmbench_tradeoff_main_only.{extension}",
-            bbox_inches="tight",
-        )
+    save_figure(main_only_fig, "ifeval_harmbench_tradeoff_main_only")
     plt.close(main_only_fig)
 
     math_field = "math500_l1_l3_n100_accuracy_pct"
@@ -538,11 +565,7 @@ def main() -> None:
         bbox_to_anchor=(0.5, -0.22),
         ncol=5,
     )
-    for extension in ("png", "pdf", "svg"):
-        math_fig.savefig(
-            OUTPUT_DIR / f"math500_harmbench_tradeoff_main_only.{extension}",
-            bbox_inches="tight",
-        )
+    save_figure(math_fig, "math500_harmbench_tradeoff_main_only")
     plt.close(math_fig)
 
     gsm_field = "gsm8k_accuracy_pct"
@@ -576,6 +599,8 @@ def main() -> None:
             and row["plot_role"] == "main"
             and row[gsm_field]
         ]
+        if not method_rows:
+            continue
         xs, ys = zip(
             *(coordinates(row, gsm_field) for row in method_rows),
             strict=True,
@@ -623,11 +648,7 @@ def main() -> None:
         bbox_to_anchor=(0.5, -0.22),
         ncol=5,
     )
-    for extension in ("png", "pdf", "svg"):
-        gsm_fig.savefig(
-            OUTPUT_DIR / f"gsm8k_harmbench_tradeoff_main_only.{extension}",
-            bbox_inches="tight",
-        )
+    save_figure(gsm_fig, "gsm8k_harmbench_tradeoff_main_only")
     plt.close(gsm_fig)
 
 

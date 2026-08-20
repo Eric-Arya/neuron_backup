@@ -12,7 +12,10 @@ from unified_eval.grad_development import (
     choose_gate_threshold,
     choose_config,
     configure_masks,
+    first_refusal_cue,
     first_refusal_sentence,
+    generated_corpus_record,
+    overlapping_token_indices,
     rank_gradients,
     render_prompt,
     select_corpus_target_examples,
@@ -86,6 +89,52 @@ def test_on_policy_parser_accepts_generic_generated_response_file() -> None:
     assert args.responses_path == Path("generated.jsonl")
     assert args.response_column == "model_response"
     assert args.safe_only is False
+
+
+def test_on_policy_parser_accepts_first_refusal_cue_tail_mode() -> None:
+    args = build_parser().parse_args(
+        ["extract-on-policy-refusals", "--target-mode", "first-refusal-cue"]
+    )
+    assert args.target_mode == "first-refusal-cue"
+    assert args.alpha_scope == "tail"
+
+
+def test_first_refusal_cue_uses_earliest_completed_lexicon_match() -> None:
+    response = "Preface: this is illegal and unethical. I cannot help."
+    prefix, cue, start, end = first_refusal_cue(response)
+    assert cue == "illegal"
+    assert response[start:end] == cue
+    assert prefix + cue == response[:end]
+    assert first_refusal_cue("I cannot create that.")[1] == "I cannot"
+    assert first_refusal_cue("There is no refusal cue here.") is None
+
+
+def test_target_alignment_includes_token_spanning_cue_boundary() -> None:
+    offsets = [(0, 0), (0, 4), (4, 8), (8, 15)]
+    assert overlapping_token_indices(offsets, 5, 15) == [2, 3]
+
+
+def test_safe_corpus_generation_defaults_to_benchmarked_configuration() -> None:
+    args = build_parser().parse_args(["generate-safe-corpus"])
+    assert args.target_safe_count == 256
+    assert args.batch_size == 32
+    assert args.max_new_tokens == 256
+    assert args.prompt_format == "raw"
+    assert args.dtype == "bfloat16"
+
+
+def test_generated_corpus_record_scores_safety_and_preserves_source() -> None:
+    record = generated_corpus_record(
+        7,
+        {"prompt": "harmful prompt", "llama3_output": "teacher refusal"},
+        "I cannot assist with that.",
+        6,
+        "model_response",
+    )
+    assert record["source_index"] == 7
+    assert record["completion"] == "teacher refusal"
+    assert record["jailbroken"] is False
+    assert "I cannot" in record["matched_refusal_prefixes"]
 
 
 def test_positive_only_masks_skip_negative_gradient_neurons() -> None:

@@ -17,6 +17,7 @@ from datasets import load_from_disk
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .common import (
+    REFUSAL_PREFIXES,
     atomic_write_json,
     atomic_write_jsonl,
     extract_gsm_answer,
@@ -40,6 +41,14 @@ DEFAULT_GSM8K = Path("/workspace/xcy/dataset/shared/gsm8k/main")
 DEFAULT_SN_CORPUS = Path(
     "/workspace/xcy/dataset/projects/iclr_neuron/safety_neuron/training/"
     "circuit_breakers_train.json"
+)
+DEFAULT_SN_FIRST256_GENERATIONS = Path(
+    "/workspace/xcy/dataset/projects/iclr_neuron/safety_neuron/training/"
+    "circuit_breakers_train_first256_llama3_raw_regenerated_bf16_greedy256.jsonl"
+)
+DEFAULT_SN_SAFE256_OUTPUT = Path(
+    "/workspace/xcy/dataset/projects/iclr_neuron/safety_neuron/training/"
+    "circuit_breakers_train_llama3_raw_regenerated_bf16_greedy256_safe256"
 )
 DEFAULT_OUTPUT = Path(
     "/workspace/xcy/safety_repro/unified_eval/results/grad_harmbench_development"
@@ -82,6 +91,25 @@ def build_parser() -> argparse.ArgumentParser:
     baseline.add_argument("--max-new-tokens", type=int, default=128)
     baseline.add_argument("--prompt-format", choices=("raw", "chat"), default="raw")
     baseline.add_argument("--limit", type=int)
+
+    safe_corpus = subparsers.add_parser("generate-safe-corpus")
+    add_runtime_arguments(safe_corpus)
+    safe_corpus.set_defaults(output_dir=DEFAULT_SN_SAFE256_OUTPUT)
+    safe_corpus.add_argument("--dataset", type=Path, default=DEFAULT_SN_CORPUS)
+    safe_corpus.add_argument(
+        "--seed-responses",
+        type=Path,
+        default=DEFAULT_SN_FIRST256_GENERATIONS,
+        help="Previously generated contiguous corpus prefix to preserve and reuse",
+    )
+    safe_corpus.add_argument("--target-safe-count", type=int, default=256)
+    safe_corpus.add_argument("--corpus-start", type=int, default=0)
+    safe_corpus.add_argument("--corpus-limit", type=int)
+    safe_corpus.add_argument("--batch-size", type=int, default=32)
+    safe_corpus.add_argument("--max-new-tokens", type=int, default=256)
+    safe_corpus.add_argument("--prompt-format", choices=("raw", "chat"), default="raw")
+    safe_corpus.add_argument("--response-column", default="model_response")
+    safe_corpus.add_argument("--seed", type=int, default=112)
 
     extract = subparsers.add_parser("extract")
     add_runtime_arguments(extract)
@@ -135,6 +163,15 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     on_policy_extract.add_argument("--refusal-phrase", default="I cannot")
+    on_policy_extract.add_argument(
+        "--target-mode",
+        choices=("refusal-sentence", "first-refusal-cue"),
+        default="refusal-sentence",
+        help=(
+            "Use the first sentence beginning with --refusal-phrase, or the earliest "
+            "completed match from the full refusal-cue lexicon"
+        ),
+    )
     on_policy_extract.add_argument("--candidate-pool", type=int, default=2000)
     on_policy_extract.add_argument("--top-k", type=int, default=1000)
     on_policy_extract.add_argument("--folds", type=int, default=3)
@@ -535,6 +572,186 @@ def baseline(args: argparse.Namespace) -> None:
     )
 
 
+def generated_corpus_record(
+    source_index: int,
+    source_row: dict[str, Any],
+    response: str,
+    response_token_count: int | None,
+    response_column: str,
+) -> dict[str, Any]:
+    jailbroken, matched = score_asr(response)
+    record: dict[str, Any] = {
+        "source_index": source_index,
+        "prompt": str(source_row["prompt"]),
+        "completion": str(source_row.get("llama3_output", "")),
+        response_column: response,
+        "jailbroken": jailbroken,
+        "matched_refusal_prefixes": matched,
+        **response_diagnostics(response),
+    }
+    if response_token_count is not None:
+        record["response_token_count"] = response_token_count
+    return record
+
+
+def generate_safe_corpus(args: argparse.Namespace) -> None:
+    """Preserve an existing SN prefix, then generate until N safe rows are found."""
+    validate_positive(
+        [args.target_safe_count, args.batch_size, args.max_new_tokens],
+        "safe corpus generation values",
+    )
+    if args.corpus_start < 0:
+        raise ValueError("corpus-start must be non-negative")
+    source_rows = json.loads(args.dataset.read_text(encoding="utf-8"))
+    if not isinstance(source_rows, list) or not all(
+        isinstance(row, dict) for row in source_rows
+    ):
+        raise ValueError("SN corpus must be a JSON list of objects")
+    source_stop = len(source_rows)
+    if args.corpus_limit is not None:
+        validate_positive([args.corpus_limit], "corpus limit")
+        source_stop = min(source_stop, args.corpus_start + args.corpus_limit)
+    if args.corpus_start >= source_stop:
+        raise ValueError("Requested corpus slice is empty")
+    if not args.seed_responses.exists():
+        raise FileNotFoundError(
+            f"Required original response prefix is missing: {args.seed_responses}"
+        )
+
+    all_path = args.output_dir / "all_generated_responses.jsonl"
+    safe_path = args.output_dir / "safe_responses.jsonl"
+    metadata_path = args.output_dir / "metadata.json"
+    if any(path.exists() for path in (all_path, safe_path, metadata_path)) and not args.overwrite:
+        raise FileExistsError(
+            f"Output exists under {args.output_dir}; pass --overwrite to replace it"
+        )
+
+    seed_rows = read_jsonl(args.seed_responses)
+    generated: list[dict[str, Any]] = []
+    safe: list[dict[str, Any]] = []
+    expected_index = args.corpus_start
+    for seed_row in seed_rows:
+        source_index = int(seed_row["source_index"])
+        if source_index != expected_index or source_index >= source_stop:
+            raise ValueError(
+                "Seed responses must be a contiguous prefix of the requested corpus slice"
+            )
+        source_row = source_rows[source_index]
+        if str(seed_row.get("prompt", "")) != str(source_row.get("prompt", "")):
+            raise ValueError(f"Seed prompt mismatch at source index {source_index}")
+        response = str(seed_row.get(args.response_column, ""))
+        record = generated_corpus_record(
+            source_index,
+            source_row,
+            response,
+            (
+                int(seed_row["response_token_count"])
+                if seed_row.get("response_token_count") is not None
+                else None
+            ),
+            args.response_column,
+        )
+        generated.append(record)
+        if not record["jailbroken"]:
+            safe.append(record)
+        expected_index += 1
+    seed_safe_count = len(safe)
+    if seed_safe_count != 116:
+        raise ValueError(
+            f"Expected the original 116 safe responses, found {seed_safe_count}"
+        )
+    if seed_safe_count > args.target_safe_count:
+        raise ValueError("target-safe-count is smaller than the preserved safe prefix")
+
+    next_index = args.corpus_start + len(generated)
+    started = time.perf_counter()
+    model = tokenizer = None
+    if len(safe) < args.target_safe_count:
+        torch.manual_seed(args.seed)
+        torch.cuda.manual_seed_all(args.seed)
+        model, tokenizer = load_model(args.model, args.device, args.dtype)
+    while len(safe) < args.target_safe_count and next_index < source_stop:
+        batch_stop = min(next_index + args.batch_size, source_stop)
+        batch_indices = list(range(next_index, batch_stop))
+        responses = generate_batch(
+            model,
+            tokenizer,
+            [
+                render_prompt(
+                    tokenizer,
+                    str(source_rows[index]["prompt"]),
+                    args.prompt_format,
+                )
+                for index in batch_indices
+            ],
+            args.max_new_tokens,
+        )
+        for source_index, response in zip(batch_indices, responses):
+            record = generated_corpus_record(
+                source_index,
+                source_rows[source_index],
+                response,
+                len(tokenizer.encode(response, add_special_tokens=False)),
+                args.response_column,
+            )
+            generated.append(record)
+            if not record["jailbroken"]:
+                safe.append(record)
+            next_index = source_index + 1
+            if len(safe) == args.target_safe_count:
+                break
+        atomic_write_jsonl(all_path, generated)
+        atomic_write_jsonl(safe_path, safe)
+        print(
+            f"generated={len(generated)} safe={len(safe)}/{args.target_safe_count} "
+            f"next_source_index={next_index}",
+            flush=True,
+        )
+    if len(safe) != args.target_safe_count:
+        raise ValueError(
+            f"Corpus slice ended after finding {len(safe)}/{args.target_safe_count} safe responses"
+        )
+
+    atomic_write_jsonl(all_path, generated)
+    atomic_write_jsonl(safe_path, safe)
+    metadata = {
+        "model": str(args.model.resolve()),
+        "dtype": args.dtype,
+        "dataset": str(args.dataset.resolve()),
+        "dataset_sha256": sha256_file(args.dataset),
+        "seed_responses": str(args.seed_responses.resolve()),
+        "seed_responses_sha256": sha256_file(args.seed_responses),
+        "seed_response_count": len(seed_rows),
+        "preserved_seed_safe_count": seed_safe_count,
+        "new_safe_count": len(safe) - seed_safe_count,
+        "corpus_start": args.corpus_start,
+        "source_stop_exclusive": next_index,
+        "generated_count": len(generated),
+        "safe_count": len(safe),
+        "unsafe_count": len(generated) - len(safe),
+        "safety_rule": "case-sensitive llm-attacks refusal-substring rule",
+        "batch_size": args.batch_size,
+        "max_new_tokens": args.max_new_tokens,
+        "prompt_format": args.prompt_format,
+        "seed": args.seed,
+        "response_column": args.response_column,
+        "repetitive_safe_count": sum(bool(row["repetitive"]) for row in safe),
+        "safe_with_i_cannot_count": sum(
+            "I cannot" in str(row[args.response_column]) for row in safe
+        ),
+        "elapsed_seconds_for_new_generation": time.perf_counter() - started,
+        "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
+        "artifacts": {
+            "all_generated_responses": str(all_path.resolve()),
+            "all_generated_responses_sha256": sha256_file(all_path),
+            "safe_responses": str(safe_path.resolve()),
+            "safe_responses_sha256": sha256_file(safe_path),
+        },
+    }
+    atomic_write_json(metadata_path, metadata)
+    print(json.dumps(metadata, indent=2), flush=True)
+
+
 def attach_gradient_alphas(model, scope: str = "tail"):
     if scope not in {"tail", "global"}:
         raise ValueError(f"Unsupported alpha scope: {scope}")
@@ -618,6 +835,21 @@ def first_refusal_sentence(
     return response[:start], response[start:end], start, end
 
 
+def first_refusal_cue(
+    response: str, refusal_cues: Sequence[str] = REFUSAL_PREFIXES
+) -> tuple[str, str, int, int] | None:
+    """Return the first refusal cue completed while reading the response."""
+    matches = []
+    for cue in refusal_cues:
+        start = response.find(cue)
+        if start >= 0:
+            matches.append((start + len(cue), start, len(cue), cue))
+    if not matches:
+        return None
+    end, start, _, cue = min(matches)
+    return response[:start], cue, start, end
+
+
 def backward_text_span(
     model,
     tokenizer,
@@ -635,11 +867,10 @@ def backward_text_span(
     )
     input_ids_list = encoded["input_ids"]
     offsets = encoded["offset_mapping"]
-    target_indices = [
-        index
-        for index, (start, end) in enumerate(offsets)
-        if end > start and start >= target_start and start < target_end
-    ]
+    # Byte-level tokenizers can include the whitespace immediately before a cue
+    # in the cue's first token, so select tokens by span overlap rather than by
+    # requiring the token to begin inside the target character span.
+    target_indices = overlapping_token_indices(offsets, target_start, target_end)
     if not target_indices or target_indices[0] == 0:
         raise ValueError("Could not align a non-initial target token span")
     if target_indices != list(range(target_indices[0], target_indices[-1] + 1)):
@@ -664,6 +895,18 @@ def backward_text_span(
     score = token_scores.mean()
     score.backward()
     return float(score.detach().cpu()), len(target_indices)
+
+
+def overlapping_token_indices(
+    offsets: Sequence[Sequence[int]], target_start: int, target_end: int
+) -> list[int]:
+    if target_start < 0 or target_end <= target_start:
+        raise ValueError("Target character span must be non-empty and non-negative")
+    return [
+        index
+        for index, (start, end) in enumerate(offsets)
+        if end > start and end > target_start and start < target_end
+    ]
 
 
 def normalized_prompt(text: str) -> str:
@@ -1125,7 +1368,11 @@ def extract_on_policy_refusals(args: argparse.Namespace) -> None:
         source_safe_rows += int(is_safe)
         if args.safe_only and not is_safe:
             continue
-        split = first_refusal_sentence(response, args.refusal_phrase)
+        split = (
+            first_refusal_cue(response)
+            if args.target_mode == "first-refusal-cue"
+            else first_refusal_sentence(response, args.refusal_phrase)
+        )
         if split is not None:
             repetitive = (
                 bool(row["repetitive"])
@@ -1134,7 +1381,7 @@ def extract_on_policy_refusals(args: argparse.Namespace) -> None:
             )
             selected.append((row, response, split, is_safe, repetitive))
     if not selected:
-        raise ValueError("No safe generated responses contain the refusal phrase")
+        raise ValueError("No safe generated responses contain the requested refusal target")
 
     output_dir = args.output_dir / "gradients"
     output_path = output_dir / "per_example_g.pt"
@@ -1150,7 +1397,7 @@ def extract_on_policy_refusals(args: argparse.Namespace) -> None:
     started = time.perf_counter()
     try:
         for index, (row, response, split, is_safe, repetitive) in enumerate(selected, 1):
-            response_prefix, target_sentence, response_start, response_end = split
+            response_prefix, target_text, response_start, response_end = split
             prompt = str(row["prompt"])
             full_text = prompt + response[:response_end]
             target_start = len(prompt) + response_start
@@ -1175,7 +1422,17 @@ def extract_on_policy_refusals(args: argparse.Namespace) -> None:
                     "source_index": int(row.get("source_index", index - 1)),
                     "safe_by_refusal_substring": is_safe,
                     "response_prefix": response_prefix,
-                    "target_sentence": target_sentence,
+                    "target_text": target_text,
+                    "target_cue": (
+                        target_text
+                        if args.target_mode == "first-refusal-cue"
+                        else None
+                    ),
+                    "target_sentence": (
+                        target_text
+                        if args.target_mode == "refusal-sentence"
+                        else None
+                    ),
                     "response_target_char_start": response_start,
                     "response_target_char_end": response_end,
                     "target_token_count": target_token_count,
@@ -1225,10 +1482,19 @@ def extract_on_policy_refusals(args: argparse.Namespace) -> None:
             "source_rows": len(source_rows),
             "source_safe_rows": source_safe_rows,
             "selected_rows": len(selected),
+            "target_mode": args.target_mode,
             "refusal_phrase": args.refusal_phrase,
             "objective": (
-                "mean teacher-forced log probability of the first generated refusal "
+                "mean teacher-forced log probability of the first completed refusal cue, "
+                "conditioned on the raw prompt plus its on-policy response prefix"
+                if args.target_mode == "first-refusal-cue"
+                else "mean teacher-forced log probability of the first generated refusal "
                 "sentence, conditioned on the raw prompt plus its on-policy response prefix"
+            ),
+            "target_cue_counts": (
+                dict(Counter(str(row["target_cue"]) for row in example_metadata))
+                if args.target_mode == "first-refusal-cue"
+                else None
             ),
             "alpha_scope": args.alpha_scope,
             "prompt_format": "raw",
@@ -1897,6 +2163,8 @@ def main() -> None:
         benchmark(args)
     elif args.command == "baseline":
         baseline(args)
+    elif args.command == "generate-safe-corpus":
+        generate_safe_corpus(args)
     elif args.command == "extract":
         extract(args)
     elif args.command == "extract-corpus":

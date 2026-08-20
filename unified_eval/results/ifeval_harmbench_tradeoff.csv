@@ -32,3 +32,6 @@ Grad (on-policy),"K=4000, strength=0.5",20000,strength_sweep,18.5,66.0,75.96,75.
 Grad (on-policy),"K=4000, strength=0.6",20000,strength_sweep,15.0,69.5,78.21,77.5,85.26,,
 Grad (on-policy),"K=4000, strength=0.75",20000,strength_sweep,8.5,66.5,75.64,75.0,82.05,,
 Grad (on-policy),"K=4000, strength=0.85",20000,strength_sweep,6.0,62.5,73.40,74.0,81.41,,
+"Grad (first-cue, n=256)","K=1000, strength=1",50000,main,22.5,66.0,76.60,77.0,84.62,,
+"Grad (first-cue, n=256)","K=2000, strength=1",50000,main,13.5,62.5,74.36,74.5,83.01,,
+"Grad (first-cue, n=256)","K=4000, strength=1",50000,main,4.0,64.5,72.76,72.0,78.85,,
