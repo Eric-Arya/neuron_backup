@@ -307,6 +307,13 @@ three-shot chain-of-thought completion protocol as the earlier BBH runs.
 | Direct 16k, `s=0.30` | 12.0% | 64.0% | **46** | **67.5%** | 26 |
 | Fisher 16k, `c=0.22` | **7.0%** | **66.5%** | 44 | 64.0% | 26 |
 
+![Direct and Fisher-guided HarmBench–MATH100 trade-off](../figures/grad_fisher_math100_harmbench.png)
+
+The MATH100 figure contains only direct Grad and Fisher-guided Grad settings
+with completed frozen HarmBench and MATH100 evaluations. The connected direct
+trajectory holds `s=1` fixed while increasing the active prefix from 1k to 4k;
+alternate direct strengths and Fisher settings are shown as unconnected points.
+
 At 12k, the mean-matched Fisher `c=0.22` controller cuts ASR by seven points
 while slightly improving IFEval and MATH, but loses 2.5 BBH points. At 16k,
 Fisher improves ASR by five points and IFEval by 2.5 points, but loses two
