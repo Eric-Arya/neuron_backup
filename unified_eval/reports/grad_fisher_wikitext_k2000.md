@@ -207,6 +207,28 @@ above direct `k=4k`, `s=1`, while producing fewer repetitive responses. This
 does not change the HarmBench--IFEval conclusion, but it shows that the new
 controller's capability cost is not uniform across benchmarks.
 
+### MATH100 follow-up
+
+The same two finalists were then evaluated on the frozen seed-112 MATH100
+subset: 100 level-1-to-3 problems sampled from MATH-500. Evaluation used the
+publisher zero-shot chain-of-thought instruction in task-native chat format,
+greedy decoding, and deterministic `math_verify` symbolic equivalence.
+
+| Controller | MATH100 accuracy | Level 1 | Level 2 | Level 3 | Repetitive responses |
+|---|---:|---:|---:|---:|---:|
+| Unedited Llama-3 | 48.0% | — | — | — | 18 |
+| Direct Grad `k=2k`, `s=1` | 48.0% | — | — | — | 15 |
+| Direct Grad `k=4k`, `s=0.75` | 45.0% | — | — | — | 18 |
+| Direct Grad `k=4k`, `s=1` | 37.0% | — | — | — | 12 |
+| Floor Fisher 8k, floor 0.35 | 39.0% | 61.11% | 42.11% | 27.27% | 19 |
+| Floor Fisher 8k, floor 0.4 | 39.0% | 61.11% | 44.74% | 25.0% | 16 |
+
+Unlike BBH, MATH100 exposes a substantial capability loss: both floor-Fisher
+finalists are nine points below the unedited model and six points below direct
+`k=4k`, `s=0.75`. They remain two points above the harsher direct `k=4k`, `s=1`
+edit. The BBH and MATH100 results therefore support the broader conclusion that
+capability preservation is benchmark-dependent rather than uniform.
+
 ## Frozen comparison
 
 All rows use the same ranking, model, decoding, raw HarmBench set, and IFEval
@@ -290,6 +312,10 @@ continuations and explicitly penalize repetition.
   `results/bbh_grad_floorfisher_f0p35_m0p6_c0p75_d1_firstcue256_k8000_raw_cot_fp32/`
   and
   `results/bbh_grad_floorfisher_f0p4_m0p6_c0p75_d1_firstcue256_k8000_raw_cot_fp32/`
+- Direct-floor Fisher MATH100 finalists:
+  `results/math100_grad_floorfisher_f0p35_m0p6_c0p75_d1_firstcue256_k8000_fp32/`
+  and
+  `results/math100_grad_floorfisher_f0p4_m0p6_c0p75_d1_firstcue256_k8000_fp32/`
 - Small-reference, bounded, blend, and anchored-tail trials:
   `results/grad_box_fisher_k8000_small_reference/`
 - Top-4k bounded Fisher trials: `results/grad_box_fisher_k4000_local/`
