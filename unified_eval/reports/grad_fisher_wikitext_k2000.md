@@ -187,6 +187,26 @@ from 103 to 101, but loses 1.5 strict IFEval points. Compared with direct
 seven repetitive HarmBench responses. It therefore improves substantially on
 the previous Fisher controllers without dominating either direct reference.
 
+### BBH follow-up
+
+Both floor-Fisher finalists were subsequently evaluated on the frozen
+seed-112, task-stratified 200-example BBH subset. This used the official raw
+three-shot chain-of-thought text-completion format, greedy decoding, and the
+same evaluator revision as the existing direct runs; no chat template was used.
+
+| Controller | BBH accuracy | Correct | Task macro accuracy | Repetitive responses | Extraction failures |
+|---|---:|---:|---:|---:|---:|
+| Unedited Llama-3 | 63.5% | 127/200 | 63.23% | 26 | 4 |
+| Direct Grad `k=4k`, `s=1` | 62.5% | 125/200 | 62.43% | 28 | 4 |
+| Floor Fisher 8k, floor 0.35 | 62.5% | 125/200 | 62.30% | 26 | 3 |
+| Floor Fisher 8k, floor 0.4 | 63.0% | 126/200 | 62.70% | 25 | 0 |
+
+The floor-0.4 finalist retains BBH substantially better than its IFEval result
+alone might suggest: it is only 0.5 point below the unedited model and 0.5 point
+above direct `k=4k`, `s=1`, while producing fewer repetitive responses. This
+does not change the HarmBench--IFEval conclusion, but it shows that the new
+controller's capability cost is not uniform across benchmarks.
+
 ## Frozen comparison
 
 All rows use the same ranking, model, decoding, raw HarmBench set, and IFEval
@@ -266,6 +286,10 @@ continuations and explicitly penalize repetition.
 - Direct-floor Fisher primary/local sweeps:
   `results/grad_floor_fisher_primary_sweep/` and
   `results/grad_floor_fisher_k8000_local/`
+- Direct-floor Fisher BBH finalists:
+  `results/bbh_grad_floorfisher_f0p35_m0p6_c0p75_d1_firstcue256_k8000_raw_cot_fp32/`
+  and
+  `results/bbh_grad_floorfisher_f0p4_m0p6_c0p75_d1_firstcue256_k8000_raw_cot_fp32/`
 - Small-reference, bounded, blend, and anchored-tail trials:
   `results/grad_box_fisher_k8000_small_reference/`
 - Top-4k bounded Fisher trials: `results/grad_box_fisher_k4000_local/`
