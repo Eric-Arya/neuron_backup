@@ -111,6 +111,14 @@ sequence appears at least five times.
 | Fisher full select, 6k, `s=1` | 6,000 | 2.0% | 130 | 54.0% | 65.71% |
 | Fisher replace 500/4k, `s=1` | 4,000 | 3.5% | 130 | 56.5% | 66.35% |
 
+![Direct and Fisher-guided HarmBench–IFEval trade-off](../figures/grad_fisher_ifeval_harmbench.png)
+
+The figure includes only direct and Fisher-guided first-cue Grad interventions
+with both frozen metrics available. The connected blue trajectory is the direct
+`s=1` neuron-count sweep; direct 8k/s=0.75 is shown separately because its
+strength differs. Fisher-guided variants are not connected because their
+selection and scaling rules are not a single ordered trajectory.
+
 The direct 4k and 6k failures are nested on frozen HarmBench: direct 6k fixes
 four of direct 4k's eight attacks and introduces no new attacks. That real safety
 gain costs 6.0 strict IFEval prompt points and 26 extra repetitive responses.
