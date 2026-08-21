@@ -30,15 +30,19 @@ class Point:
 
 POINTS = (
     Point("direct 2k, s=1", "grad_firstcue_safe256_tail_positive_k2000_s1_fp32", "direct", "o", (8, 2)),
-    Point("direct 4k, s=1", "grad_firstcue_safe256_tail_positive_k4000_s1_fp32", "direct", "o", (8, 7)),
+    Point("direct 4k, s=1", "grad_firstcue_safe256_tail_positive_k4000_s1_fp32", "direct", "o", (8, 17)),
     Point("direct 5k, s=1", "grad_direct_firstcue256_k5000_s1_fp32", "direct", "o", (-80, 8)),
     Point("direct 6k, s=1", "grad_direct_firstcue256_k6000_s1_fp32", "direct", "o", (-78, -18)),
     Point("direct 8k, s=0.75", "grad_direct_firstcue256_k8000_s0p75", "direct_alt", "D", (8, -17)),
+    Point("direct 8k, s=0.6", "grad_direct_firstcue256_k8000_s0p6_fp32", "direct_alt", "D", (8, 7)),
     Point("direct 8k, s=1", "grad_direct_firstcue256_k8000_s1_fp32", "direct", "o", (8, 7)),
     Point("Fisher diagonal, cap=1", "grad_fisher_diag_cap1_firstcue256_k8000", "fisher", "s", (8, 8)),
     Point("Fisher select 4k", "grad_fisherselect_sqrt_active4000_s1_firstcue256", "fisher", "^", (8, 8)),
     Point("Fisher select 6k", "grad_fisherselect_fisher_active6000_s1_firstcue256", "fisher", "^", (8, 8)),
     Point("Fisher replace 500/4k", "grad_fisherreplace_sqrt_base4000_replace500_s1_firstcue256", "fisher", "X", (8, 8)),
+    Point("bounded Fisher 8k, s=0.6 KL", "grad_boxfisher_actualkl_s0p6_firstcue256_k8000", "fisher", "s", (-135, 12)),
+    Point("20% Fisher blend", "grad_blendfisher0p2_actualkl_s0p6_firstcue256_k8000", "fisher", "P", (-92, -18)),
+    Point("80% Fisher blend", "grad_blendfisher0p8_actualkl_s0p6_firstcue256_k8000", "fisher", "P", (-90, 8)),
 )
 
 
@@ -112,7 +116,7 @@ def main() -> None:
             fontsize=8.6,
         )
 
-    ax.set_xlim(52.5, 66.2)
+    ax.set_xlim(52.5, 68.2)
     ax.set_ylim(-0.8, 14.7)
     ax.set_xlabel("IFEval strict prompt accuracy (%)  →")
     ax.set_ylabel("HarmBench attack success rate (%)  ↓")
@@ -126,7 +130,7 @@ def main() -> None:
             Line2D(
                 [0], [0], color="none", marker="D", markerfacecolor="white",
                 markeredgecolor=DIRECT_COLOR, markersize=6.5,
-                label="Direct 8k, s=0.75",
+                label="Direct 8k, alternate strength",
             ),
             Line2D(
                 [0], [0], color="none", marker="^", markerfacecolor=FISHER_COLOR,

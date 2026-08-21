@@ -3,12 +3,38 @@ from __future__ import annotations
 import torch
 
 from unified_eval.fisher_grad import (
+    anchored_tail_deltas,
+    box_fisher_deltas,
     conservative_replacement_indices,
     nonnegative_natural_direction,
     normalize_direction,
     scale_artifact,
     shrunk_fisher,
 )
+
+
+def test_anchored_tail_deltas_preserve_prefix_and_scale_only_tail() -> None:
+    fisher = torch.tensor([0.2, 0.4, 0.6, 0.8])
+    deltas = anchored_tail_deltas(
+        fisher, base_k=2, base_strength=0.75, tail_weight=0.5
+    )
+    assert torch.allclose(deltas, torch.tensor([0.75, 0.75, 0.3, 0.4]))
+
+
+def test_box_fisher_deltas_match_reference_budget_and_cap() -> None:
+    gradient = torch.tensor([3.0, 2.0, 1.0])
+    curvature = torch.tensor([1.0, 2.0, 4.0])
+    deltas, _, achieved = box_fisher_deltas(
+        gradient,
+        curvature,
+        reference_strength=0.5,
+        curvature_power=1.0,
+        delta_cap=0.75,
+    )
+    target = 0.5 * 0.5**2 * float(curvature.sum())
+    assert torch.all(deltas >= 0)
+    assert float(deltas.max()) <= 0.75
+    assert abs(achieved - target) < 1e-6
 
 
 def test_conservative_replacement_keeps_budget_and_uses_tail() -> None:

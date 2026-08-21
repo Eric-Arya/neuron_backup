@@ -10,9 +10,9 @@ alternative: 2.5% ASR and 62.0% strict IFEval, but 115/200 HarmBench responses
 are repetitive versus 94/200 at `k=4,000`.
 
 Fisher should not currently determine the activation multipliers. Every tested
-individual, full-selection, and conservative-replacement Fisher controller was
-dominated by a direct controller once HarmBench repetition and frozen IFEval
-were considered.
+individual, bounded, blended, tail-augmented, full-selection, and
+conservative-replacement Fisher controller was dominated by a direct
+controller once HarmBench repetition and frozen IFEval were considered.
 
 ## Protocol
 
@@ -77,6 +77,59 @@ and hard delta caps of 0.5, 1, 2, and 4 were tested. The best viable cap was 1:
 ASR, 61.0% strict IFEval, and 98/200 HarmBench repetitions, which is worse than
 direct `k=4,000`, `s=1` on all three criteria.
 
+### Small-radius calibration and bounded allocation
+
+To avoid calibrating the local quadratic model at `s=1`, additional controllers
+used direct `s=0.5` and `s=0.2` references. Actual held-out WikiText KL was
+matched after constructing each direction.
+
+| Pool/reference | Direct ASR | Fisher ASR | Evaluation | Result |
+|---|---:|---:|---|---|
+| Dense 2k, `s=0.5` | 38.30% | 65.96% | tuning 47 | unbounded Fisher was worse |
+| Dense 2k, `s=0.2` | 55.32% | 48.94% | tuning 47 | small gain, edit too weak |
+| Bounded 8k, `s=0.5` | 11.33% | 8.67% | confirmation 150 | modest gain after actual-KL calibration |
+| Bounded 8k, `s=0.6` | 8.00% | 2.67% | confirmation 150 | strongest local-development result |
+
+The dense natural direction remained non-local even at the smaller references:
+after KL calibration its maximum delta was 21.82 for `s=0.5` and 9.48 for
+`s=0.2`. The bounded 8k controller instead used
+`gradient / sqrt(Fisher + damping)`, damping of one median positive diagonal,
+and a pre-calibration cap of 0.9. Matching direct 8k/`s=0.6` actual KL applied a
+global factor of 0.8841, leaving deltas from 0.025 to 0.796 (median 0.551).
+
+On the frozen sets, however, direct 8k/`s=0.6` scored 6.5% ASR and 67.0% strict
+IFEval, while the bounded Fisher controller scored 5.0% ASR and 61.5% strict
+IFEval. The 1.5-point safety gain cost 5.5 IFEval points and increased HarmBench
+repetition from 103 to 117.
+
+### Direct–Fisher blends
+
+The bounded endpoint was interpolated with direct 8k/`s=0.6`. A Fisher weight
+of 0.2 means 80% direct delta plus 20% Fisher delta per neuron; weight 0.8 means
+the reverse. Both endpoints were actual-KL matched before interpolation, then
+the blends received their own held-out-KL correction: 1.0046 for weight 0.2 and
+0.9842 for weight 0.8.
+
+On the disjoint 64-example IFEval development split, both blends improved strict
+prompt accuracy over direct: 64.06% for weight 0.2 and 65.63% for weight 0.8,
+versus 60.94% direct. This did not transfer into a frozen safety improvement.
+Both blends scored 6.5% HarmBench ASR, exactly matching direct `s=0.6`; frozen
+strict IFEval was 65.5% and 65.0%, respectively, versus 67.0% direct. Thus the
+blends are not Pareto improvements.
+
+### Fisher tail and top-4k redistribution
+
+Two final bounded constructions tested whether Fisher should play a narrower
+role. The first held the top 4k Grad neurons at `s=0.75` or `s=0.85` and used
+Fisher only to allocate ranks 4,001--8,000. With the `s=0.85` anchor, 75% and
+100% Fisher tails reached 2.67% and 2.0% ASR on confirmation, but strict IFEval
+development fell to 57.81% and 56.25%.
+
+The second redistributed scaling only inside the top-4k Grad pool using the 8k
+diagonal Fisher principal prefix. The best bounded `s=0.85` candidate reached
+2.0% confirmation ASR with 75/150 repetitive responses, but again only 57.81%
+strict IFEval on development. Neither construction advanced to frozen IFEval.
+
 ### Fisher selection and conservative replacement
 
 Two curvature scores were tested inside the top-8,000 Grad pool:
@@ -104,8 +157,12 @@ sequence appears at least five times.
 | **Direct `k=4k`, `s=1`** | **4,000** | **4.0%** | **94** | **64.5%** | **72.76%** |
 | Direct `k=5k`, `s=1` | 5,000 | 4.0% | 106 | 59.5% | 69.23% |
 | Direct `k=6k`, `s=1` | 6,000 | 2.0% | 120 | 58.5% | 68.91% |
+| Direct `k=8k`, `s=0.6` | 8,000 | 6.5% | 103 | 67.0% | 75.32% |
 | Direct `k=8k`, `s=0.75` | 8,000 | 2.5% | 115 | 62.0% | 70.19% |
 | Direct `k=8k`, `s=1` | 8,000 | 0.0% | 167 | 54.0% | 63.78% |
+| Bounded Fisher 8k, actual-KL `s=0.6` | variable/8,000 | 5.0% | 117 | 61.5% | 71.15% |
+| 20% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 102 | 65.5% | 74.68% |
+| 80% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 107 | 65.0% | 74.36% |
 | Diagonal Fisher, cap 1 | variable/8,000 | 4.5% | 98 | 61.0% | 69.23% |
 | Fisher full select, 4k, `s=1` | 4,000 | 3.0% | 133 | 61.5% | 68.91% |
 | Fisher full select, 6k, `s=1` | 6,000 | 2.0% | 130 | 54.0% | 65.71% |
@@ -115,9 +172,9 @@ sequence appears at least five times.
 
 The figure includes only direct and Fisher-guided first-cue Grad interventions
 with both frozen metrics available. The connected blue trajectory is the direct
-`s=1` neuron-count sweep; direct 8k/s=0.75 is shown separately because its
-strength differs. Fisher-guided variants are not connected because their
-selection and scaling rules are not a single ordered trajectory.
+`s=1` neuron-count sweep; direct 8k at `s=0.6` and `s=0.75` is shown separately
+because the strength differs. Fisher-guided variants are not connected because
+their selection and scaling rules are not a single ordered trajectory.
 
 The direct 4k and 6k failures are nested on frozen HarmBench: direct 6k fixes
 four of direct 4k's eight attacks and introduces no new attacks. That real safety
@@ -134,8 +191,9 @@ At present, diagonal Fisher is useful as a diagnostic but not as a controller.
 The WikiText curvature estimate does detect directions that strongly alter model
 behavior, yet low quadratic cost around the unedited model does not predict good
 instruction following after a large activation edit. Shrinkage, damping, smaller
-radii, coordinate caps, an 8k Fisher pool, full curvature selection, and limited
-replacement all failed to resolve this mismatch.
+radii, actual-KL calibration, coordinate caps, an 8k Fisher pool, direct–Fisher
+blending, tail-only allocation, top-4k redistribution, full curvature selection,
+and limited replacement all failed to resolve this mismatch.
 
 The direct sweep gives two defensible choices:
 
@@ -157,6 +215,9 @@ instruction-following continuations and explicitly penalize repetition.
 - Fisher scale sweep: `results/grad_fisher_diag_k8000_variant_sweep/`
 - Fisher selection sweep: `results/grad_fisher_selection_k8000_variant_sweep/`
 - Conservative replacement sweep: `results/grad_fisher_replacement_k8000_variant_sweep/`
+- Small-reference, bounded, blend, and anchored-tail trials:
+  `results/grad_box_fisher_k8000_small_reference/`
+- Top-4k bounded Fisher trials: `results/grad_box_fisher_k4000_local/`
 - Direct 5k/6k sweep: `results/grad_direct_k5000_k6000_variant_sweep/`
 - Frozen final runs: `results/grad_direct_firstcue256_k5000_s1_fp32/`,
   `results/grad_direct_firstcue256_k6000_s1_fp32/`,

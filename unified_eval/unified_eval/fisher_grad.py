@@ -155,6 +155,35 @@ def build_parser() -> argparse.ArgumentParser:
         default=["gain_over_sqrt_fisher", "gain_over_fisher"],
     )
 
+    box = subparsers.add_parser("make-box-fisher-variants")
+    box.add_argument("--fisher", type=Path, required=True)
+    box.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
+    box.add_argument("--output-dir", type=Path, required=True)
+    box.add_argument("--pool-k", type=int, default=8000)
+    box.add_argument(
+        "--reference-strengths", type=float, nargs="+", default=[0.5, 0.2]
+    )
+    box.add_argument("--damping-ratios", type=float, nargs="+", default=[1, 4, 16])
+    box.add_argument("--curvature-powers", type=float, nargs="+", default=[0.5, 1])
+    box.add_argument("--cap-factors", type=float, nargs="+", default=[1.5, 2])
+
+    blend = subparsers.add_parser("make-blend-variants")
+    blend.add_argument("--first-scales", type=Path, required=True)
+    blend.add_argument("--second-scales", type=Path, required=True)
+    blend.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
+    blend.add_argument("--output-dir", type=Path, required=True)
+    blend.add_argument("--weights", type=float, nargs="+", default=[0.2, 0.4, 0.6, 0.8])
+
+    anchored = subparsers.add_parser("make-anchored-tail-variants")
+    anchored.add_argument("--fisher-scales", type=Path, required=True)
+    anchored.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
+    anchored.add_argument("--output-dir", type=Path, required=True)
+    anchored.add_argument("--base-k", type=int, default=4000)
+    anchored.add_argument("--base-strength", type=float, default=0.75)
+    anchored.add_argument(
+        "--tail-weights", type=float, nargs="+", default=[0.25, 0.5, 0.75, 1.0]
+    )
+
     return parser
 
 
@@ -834,6 +863,222 @@ def conservative_replacement_indices(
     )
 
 
+def box_fisher_deltas(
+    gradient: torch.Tensor,
+    curvature: torch.Tensor,
+    reference_strength: float,
+    curvature_power: float,
+    delta_cap: float,
+) -> tuple[torch.Tensor, float, float]:
+    """Allocate a direct reference budget along a bounded Fisher direction."""
+    if (
+        reference_strength <= 0
+        or curvature_power <= 0
+        or delta_cap <= reference_strength
+        or gradient.shape != curvature.shape
+        or torch.any(curvature <= 0)
+    ):
+        raise ValueError("Invalid bounded Fisher allocation parameters")
+    target = 0.5 * reference_strength**2 * float(curvature.sum())
+    direction = gradient.clamp_min(0) / curvature.pow(curvature_power)
+
+    def deltas_and_cost(scale: float) -> tuple[torch.Tensor, float]:
+        deltas = (scale * direction).clamp(max=delta_cap)
+        cost = 0.5 * float((curvature * deltas.square()).sum())
+        return deltas, cost
+
+    low = 0.0
+    high = 1.0
+    _, high_cost = deltas_and_cost(high)
+    while high_cost < target:
+        high *= 2
+        _, high_cost = deltas_and_cost(high)
+        if high > 1e12:
+            raise RuntimeError("Could not bracket bounded Fisher budget")
+    for _ in range(80):
+        scale = 0.5 * (low + high)
+        _, cost = deltas_and_cost(scale)
+        if cost < target:
+            low = scale
+        else:
+            high = scale
+    deltas, achieved = deltas_and_cost(high)
+    return deltas, high, achieved
+
+
+def make_box_fisher_variants(args: argparse.Namespace) -> None:
+    validate_positive(
+        [
+            args.pool_k,
+            *args.reference_strengths,
+            *args.damping_ratios,
+            *args.curvature_powers,
+            *args.cap_factors,
+        ],
+        "bounded Fisher variant values",
+    )
+    if any(factor <= 1 for factor in args.cap_factors):
+        raise ValueError("cap-factors must exceed one")
+    payload = torch.load(args.fisher, map_location="cpu", weights_only=True)
+    fisher = payload["fisher"].float()
+    gradient = payload["gradient"].float()
+    if fisher.ndim != 1 or fisher.numel() < args.pool_k:
+        raise ValueError("Bounded variants require a diagonal Fisher covering the pool")
+    fisher = fisher[: args.pool_k]
+    gradient = gradient[: args.pool_k]
+    ranking = read_positive_ranking(args.ranking, args.pool_k)
+    median = float(fisher[fisher > 0].median())
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    outputs = []
+    for reference_strength in args.reference_strengths:
+        for damping_ratio in args.damping_ratios:
+            damping = damping_ratio * median
+            curvature = fisher.clamp_min(0) + damping
+            for curvature_power in args.curvature_powers:
+                for cap_factor in args.cap_factors:
+                    delta_cap = cap_factor * reference_strength
+                    deltas, direction_scale, achieved = box_fisher_deltas(
+                        gradient,
+                        curvature,
+                        reference_strength,
+                        curvature_power,
+                        delta_cap,
+                    )
+                    target = 0.5 * reference_strength**2 * float(curvature.sum())
+                    fields = {
+                        "reference_strength": reference_strength,
+                        "damping_ratio": damping_ratio,
+                        "curvature_power": curvature_power,
+                        "cap_factor": cap_factor,
+                    }
+                    encoded = "_".join(
+                        f"{key}{str(value).replace('.', 'p')}"
+                        for key, value in fields.items()
+                    )
+                    label = f"boxfisher_k{args.pool_k}_{encoded}"
+                    artifact = scale_artifact(
+                        "individual_nonnegative_box_fisher",
+                        ranking,
+                        deltas,
+                        {
+                            "label": label,
+                            "source_fisher": str(args.fisher.resolve()),
+                            "source_fisher_sha256": sha256_file(args.fisher),
+                            "pool_k": args.pool_k,
+                            **fields,
+                            "delta_cap": delta_cap,
+                            "damping": damping,
+                            "direction_scale": direction_scale,
+                            "predicted_target_quadratic_cost": target,
+                            "predicted_achieved_quadratic_cost": achieved,
+                        },
+                    )
+                    path = args.output_dir / f"{label}.json"
+                    atomic_write_json(path, artifact)
+                    outputs.append({"label": label, "path": str(path.resolve())})
+    atomic_write_json(
+        args.output_dir / "manifest.json",
+        {
+            "fisher": str(args.fisher.resolve()),
+            "ranking": str(args.ranking.resolve()),
+            "variants": outputs,
+        },
+    )
+
+
+def make_blend_variants(args: argparse.Namespace) -> None:
+    if any(not 0 < weight < 1 for weight in args.weights):
+        raise ValueError("Blend weights must be strictly between zero and one")
+    first_payload = json.loads(args.first_scales.read_text(encoding="utf-8"))
+    second_payload = json.loads(args.second_scales.read_text(encoding="utf-8"))
+    top_k = int(first_payload["top_k"])
+    if int(second_payload["top_k"]) != top_k:
+        raise ValueError("Blend artifacts must have the same top-k")
+    ranking = read_positive_ranking(args.ranking, top_k)
+    _, first = load_scale_deltas(args.first_scales, ranking, None)
+    _, second = load_scale_deltas(args.second_scales, ranking, None)
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    outputs = []
+    for weight in args.weights:
+        deltas = (1 - weight) * first + weight * second
+        encoded = str(weight).replace(".", "p")
+        label = f"blend_direct_fisher_weight{encoded}_k{top_k}"
+        artifact = scale_artifact(
+            "individual_nonnegative_direct_fisher_blend",
+            ranking,
+            deltas,
+            {
+                "label": label,
+                "first_scales": str(args.first_scales.resolve()),
+                "first_scales_sha256": sha256_file(args.first_scales),
+                "second_scales": str(args.second_scales.resolve()),
+                "second_scales_sha256": sha256_file(args.second_scales),
+                "fisher_weight": weight,
+            },
+        )
+        path = args.output_dir / f"{label}.json"
+        atomic_write_json(path, artifact)
+        outputs.append({"label": label, "path": str(path.resolve())})
+    atomic_write_json(
+        args.output_dir / "manifest.json",
+        {"top_k": top_k, "variants": outputs},
+    )
+
+
+def anchored_tail_deltas(
+    fisher_deltas: torch.Tensor,
+    base_k: int,
+    base_strength: float,
+    tail_weight: float,
+) -> torch.Tensor:
+    if not 0 < base_k < fisher_deltas.numel():
+        raise ValueError("base-k must be inside the Fisher pool")
+    validate_positive([base_strength, tail_weight], "anchored-tail values")
+    deltas = torch.zeros_like(fisher_deltas)
+    deltas[:base_k] = base_strength
+    deltas[base_k:] = tail_weight * fisher_deltas[base_k:]
+    return deltas
+
+
+def make_anchored_tail_variants(args: argparse.Namespace) -> None:
+    payload = json.loads(args.fisher_scales.read_text(encoding="utf-8"))
+    top_k = int(payload["top_k"])
+    ranking = read_positive_ranking(args.ranking, top_k)
+    _, fisher_deltas = load_scale_deltas(args.fisher_scales, ranking, None)
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    outputs = []
+    for tail_weight in args.tail_weights:
+        deltas = anchored_tail_deltas(
+            fisher_deltas, args.base_k, args.base_strength, tail_weight
+        )
+        encoded_strength = str(args.base_strength).replace(".", "p")
+        encoded_weight = str(tail_weight).replace(".", "p")
+        label = (
+            f"anchored_base{args.base_k}_s{encoded_strength}_"
+            f"fishertail{encoded_weight}_k{top_k}"
+        )
+        artifact = scale_artifact(
+            "individual_nonnegative_anchored_fisher_tail",
+            ranking,
+            deltas,
+            {
+                "label": label,
+                "fisher_scales": str(args.fisher_scales.resolve()),
+                "fisher_scales_sha256": sha256_file(args.fisher_scales),
+                "base_k": args.base_k,
+                "base_strength": args.base_strength,
+                "tail_weight": tail_weight,
+            },
+        )
+        path = args.output_dir / f"{label}.json"
+        atomic_write_json(path, artifact)
+        outputs.append({"label": label, "path": str(path.resolve())})
+    atomic_write_json(
+        args.output_dir / "manifest.json",
+        {"top_k": top_k, "variants": outputs},
+    )
+
+
 def make_fisher_selection_variants(args: argparse.Namespace) -> None:
     validate_positive(
         [args.pool_k, args.base_k, *args.active_k, *args.strengths],
@@ -1284,8 +1529,12 @@ def validate_kl(args: argparse.Namespace) -> None:
         args.shared_scales, ranking, "shared"
     )
     individual_payload, individual_delta = load_scale_deltas(
-        args.individual_scales, ranking, "individual_nonnegative"
+        args.individual_scales, ranking, None
     )
+    if not str(individual_payload.get("mode", "")).startswith(
+        "individual_nonnegative"
+    ):
+        raise ValueError("KL calibration requires a nonnegative individual direction")
     model, tokenizer = load_model(args.model, args.device, args.dtype)
     alpha, handles, state = attach_selected_alphas(model, ranking)
     torch.manual_seed(args.seed)
@@ -1438,6 +1687,12 @@ def main() -> None:
         evaluate_safety(args)
     elif args.command == "make-fisher-selection-variants":
         make_fisher_selection_variants(args)
+    elif args.command == "make-box-fisher-variants":
+        make_box_fisher_variants(args)
+    elif args.command == "make-blend-variants":
+        make_blend_variants(args)
+    elif args.command == "make-anchored-tail-variants":
+        make_anchored_tail_variants(args)
     else:
         raise ValueError(args.command)
 

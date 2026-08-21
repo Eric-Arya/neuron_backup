@@ -567,9 +567,14 @@ def validate_inputs(args: argparse.Namespace) -> dict[str, Any]:
         ifeval_manifest = json.loads(args.ifeval_manifest.read_text(encoding="utf-8"))
         if ifeval_hash != ifeval_manifest.get("output_sha256"):
             raise ValueError("IFEval subset hash does not match its manifest")
-        if len(ifeval) != 200 or len({row.get("key") for row in ifeval}) != 200:
-            raise ValueError("IFEval subset must contain 200 unique keys")
-        if len({row.get("prompt") for row in ifeval}) != 200:
+        expected_count = int(ifeval_manifest.get("count", 200))
+        if len(ifeval) != expected_count or len(
+            {row.get("key") for row in ifeval}
+        ) != expected_count:
+            raise ValueError(
+                f"IFEval subset must contain {expected_count} unique keys"
+            )
+        if len({row.get("prompt") for row in ifeval}) != expected_count:
             raise ValueError("IFEval subset prompts must be unique")
         for row in ifeval:
             if not isinstance(row.get("prompt"), str) or not row["prompt"]:
@@ -1530,6 +1535,7 @@ def _ifeval_score_summary(outputs: Sequence[Any]) -> dict[str, Any]:
 def run_ifeval(args, method, semantic, run_dir: Path) -> None:
     source_all = read_jsonl(args.ifeval)
     count = limit_count(len(source_all), args.ifeval_limit, 200)
+    manifest = json.loads(args.ifeval_manifest.read_text(encoding="utf-8"))
     source = source_all[:count]
     fingerprint = task_fingerprint(semantic, "ifeval", count)
     task_dir = run_dir / "ifeval"
@@ -1600,7 +1606,10 @@ def run_ifeval(args, method, semantic, run_dir: Path) -> None:
         )
     summary = {
         "benchmark": "IFEval",
-        "subset": f"seed-112 coverage-first subset; first {count} of 200 rows",
+        "subset": (
+            f"{manifest.get('selection', 'seed-112 coverage-first subset')}; "
+            f"first {count} of {len(source_all)} rows"
+        ),
         "num_samples": count,
         "num_instruction_constraints": sum(
             len(row["instruction_id_list"]) for row in source
