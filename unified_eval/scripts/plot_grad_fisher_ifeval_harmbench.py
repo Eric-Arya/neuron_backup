@@ -26,10 +26,13 @@ DISPLAY_LABELS = {
     "direct 8k, s=0.6",
     "direct 8k, s=0.75",
     "direct 8k, s=1",
+    "direct 12k, s=0.3",
+    "direct 16k, s=0.3",
     "Fisher 12k, c=.22",
     "Fisher 12k, c=.24",
     "Fisher 12k, c=.48",
     "Fisher 12k, cap=.6",
+    "Fisher 16k, c=.22",
 }
 
 
@@ -89,6 +92,20 @@ POINTS = (
     ),
     Point(
         "direct 8k, s=1", "grad_direct_firstcue256_k8000_s1_fp32", "direct", "o", (8, 7)
+    ),
+    Point(
+        "direct 12k, s=0.3",
+        "grad_direct_firstcue256_k12000_s0p3_frozen_with_bbh",
+        "direct_alt",
+        "D",
+        (-105, 10),
+    ),
+    Point(
+        "direct 16k, s=0.3",
+        "grad_direct_firstcue256_k16000_s0p3_frozen_with_bbh",
+        "direct_alt",
+        "D",
+        (-110, 8),
     ),
     Point(
         "Fisher diagonal, cap=1",
@@ -167,7 +184,7 @@ POINTS = (
         "grad_floorfisher_wt2048_k12000_f0_c0p24_cap0p75",
         "fisher",
         "*",
-        (-98, -21),
+        (-125, 5),
         "grad_floor_fisher_wikitext2048_gentle12k/frozen_harmbench_c0p24/summary.json",
         "floorfisher_k12000_floor0p0_c0p24_cap0p75_damp1p0",
     ),
@@ -188,6 +205,13 @@ POINTS = (
         (-120, -4),
         "grad_floor_fisher_wikitext2048_smaller_cap/frozen_harmbench_cap0p6_f0_c0p56/summary.json",
         "floorfisher_k12000_floor0p0_c0p56_cap0p6_damp1p0",
+    ),
+    Point(
+        "Fisher 16k, c=.22",
+        "grad_floorfisher_wt2048_k16000_f0_c0p22_cap0p75_frozen",
+        "fisher",
+        "*",
+        (8, -18),
     ),
 )
 
@@ -275,7 +299,7 @@ def main() -> None:
         )
 
     ax.set_xlim(52.5, 68.2)
-    ax.set_ylim(-0.8, 14.7)
+    ax.set_ylim(-0.8, 15.5)
     ax.set_xlabel("IFEval strict prompt accuracy (%)  →")
     ax.set_ylabel("HarmBench attack success rate (%)  ↓")
     ax.set_title("Direct versus Fisher-guided first-cue Grad interventions")
@@ -298,7 +322,7 @@ def main() -> None:
                 markerfacecolor="white",
                 markeredgecolor=DIRECT_COLOR,
                 markersize=6.5,
-                label="Direct 8k, alternate strength",
+                label="Direct alternate strength",
             ),
             Line2D(
                 [0],

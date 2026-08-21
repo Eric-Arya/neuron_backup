@@ -8,7 +8,8 @@ Grad prefix, `k=12,000`, zero direct floor, `c=0.22`, cap 0.75, and damping of
 one median Fisher diagonal. It gives 7.5% frozen ASR, 67.0% strict IFEval, and
 46/100 MATH. It exactly matches direct `k=8,000`, `s=0.6` on IFEval while
 improving MATH by four points; frozen HarmBench repetition also falls from 103
-to 94 responses, at the cost of one additional successful attack.
+to 94 responses, at the cost of one additional successful attack. It scores
+62.5% on the frozen BBH subset.
 
 Two stronger Fisher alternatives remain useful. `c=0.24` gives 7.0% ASR,
 65.5% IFEval, and 47/100 MATH with the same 94 HarmBench repetitions. `c=0.48`
@@ -16,6 +17,9 @@ is the math/safety-oriented point: 1.5% ASR, 64.0% IFEval, and 49/100 MATH,
 but 110/200 HarmBench responses are repetitive. These results supersede the
 earlier direct-only recommendation: diagonal Fisher is useful when its score is
 applied to a larger Grad prefix with zero floor and `c` is searched directly.
+The tested 16k Fisher extension does not replace the 12k default: at `c=0.22`
+it gives 7.0% ASR, 66.5% IFEval, 44/100 MATH, and 64.0% BBH. It is competitive
+on safety and IFEval, but loses two MATH points relative to the 12k default.
 
 ## Protocol
 
@@ -29,8 +33,8 @@ applied to a larger Grad prefix with zero floor and `c` is searched directly.
 - KL validation data: 256 additional disjoint raw contexts.
 - Fisher continuations: 32 tokens sampled from the unedited model with no chat
   template.
-- Estimator: four Rademacher token-score projections per context: 4,096 score
-  vectors over 32,768 generated tokens.
+- Estimator: four Rademacher token-score projections per context. The expanded
+  run uses 8,192 score vectors over 65,536 generated tokens.
 - Safety development: 47-example tuning split followed by a disjoint 150-example
   confirmation split. The frozen 200-example HarmBench set was used only for
   finalists.
@@ -268,10 +272,13 @@ validated frontier is:
 | Controller | Median/mean delta | Capped | Frozen ASR | HB rep. | Frozen strict IFEval | MATH100 | MATH rep. |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Direct 8k, `s=0.6` | 0.600/0.600 | 0 | 6.5% | 103 | **67.0%** | 42 | **12** |
+| Direct 12k, `s=0.3` | 0.300/0.300 | 0 | 14.5% | **84** | 66.5% | 45 | 18 |
+| Direct 16k, `s=0.3` | 0.300/0.300 | 0 | 12.0% | 85 | 64.0% | 46 | **14** |
 | Fisher 12k, floor 0, `c=0.22`, cap 0.75 | 0.255/0.300 | 705 | 7.5% | **94** | **67.0%** | 46 | 18 |
 | Fisher 12k, floor 0, `c=0.24`, cap 0.75 | 0.278/0.323 | 851 | 7.0% | **94** | 65.5% | 47 | 18 |
 | Fisher 12k, floor 0, `c=0.48`, cap 0.75 | 0.556/0.535 | 3,523 | 1.5% | 110 | 64.0% | **49** | 15 |
 | Fisher 12k, floor 0, `c=0.56`, cap 0.6 | 0.600/0.511 | 6,710 | 3.5% | 103 | 64.0% | 44 | 20 |
+| Fisher 16k, floor 0, `c=0.22`, cap 0.75 | 0.244/0.286 | 794 | 7.0% | 99 | 66.5% | 44 | 17 |
 | Fisher 12k, floor 0.4, `c=0.12`, cap 0.75 | 0.539/0.559 | 977 | **1.0%** | 118 | 62.0% | — | — |
 
 The main capability result is the `c=0.22` row: compared with direct 8k,
@@ -281,6 +288,34 @@ ASR threshold. The `c=0.48` row is stronger for MATH and safety, scoring one
 point above the unedited model on MATH100, but its higher repetition and
 three-point IFEval loss make it a different operating point rather than the
 balanced default.
+
+### Matched direct controls and BBH
+
+The 12k and 16k direct controls multiply every selected activation by 1.30,
+so their additive strength is `s=0.30`. This closely matches the mean Fisher
+delta at the balanced 12k and 16k `c=0.22` points (0.300 and 0.286,
+respectively), while holding the ranking and active prefix fixed. BBH uses the
+same frozen seed-112 task-stratified 200-example subset and official raw
+three-shot chain-of-thought completion protocol as the earlier BBH runs.
+
+| Controller | HarmBench ASR | IFEval strict | MATH100 | BBH | BBH rep. |
+|---|---:|---:|---:|---:|---:|
+| Direct 12k, `s=0.30` | 14.5% | 66.5% | 45 | **65.0%** | 25 |
+| Fisher 12k, `c=0.22` | **7.5%** | **67.0%** | **46** | 62.5% | 27 |
+| Fisher 12k, `c=0.24` | **7.0%** | 65.5% | 47 | 62.5% | 27 |
+| Fisher 12k, `c=0.48` | **1.5%** | 64.0% | **49** | **65.0%** | 32 |
+| Direct 16k, `s=0.30` | 12.0% | 64.0% | **46** | **67.5%** | 26 |
+| Fisher 16k, `c=0.22` | **7.0%** | **66.5%** | 44 | 64.0% | 26 |
+
+At 12k, the mean-matched Fisher `c=0.22` controller cuts ASR by seven points
+while slightly improving IFEval and MATH, but loses 2.5 BBH points. At 16k,
+Fisher improves ASR by five points and IFEval by 2.5 points, but loses two
+MATH points and 3.5 BBH points. Thus Fisher's advantage is not a consequence
+of merely spreading a fixed shared strength across more neurons; it is a
+benchmark-dependent redistribution of the edit. The 12k `c=0.48` point is the
+only Fisher finalist here that matches its direct control on BBH while also
+improving both safety and MATH, at the cost of 2.5 IFEval points and more BBH
+repetition.
 
 ## Frozen comparison
 
@@ -297,6 +332,8 @@ sequence appears at least five times.
 | Direct `k=8k`, `s=0.6` | 8,000 | 6.5% | 103 | 67.0% | 75.32% |
 | Direct `k=8k`, `s=0.75` | 8,000 | 2.5% | 115 | 62.0% | 70.19% |
 | Direct `k=8k`, `s=1` | 8,000 | 0.0% | 167 | 54.0% | 63.78% |
+| Direct `k=12k`, `s=0.3` | 12,000 | 14.5% | 84 | 66.5% | 76.92% |
+| Direct `k=16k`, `s=0.3` | 16,000 | 12.0% | 85 | 64.0% | 75.32% |
 | Bounded Fisher 8k, actual-KL `s=0.6` | variable/8,000 | 5.0% | 117 | 61.5% | 71.15% |
 | 20% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 102 | 65.5% | 74.68% |
 | 80% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 107 | 65.0% | 74.36% |
@@ -306,6 +343,7 @@ sequence appears at least five times.
 | Floor Fisher 12k, floor 0, `c=0.24`, cap 0.75 | 12,000 | 7.0% | 94 | 65.5% | 76.28% |
 | Floor Fisher 12k, floor 0, `c=0.48`, cap 0.75 | 12,000 | 1.5% | 110 | 64.0% | 72.12% |
 | Floor Fisher 12k, floor 0, `c=0.56`, cap 0.6 | 12,000 | 3.5% | 103 | 64.0% | 73.08% |
+| Floor Fisher 16k, floor 0, `c=0.22`, cap 0.75 | 16,000 | 7.0% | 99 | 66.5% | 75.96% |
 | Diagonal Fisher, cap 1 | variable/8,000 | 4.5% | 98 | 61.0% | 69.23% |
 | Fisher full select, 4k, `s=1` | 4,000 | 3.0% | 133 | 61.5% | 68.91% |
 | Fisher full select, 6k, `s=1` | 6,000 | 2.0% | 130 | 54.0% | 65.71% |
@@ -314,9 +352,10 @@ sequence appears at least five times.
 ![Direct and Fisher-guided HarmBench–IFEval trade-off](../figures/grad_fisher_ifeval_harmbench.png)
 
 The figure includes the direct first-cue Grad baselines and the selected new
-12k Fisher-guided endpoints with both frozen metrics available. The connected
+12k/16k Fisher-guided endpoints with both frozen metrics available. The connected
 blue trajectory is the direct `s=1` neuron-count sweep; direct 8k at `s=0.6` and
-`s=0.75` is shown separately because the strength differs. Fisher-guided
+`s=0.75` and direct 12k/16k at `s=0.3` are shown separately because their
+strengths differ. Fisher-guided
 variants are not connected because `c` and the cap differ.
 
 The direct 4k and 6k failures are nested on frozen HarmBench: direct 6k fixes
@@ -352,6 +391,11 @@ through a nonuniform allocation. Moving from `c=0.22` to 0.48 gains three MATH
 points and six ASR points while losing three IFEval points and adding 16
 repetitive HarmBench responses. Thus general capability is multidimensional:
 IFEval and mathematical reasoning do not move together under neuron editing.
+The matched 12k/16k controls strengthen this conclusion: Fisher dominates the
+corresponding uniform edit on the HarmBench--IFEval plane, but direct scaling
+can retain more BBH, and at 16k it also retains more MATH. Increasing the
+number of edited neurons is therefore not uniformly beneficial; 12k remains
+the best balanced operating point found.
 
 ## Artifacts
 
@@ -374,6 +418,18 @@ IFEval and mathematical reasoning do not move together under neuron editing.
   `results/grad_floor_fisher_wikitext2048_smaller_cap/`,
   `results/grad_floor_fisher_wikitext2048_gentle12k/`, and
   `results/grad_floor_fisher_wikitext2048_gentler12k/`
+- Expanded 16k zero-floor sweep and frozen finalist:
+  `results/grad_floor_fisher_wikitext2048_gentle16k/` and
+  `results/grad_floorfisher_wt2048_k16000_f0_c0p22_cap0p75_frozen/`
+- Mean-matched direct controls:
+  `results/grad_direct_firstcue256_k12000_s0p3_frozen_with_bbh/` and
+  `results/grad_direct_firstcue256_k16000_s0p3_frozen_with_bbh/`
+- 12k/16k Fisher BBH finalists:
+  `results/bbh_grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75_raw_cot_fp32/`,
+  `results/bbh_grad_floorfisher_wt2048_k12000_f0_c0p24_cap0p75_raw_cot_fp32/`,
+  `results/bbh_grad_floorfisher_wt2048_k12000_f0_c0p48_cap0p75_raw_cot_fp32/`,
+  and
+  `results/bbh_grad_floorfisher_wt2048_k16000_f0_c0p22_cap0p75_raw_cot_fp32/`
 - Direct-floor Fisher BBH finalists:
   `results/bbh_grad_floorfisher_f0p35_m0p6_c0p75_d1_firstcue256_k8000_raw_cot_fp32/`
   and
