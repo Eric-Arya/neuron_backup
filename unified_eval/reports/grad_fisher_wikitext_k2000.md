@@ -12,7 +12,10 @@ are repetitive versus 94/200 at `k=4,000`.
 Fisher should not currently determine the activation multipliers. Every tested
 individual, bounded, blended, tail-augmented, full-selection, and
 conservative-replacement Fisher controller was dominated by a direct
-controller once HarmBench repetition and frozen IFEval were considered.
+controller once HarmBench repetition and frozen IFEval were considered. A
+later direct-floor plus Fisher controller substantially improved the individual
+Fisher results, but still produced a different trade-off rather than a Pareto
+improvement over direct scaling.
 
 ## Protocol
 
@@ -145,6 +148,45 @@ IFEval. The full selectors had the same pattern. Fisher preferentially found
 interventions that trigger refusal/degeneration, not interventions that preserve
 general response quality.
 
+### Direct floor plus individual Fisher scaling
+
+The final study used the proposed score as the multiplier direction rather than
+only as a selector:
+
+\[
+\Delta_j=\min\left(\Delta_{\max},\ s_{\min}+
+c\frac{|g_j^{\mathrm{safe}}|}{F_{jj}+\lambda}\right),\qquad
+\alpha_j=1+\Delta_j.
+\]
+
+All candidates came from the first-cue positive-only Grad prefix. The constant
+`c` was chosen to hit a requested median delta, and `lambda` was a multiple of
+the median positive diagonal Fisher. This guarantees a direct edit for every
+selected neuron while preventing the long tail seen in the unbounded natural
+direction.
+
+A 32-candidate primary sweep covered `k=4k`, `6k`, and `8k`; a 30-candidate
+local sweep refined the promising `k=8k` region and varied damping from 0.25 to
+16 median Fisher diagonals. All 62 candidates were screened on the 47-example
+HarmBench tuning split. Seventeen diverse candidates advanced to the disjoint
+150-example confirmation split, and ten were checked on the disjoint 64-example
+IFEval development split.
+
+The two frozen finalists both used `k=8k`, median delta 0.6, cap 0.75, and
+`lambda=0.00020245` (one median positive Fisher diagonal):
+
+| Floor | `c` | Actual delta mean | Capped neurons | Confirmation ASR | Development strict IFEval | Frozen ASR | Frozen strict IFEval | Frozen HB rep. |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.35 | 0.20487 | 0.6076 | 1,827 | 2.67% | 62.5% | 6.0% | 65.0% | 102/200 |
+| 0.40 | 0.16389 | 0.6123 | 1,514 | 2.67% | 59.38% | 5.5% | 65.5% | 101/200 |
+
+The floor-0.4 result is the best individual Fisher trade-off found: compared
+with direct `k=8k`, `s=0.6`, it reduces ASR from 6.5% to 5.5% and repetition
+from 103 to 101, but loses 1.5 strict IFEval points. Compared with direct
+`k=4k`, `s=1`, it gains 1.0 IFEval point but loses 1.5 safety points and adds
+seven repetitive HarmBench responses. It therefore improves substantially on
+the previous Fisher controllers without dominating either direct reference.
+
 ## Frozen comparison
 
 All rows use the same ranking, model, decoding, raw HarmBench set, and IFEval
@@ -163,6 +205,8 @@ sequence appears at least five times.
 | Bounded Fisher 8k, actual-KL `s=0.6` | variable/8,000 | 5.0% | 117 | 61.5% | 71.15% |
 | 20% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 102 | 65.5% | 74.68% |
 | 80% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 107 | 65.0% | 74.36% |
+| Floor Fisher 8k, floor 0.35, median 0.6, cap 0.75 | 8,000 | 6.0% | 102 | 65.0% | 74.36% |
+| Floor Fisher 8k, floor 0.4, median 0.6, cap 0.75 | 8,000 | 5.5% | 101 | 65.5% | 74.68% |
 | Diagonal Fisher, cap 1 | variable/8,000 | 4.5% | 98 | 61.0% | 69.23% |
 | Fisher full select, 4k, `s=1` | 4,000 | 3.0% | 133 | 61.5% | 68.91% |
 | Fisher full select, 6k, `s=1` | 6,000 | 2.0% | 130 | 54.0% | 65.71% |
@@ -187,13 +231,16 @@ safety controller.
 
 ## Interpretation
 
-At present, diagonal Fisher is useful as a diagnostic but not as a controller.
+At present, diagonal Fisher is useful as a diagnostic and can provide a smooth
+safety/capability trade-off when combined with a direct floor, but it is still
+not the recommended controller.
 The WikiText curvature estimate does detect directions that strongly alter model
 behavior, yet low quadratic cost around the unedited model does not predict good
 instruction following after a large activation edit. Shrinkage, damping, smaller
 radii, actual-KL calibration, coordinate caps, an 8k Fisher pool, direct–Fisher
 blending, tail-only allocation, top-4k redistribution, full curvature selection,
-and limited replacement all failed to resolve this mismatch.
+limited replacement, and bounded direct-floor scaling all failed to produce a
+Pareto improvement.
 
 The direct sweep gives two defensible choices:
 
@@ -202,10 +249,11 @@ The direct sweep gives two defensible choices:
    IFEval prompt points and 21 additional repetitive HarmBench outputs for a
    1.5-point ASR reduction.
 
-Do not claim the current individual Fisher method as an improvement. A future
-Fisher attempt should change the objective or general-data distribution rather
-than only tune damping or KL radius—for example, measure curvature on
-instruction-following continuations and explicitly penalize repetition.
+The direct-floor controller is an improvement over the unbounded individual
+Fisher method, but not over the best direct baselines. A future Fisher attempt
+should change the objective or general-data distribution rather than only tune
+damping or KL radius—for example, measure curvature on instruction-following
+continuations and explicitly penalize repetition.
 
 ## Artifacts
 
@@ -215,6 +263,9 @@ instruction-following continuations and explicitly penalize repetition.
 - Fisher scale sweep: `results/grad_fisher_diag_k8000_variant_sweep/`
 - Fisher selection sweep: `results/grad_fisher_selection_k8000_variant_sweep/`
 - Conservative replacement sweep: `results/grad_fisher_replacement_k8000_variant_sweep/`
+- Direct-floor Fisher primary/local sweeps:
+  `results/grad_floor_fisher_primary_sweep/` and
+  `results/grad_floor_fisher_k8000_local/`
 - Small-reference, bounded, blend, and anchored-tail trials:
   `results/grad_box_fisher_k8000_small_reference/`
 - Top-4k bounded Fisher trials: `results/grad_box_fisher_k4000_local/`

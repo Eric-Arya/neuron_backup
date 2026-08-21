@@ -26,8 +26,7 @@ from .methods import DEFAULT_LLAMA3, DTYPES
 
 
 DEFAULT_WIKITEXT = Path(
-    "/workspace/xcy/dataset/wikitext/wikitext-2-raw-v1/"
-    "train-00000-of-00001.parquet"
+    "/workspace/xcy/dataset/wikitext/wikitext-2-raw-v1/train-00000-of-00001.parquet"
 )
 DEFAULT_RANKING = Path(
     "/workspace/xcy/safety_repro/unified_eval/results/"
@@ -103,7 +102,9 @@ def build_parser() -> argparse.ArgumentParser:
     variants.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
     variants.add_argument("--base-individual-scales", type=Path, required=True)
     variants.add_argument("--output-dir", type=Path, required=True)
-    variants.add_argument("--direct-top-k", type=int, nargs="+", default=[2000, 4000, 8000])
+    variants.add_argument(
+        "--direct-top-k", type=int, nargs="+", default=[2000, 4000, 8000]
+    )
     variants.add_argument(
         "--direct-strengths", type=float, nargs="+", default=[0.5, 0.75, 1.0]
     )
@@ -130,7 +131,9 @@ def build_parser() -> argparse.ArgumentParser:
     selection.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
     selection.add_argument("--output-dir", type=Path, required=True)
     selection.add_argument("--pool-k", type=int, default=8000)
-    selection.add_argument("--active-k", type=int, nargs="+", default=[2000, 4000, 6000])
+    selection.add_argument(
+        "--active-k", type=int, nargs="+", default=[2000, 4000, 6000]
+    )
     selection.add_argument("--strengths", type=float, nargs="+", default=[0.75, 1.0])
     selection.add_argument(
         "--base-k",
@@ -160,12 +163,21 @@ def build_parser() -> argparse.ArgumentParser:
     box.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
     box.add_argument("--output-dir", type=Path, required=True)
     box.add_argument("--pool-k", type=int, default=8000)
-    box.add_argument(
-        "--reference-strengths", type=float, nargs="+", default=[0.5, 0.2]
-    )
+    box.add_argument("--reference-strengths", type=float, nargs="+", default=[0.5, 0.2])
     box.add_argument("--damping-ratios", type=float, nargs="+", default=[1, 4, 16])
     box.add_argument("--curvature-powers", type=float, nargs="+", default=[0.5, 1])
     box.add_argument("--cap-factors", type=float, nargs="+", default=[1.5, 2])
+
+    floor = subparsers.add_parser("make-floor-fisher-variants")
+    floor.add_argument("--fisher", type=Path, required=True)
+    floor.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
+    floor.add_argument("--output-dir", type=Path, required=True)
+    floor.add_argument("--pool-k", type=int, default=8000)
+    floor.add_argument("--active-k", type=int, nargs="+", default=[4000, 6000, 8000])
+    floor.add_argument("--floors", type=float, nargs="+", default=[0.25, 0.5])
+    floor.add_argument("--target-medians", type=float, nargs="+", default=[0.6, 0.75])
+    floor.add_argument("--caps", type=float, nargs="+", default=[0.9, 1.0])
+    floor.add_argument("--damping-ratios", type=float, nargs="+", default=[1.0])
 
     blend = subparsers.add_parser("make-blend-variants")
     blend.add_argument("--first-scales", type=Path, required=True)
@@ -267,9 +279,7 @@ def prepare_contexts(args: argparse.Namespace) -> None:
 
     fisher_path = args.output_dir / "fisher_contexts.jsonl"
     validation_path = args.output_dir / "validation_contexts.jsonl"
-    atomic_write_jsonl(
-        fisher_path, records(selected[: args.fisher_contexts], "fisher")
-    )
+    atomic_write_jsonl(fisher_path, records(selected[: args.fisher_contexts], "fisher"))
     atomic_write_jsonl(
         validation_path, records(selected[args.fisher_contexts :], "validation")
     )
@@ -318,11 +328,15 @@ def load_model(path: Path, device: str, dtype: str):
     return model, tokenizer
 
 
-def attach_selected_alphas(model, ranking: Sequence[dict[str, Any]], scope: str = "tail"):
+def attach_selected_alphas(
+    model, ranking: Sequence[dict[str, Any]], scope: str = "tail"
+):
     if scope != "tail":
         raise ValueError("The firstcue256 ranking requires tail scope")
     device = model.get_input_embeddings().weight.device
-    alpha = torch.ones(len(ranking), device=device, dtype=torch.float32, requires_grad=True)
+    alpha = torch.ones(
+        len(ranking), device=device, dtype=torch.float32, requires_grad=True
+    )
     by_layer: dict[int, tuple[torch.Tensor, torch.Tensor]] = {}
     for layer_index in range(len(model.model.layers)):
         entries = [row for row in ranking if row["layer"] == layer_index]
@@ -454,9 +468,11 @@ def teacher_forced_token_scores(
         use_cache=False,
         logits_to_keep=max_tokens,
     ).logits
-    token_scores = torch.log_softmax(logits.float(), dim=-1).gather(
-        -1, targets.unsqueeze(-1)
-    ).squeeze(-1)
+    token_scores = (
+        torch.log_softmax(logits.float(), dim=-1)
+        .gather(-1, targets.unsqueeze(-1))
+        .squeeze(-1)
+    )
     return token_scores, valid_mask
 
 
@@ -472,7 +488,9 @@ def estimate_fisher(
     seed: int,
     matrix_mode: str | None,
 ) -> tuple[torch.Tensor | None, list[dict[str, Any]], dict[str, Any]]:
-    validate_positive([batch_size, continuation_tokens, probes], "Fisher runtime values")
+    validate_positive(
+        [batch_size, continuation_tokens, probes], "Fisher runtime values"
+    )
     device = alpha.device
     if matrix_mode == "dense":
         fisher = torch.zeros(
@@ -516,9 +534,7 @@ def estimate_fisher(
                 ).bernoulli_(0.5, generator=probe_generator)
                 signs.mul_(2).sub_(1)
                 score = (
-                    token_scores[batch_index]
-                    * signs
-                    * valid_mask[batch_index].float()
+                    token_scores[batch_index] * signs * valid_mask[batch_index].float()
                 ).sum()
                 completed_scores += 1
                 gradient = torch.autograd.grad(
@@ -552,18 +568,25 @@ def estimate_fisher(
             )
         if torch.cuda.is_available():
             peak_memory = max(peak_memory, torch.cuda.max_memory_allocated(device))
-        print(f"Fisher contexts {min(start + len(batch), len(rows))}/{len(rows)}", flush=True)
+        print(
+            f"Fisher contexts {min(start + len(batch), len(rows))}/{len(rows)}",
+            flush=True,
+        )
     elapsed = time.perf_counter() - started
     if fisher is not None:
         fisher.div_(score_vectors)
-    return fisher, saved_rows, {
-        "contexts": len(rows),
-        "score_vectors": score_vectors,
-        "generated_tokens": generated_tokens,
-        "elapsed_seconds": elapsed,
-        "contexts_per_second": len(rows) / elapsed,
-        "peak_cuda_bytes": peak_memory,
-    }
+    return (
+        fisher,
+        saved_rows,
+        {
+            "contexts": len(rows),
+            "score_vectors": score_vectors,
+            "generated_tokens": generated_tokens,
+            "elapsed_seconds": elapsed,
+            "contexts_per_second": len(rows) / elapsed,
+            "peak_cuda_bytes": peak_memory,
+        },
+    )
 
 
 def shrunk_fisher(
@@ -616,7 +639,9 @@ def nonnegative_natural_direction(
             torch.minimum(
                 direction,
                 matrix.cpu().matmul(direction) - gradient.cpu(),
-            ).abs().max()
+            )
+            .abs()
+            .max()
         ),
     }
 
@@ -759,7 +784,9 @@ def evaluate_actual_kls(
                 totals[index] += token_kl.sum(-1).double().cpu().sum()
                 token_totals[index] += token_kl.double().cpu().sum()
         sequence_count += len(batch)
-        print(f"KL contexts {min(start + len(batch), len(rows))}/{len(rows)}", flush=True)
+        print(
+            f"KL contexts {min(start + len(batch), len(rows))}/{len(rows)}", flush=True
+        )
     token_count = sum(len(tokens) for tokens in continuations)
     return [
         {
@@ -904,6 +931,132 @@ def box_fisher_deltas(
             high = scale
     deltas, achieved = deltas_and_cost(high)
     return deltas, high, achieved
+
+
+def floor_fisher_deltas(
+    gradient: torch.Tensor,
+    curvature: torch.Tensor,
+    floor: float,
+    target_median: float,
+    cap: float,
+) -> tuple[torch.Tensor, float]:
+    """Add a bounded natural-gradient increment above a shared direct floor."""
+    if (
+        gradient.ndim != 1
+        or curvature.ndim != 1
+        or gradient.shape != curvature.shape
+        or floor < 0
+        or not floor < target_median < cap
+        or bool((gradient < 0).any())
+        or bool((curvature <= 0).any())
+    ):
+        raise ValueError("Invalid floor Fisher allocation parameters")
+    score = gradient / curvature
+    if not bool((score > 0).any()):
+        raise ValueError("Floor Fisher score has no positive entries")
+    score_median = float(score.median())
+    if score_median <= 0:
+        raise ValueError("Floor Fisher score median must be positive")
+    scale = (target_median - floor) / score_median
+    deltas = (floor + scale * score).clamp(max=cap)
+    return deltas, float(scale)
+
+
+def make_floor_fisher_variants(args: argparse.Namespace) -> None:
+    validate_positive(
+        [
+            args.pool_k,
+            *args.active_k,
+            *args.target_medians,
+            *args.caps,
+            *args.damping_ratios,
+        ],
+        "floor Fisher variant values",
+    )
+    if any(value < 0 for value in args.floors):
+        raise ValueError("floor Fisher floors must be nonnegative")
+    if max(args.active_k) > args.pool_k:
+        raise ValueError("active-k cannot exceed pool-k")
+    payload = torch.load(args.fisher, map_location="cpu", weights_only=True)
+    fisher = payload["fisher"].float()
+    gradient = payload["gradient"].float().clamp_min(0)
+    if fisher.ndim != 1 or fisher.numel() < args.pool_k:
+        raise ValueError("Floor Fisher variants require a diagonal Fisher pool")
+    fisher = fisher[: args.pool_k].clamp_min(0)
+    gradient = gradient[: args.pool_k]
+    ranking = read_positive_ranking(args.ranking, args.pool_k)
+    median_fisher = float(fisher[fisher > 0].median())
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    outputs = []
+    for active_k in args.active_k:
+        selected_ranking = ranking[:active_k]
+        selected_gradient = gradient[:active_k]
+        selected_fisher = fisher[:active_k]
+        for damping_ratio in args.damping_ratios:
+            damping = damping_ratio * median_fisher
+            curvature = selected_fisher + damping
+            for floor in args.floors:
+                for target_median in args.target_medians:
+                    for cap in args.caps:
+                        if not floor < target_median < cap:
+                            continue
+                        deltas, scale = floor_fisher_deltas(
+                            selected_gradient,
+                            curvature,
+                            floor,
+                            target_median,
+                            cap,
+                        )
+                        fields = {
+                            "floor": floor,
+                            "median": target_median,
+                            "cap": cap,
+                            "damp": damping_ratio,
+                        }
+                        encoded = "_".join(
+                            f"{name}{str(value).replace('.', 'p')}"
+                            for name, value in fields.items()
+                        )
+                        label = f"floorfisher_k{active_k}_{encoded}"
+                        artifact = scale_artifact(
+                            "individual_nonnegative_floor_fisher",
+                            selected_ranking,
+                            deltas,
+                            {
+                                "label": label,
+                                "source_fisher": str(args.fisher.resolve()),
+                                "source_fisher_sha256": sha256_file(args.fisher),
+                                "pool_k": args.pool_k,
+                                "active_k": active_k,
+                                "score": "gradient / (Fisher + damping)",
+                                "damping_ratio": damping_ratio,
+                                "damping": damping,
+                                "direct_floor": floor,
+                                "target_median": target_median,
+                                "delta_cap": cap,
+                                "score_scale_c": scale,
+                                "actual_delta_min": float(deltas.min()),
+                                "actual_delta_median": float(deltas.median()),
+                                "actual_delta_mean": float(deltas.mean()),
+                                "actual_delta_max": float(deltas.max()),
+                                "capped_count": int((deltas == cap).sum()),
+                            },
+                        )
+                        path = args.output_dir / f"{label}.json"
+                        atomic_write_json(path, artifact)
+                        outputs.append({"label": label, "path": str(path.resolve())})
+    if not outputs:
+        raise ValueError("No valid floor Fisher parameter combinations")
+    atomic_write_json(
+        args.output_dir / "manifest.json",
+        {
+            "fisher": str(args.fisher.resolve()),
+            "fisher_sha256": sha256_file(args.fisher),
+            "ranking": str(args.ranking.resolve()),
+            "ranking_sha256": sha256_file(args.ranking),
+            "variants": outputs,
+        },
+    )
 
 
 def make_box_fisher_variants(args: argparse.Namespace) -> None:
@@ -1244,7 +1397,9 @@ def evaluate_safety(args: argparse.Namespace) -> None:
     validate_positive([args.batch_size, args.max_new_tokens], "safety runtime values")
     source = read_jsonl(args.manifest)
     prompts = [str(row["prompt"]) for row in source]
-    payloads = [json.loads(path.read_text(encoding="utf-8")) for path in args.scale_files]
+    payloads = [
+        json.loads(path.read_text(encoding="utf-8")) for path in args.scale_files
+    ]
     max_top_k = max(int(payload["top_k"]) for payload in payloads)
     ranking = read_positive_ranking(args.ranking, max_top_k)
     model, tokenizer = load_model(args.model, args.device, args.dtype)
@@ -1417,9 +1572,7 @@ def compute(args: argparse.Namespace) -> None:
     shared_direction = torch.ones(args.top_k, dtype=torch.float32)
     reference_delta = args.reference_shared_delta * shared_direction
     if fisher_cpu.ndim == 2:
-        matrix, damping = shrunk_fisher(
-            fisher_cpu, args.shrinkage, args.damping_ratio
-        )
+        matrix, damping = shrunk_fisher(fisher_cpu, args.shrinkage, args.damping_ratio)
         epsilon = 0.5 * float(reference_delta @ matrix @ reference_delta)
         individual_direction, solver = nonnegative_natural_direction(matrix, gradient)
         individual_delta = normalize_direction(individual_direction, matrix, epsilon)
@@ -1477,7 +1630,10 @@ def compute(args: argparse.Namespace) -> None:
     }
     shared = scale_artifact("shared", ranking, shared_delta, common)
     individual = scale_artifact(
-        "individual_nonnegative", ranking, individual_delta, {**common, "solver": solver}
+        "individual_nonnegative",
+        ranking,
+        individual_delta,
+        {**common, "solver": solver},
     )
     atomic_write_json(args.output_dir / "shared_scales.json", shared)
     atomic_write_json(args.output_dir / "individual_scales.json", individual)
@@ -1504,7 +1660,9 @@ def compute(args: argparse.Namespace) -> None:
                 "fisher": str((args.output_dir / "fisher.pt").resolve()),
                 "continuations": str(continuation_path.resolve()),
                 "continuations_sha256": sha256_file(continuation_path),
-                "shared_scales": str((args.output_dir / "shared_scales.json").resolve()),
+                "shared_scales": str(
+                    (args.output_dir / "shared_scales.json").resolve()
+                ),
                 "individual_scales": str(
                     (args.output_dir / "individual_scales.json").resolve()
                 ),
@@ -1531,9 +1689,7 @@ def validate_kl(args: argparse.Namespace) -> None:
     individual_payload, individual_delta = load_scale_deltas(
         args.individual_scales, ranking, None
     )
-    if not str(individual_payload.get("mode", "")).startswith(
-        "individual_nonnegative"
-    ):
+    if not str(individual_payload.get("mode", "")).startswith("individual_nonnegative"):
         raise ValueError("KL calibration requires a nonnegative individual direction")
     model, tokenizer = load_model(args.model, args.device, args.dtype)
     alpha, handles, state = attach_selected_alphas(model, ranking)
@@ -1547,9 +1703,7 @@ def validate_kl(args: argparse.Namespace) -> None:
             with torch.no_grad():
                 alpha.fill_(1.0)
             continuations.extend(
-                sample_continuations(
-                    model, tokenizer, batch, args.continuation_tokens
-                )
+                sample_continuations(model, tokenizer, batch, args.continuation_tokens)
             )
         initial = evaluate_actual_kls(
             model,
@@ -1564,9 +1718,7 @@ def validate_kl(args: argparse.Namespace) -> None:
         target_kl = initial[0]["mean_sequence_kl"]
         scale = math.sqrt(
             target_kl
-            / max(
-                initial[1]["mean_sequence_kl"], torch.finfo(torch.float64).tiny
-            )
+            / max(initial[1]["mean_sequence_kl"], torch.finfo(torch.float64).tiny)
         )
         calibration = [
             {
@@ -1689,6 +1841,8 @@ def main() -> None:
         make_fisher_selection_variants(args)
     elif args.command == "make-box-fisher-variants":
         make_box_fisher_variants(args)
+    elif args.command == "make-floor-fisher-variants":
+        make_floor_fisher_variants(args)
     elif args.command == "make-blend-variants":
         make_blend_variants(args)
     elif args.command == "make-anchored-tail-variants":

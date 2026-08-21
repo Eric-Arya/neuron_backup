@@ -6,6 +6,7 @@ from unified_eval.fisher_grad import (
     anchored_tail_deltas,
     box_fisher_deltas,
     conservative_replacement_indices,
+    floor_fisher_deltas,
     nonnegative_natural_direction,
     normalize_direction,
     scale_artifact,
@@ -15,9 +16,7 @@ from unified_eval.fisher_grad import (
 
 def test_anchored_tail_deltas_preserve_prefix_and_scale_only_tail() -> None:
     fisher = torch.tensor([0.2, 0.4, 0.6, 0.8])
-    deltas = anchored_tail_deltas(
-        fisher, base_k=2, base_strength=0.75, tail_weight=0.5
-    )
+    deltas = anchored_tail_deltas(fisher, base_k=2, base_strength=0.75, tail_weight=0.5)
     assert torch.allclose(deltas, torch.tensor([0.75, 0.75, 0.3, 0.4]))
 
 
@@ -35,6 +34,20 @@ def test_box_fisher_deltas_match_reference_budget_and_cap() -> None:
     assert torch.all(deltas >= 0)
     assert float(deltas.max()) <= 0.75
     assert abs(achieved - target) < 1e-6
+
+
+def test_floor_fisher_deltas_hit_target_median_and_cap() -> None:
+    gradient = torch.tensor([1.0, 2.0, 3.0, 100.0])
+    curvature = torch.ones(4)
+    deltas, scale = floor_fisher_deltas(
+        gradient,
+        curvature,
+        floor=0.25,
+        target_median=0.5,
+        cap=0.75,
+    )
+    assert scale == 0.125
+    assert torch.allclose(deltas, torch.tensor([0.375, 0.5, 0.625, 0.75]))
 
 
 def test_conservative_replacement_keeps_budget_and_uses_tail() -> None:
@@ -68,9 +81,7 @@ def test_normalized_direction_hits_quadratic_budget() -> None:
 
 
 def test_scale_artifact_records_multipliers() -> None:
-    ranking = [
-        {"rank": 1, "source_rank": 2, "layer": 3, "neuron": 4, "mean_g": 0.5}
-    ]
+    ranking = [{"rank": 1, "source_rank": 2, "layer": 3, "neuron": 4, "mean_g": 0.5}]
     artifact = scale_artifact("shared", ranking, torch.tensor([0.75]), {})
     assert artifact["direction"] == "positive-only"
     assert artifact["scope"] == "last"
