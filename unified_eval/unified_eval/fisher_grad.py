@@ -175,7 +175,13 @@ def build_parser() -> argparse.ArgumentParser:
     floor.add_argument("--pool-k", type=int, default=8000)
     floor.add_argument("--active-k", type=int, nargs="+", default=[4000, 6000, 8000])
     floor.add_argument("--floors", type=float, nargs="+", default=[0.25, 0.5])
-    floor.add_argument("--target-medians", type=float, nargs="+", default=[0.6, 0.75])
+    floor.add_argument("--target-medians", type=float, nargs="+")
+    floor.add_argument(
+        "--score-scales",
+        type=float,
+        nargs="+",
+        help="Search explicit global c values instead of deriving c from a median.",
+    )
     floor.add_argument("--caps", type=float, nargs="+", default=[0.9, 1.0])
     floor.add_argument("--damping-ratios", type=float, nargs="+", default=[1.0])
 
@@ -958,16 +964,46 @@ def floor_fisher_deltas(
     if score_median <= 0:
         raise ValueError("Floor Fisher score median must be positive")
     scale = (target_median - floor) / score_median
-    deltas = (floor + scale * score).clamp(max=cap)
+    deltas = capped_floor_fisher_deltas(gradient, curvature, floor, scale, cap)
     return deltas, float(scale)
 
 
+def capped_floor_fisher_deltas(
+    gradient: torch.Tensor,
+    curvature: torch.Tensor,
+    floor: float,
+    score_scale: float,
+    cap: float,
+) -> torch.Tensor:
+    if (
+        gradient.ndim != 1
+        or curvature.ndim != 1
+        or gradient.shape != curvature.shape
+        or floor < 0
+        or score_scale <= 0
+        or cap <= floor
+        or bool((gradient < 0).any())
+        or bool((curvature <= 0).any())
+    ):
+        raise ValueError("Invalid capped floor Fisher parameters")
+    return (floor + score_scale * gradient / curvature).clamp(max=cap)
+
+
 def make_floor_fisher_variants(args: argparse.Namespace) -> None:
+    if args.target_medians is not None and args.score_scales is not None:
+        raise ValueError("Use either target-medians or score-scales, not both")
+    target_medians = (
+        args.target_medians
+        if args.target_medians is not None
+        else ([] if args.score_scales is not None else [0.6, 0.75])
+    )
+    score_scales = args.score_scales or []
     validate_positive(
         [
             args.pool_k,
             *args.active_k,
-            *args.target_medians,
+            *target_medians,
+            *score_scales,
             *args.caps,
             *args.damping_ratios,
         ],
@@ -996,8 +1032,8 @@ def make_floor_fisher_variants(args: argparse.Namespace) -> None:
             damping = damping_ratio * median_fisher
             curvature = selected_fisher + damping
             for floor in args.floors:
-                for target_median in args.target_medians:
-                    for cap in args.caps:
+                for cap in args.caps:
+                    for target_median in target_medians:
                         if not floor < target_median < cap:
                             continue
                         deltas, scale = floor_fisher_deltas(
@@ -1013,38 +1049,97 @@ def make_floor_fisher_variants(args: argparse.Namespace) -> None:
                             "cap": cap,
                             "damp": damping_ratio,
                         }
-                        encoded = "_".join(
-                            f"{name}{str(value).replace('.', 'p')}"
-                            for name, value in fields.items()
-                        )
-                        label = f"floorfisher_k{active_k}_{encoded}"
-                        artifact = scale_artifact(
-                            "individual_nonnegative_floor_fisher",
+                        write_floor_fisher_variant(
+                            args,
+                            outputs,
                             selected_ranking,
                             deltas,
-                            {
-                                "label": label,
-                                "source_fisher": str(args.fisher.resolve()),
-                                "source_fisher_sha256": sha256_file(args.fisher),
-                                "pool_k": args.pool_k,
-                                "active_k": active_k,
-                                "score": "gradient / (Fisher + damping)",
-                                "damping_ratio": damping_ratio,
-                                "damping": damping,
-                                "direct_floor": floor,
-                                "target_median": target_median,
-                                "delta_cap": cap,
-                                "score_scale_c": scale,
-                                "actual_delta_min": float(deltas.min()),
-                                "actual_delta_median": float(deltas.median()),
-                                "actual_delta_mean": float(deltas.mean()),
-                                "actual_delta_max": float(deltas.max()),
-                                "capped_count": int((deltas == cap).sum()),
-                            },
+                            active_k,
+                            damping,
+                            damping_ratio,
+                            floor,
+                            cap,
+                            scale,
+                            fields,
+                            target_median,
                         )
-                        path = args.output_dir / f"{label}.json"
-                        atomic_write_json(path, artifact)
-                        outputs.append({"label": label, "path": str(path.resolve())})
+                    for scale in score_scales:
+                        deltas = capped_floor_fisher_deltas(
+                            selected_gradient, curvature, floor, scale, cap
+                        )
+                        fields = {
+                            "floor": floor,
+                            "c": scale,
+                            "cap": cap,
+                            "damp": damping_ratio,
+                        }
+                        write_floor_fisher_variant(
+                            args,
+                            outputs,
+                            selected_ranking,
+                            deltas,
+                            active_k,
+                            damping,
+                            damping_ratio,
+                            floor,
+                            cap,
+                            scale,
+                            fields,
+                            None,
+                        )
+    finalize_floor_fisher_manifest(args, outputs)
+
+
+def write_floor_fisher_variant(
+    args: argparse.Namespace,
+    outputs: list[dict[str, str]],
+    selected_ranking: Sequence[dict[str, Any]],
+    deltas: torch.Tensor,
+    active_k: int,
+    damping: float,
+    damping_ratio: float,
+    floor: float,
+    cap: float,
+    scale: float,
+    fields: dict[str, float],
+    target_median: float | None,
+) -> None:
+    encoded = "_".join(
+        f"{name}{str(value).replace('.', 'p')}" for name, value in fields.items()
+    )
+    label = f"floorfisher_k{active_k}_{encoded}"
+    artifact = scale_artifact(
+        "individual_nonnegative_floor_fisher",
+        selected_ranking,
+        deltas,
+        {
+            "label": label,
+            "source_fisher": str(args.fisher.resolve()),
+            "source_fisher_sha256": sha256_file(args.fisher),
+            "pool_k": args.pool_k,
+            "active_k": active_k,
+            "score": "gradient / (Fisher + damping)",
+            "damping_ratio": damping_ratio,
+            "damping": damping,
+            "direct_floor": floor,
+            "target_median": target_median,
+            "delta_cap": cap,
+            "score_scale_c": scale,
+            "actual_delta_min": float(deltas.min()),
+            "actual_delta_median": float(deltas.median()),
+            "actual_delta_mean": float(deltas.mean()),
+            "actual_delta_max": float(deltas.max()),
+            "capped_count": int((deltas == cap).sum()),
+        },
+    )
+    path = args.output_dir / f"{label}.json"
+    atomic_write_json(path, artifact)
+    outputs.append({"label": label, "path": str(path.resolve())})
+
+
+def finalize_floor_fisher_manifest(
+    args: argparse.Namespace, outputs: list[dict[str, str]]
+) -> None:
     if not outputs:
         raise ValueError("No valid floor Fisher parameter combinations")
     atomic_write_json(

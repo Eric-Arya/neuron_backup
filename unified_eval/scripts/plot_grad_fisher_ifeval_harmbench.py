@@ -18,6 +18,20 @@ OUTPUT_DIR = ROOT / "figures"
 DIRECT_COLOR = "#0072B2"
 FISHER_COLOR = "#D55E00"
 
+DISPLAY_LABELS = {
+    "direct 2k, s=1",
+    "direct 4k, s=1",
+    "direct 5k, s=1",
+    "direct 6k, s=1",
+    "direct 8k, s=0.6",
+    "direct 8k, s=0.75",
+    "direct 8k, s=1",
+    "Fisher 12k, c=.22",
+    "Fisher 12k, c=.24",
+    "Fisher 12k, c=.48",
+    "Fisher 12k, cap=.6",
+}
+
 
 @dataclass(frozen=True)
 class Point:
@@ -26,6 +40,8 @@ class Point:
     family: str
     marker: str
     offset: tuple[int, int]
+    harmbench_summary: str | None = None
+    harmbench_experiment: str | None = None
 
 
 POINTS = (
@@ -137,19 +153,67 @@ POINTS = (
         "v",
         (-100, 18),
     ),
+    Point(
+        "Fisher 12k, c=.22",
+        "grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75",
+        "fisher",
+        "*",
+        (-125, 14),
+        "grad_floor_fisher_wikitext2048_gentler12k/frozen_harmbench_c0p22/summary.json",
+        "floorfisher_k12000_floor0p0_c0p22_cap0p75_damp1p0",
+    ),
+    Point(
+        "Fisher 12k, c=.24",
+        "grad_floorfisher_wt2048_k12000_f0_c0p24_cap0p75",
+        "fisher",
+        "*",
+        (-98, -21),
+        "grad_floor_fisher_wikitext2048_gentle12k/frozen_harmbench_c0p24/summary.json",
+        "floorfisher_k12000_floor0p0_c0p24_cap0p75_damp1p0",
+    ),
+    Point(
+        "Fisher 12k, c=.48",
+        "grad_floorfisher_wt2048_k12000_f0_c0p48",
+        "fisher",
+        "*",
+        (8, -17),
+        "grad_floor_fisher_wikitext2048_finalists/frozen_harmbench/summary.json",
+        "floorfisher_k12000_floor0p0_c0p48_cap0p75_damp1p0",
+    ),
+    Point(
+        "Fisher 12k, cap=.6",
+        "grad_floorfisher_wt2048_k12000_f0_c0p56_cap0p6",
+        "fisher",
+        "h",
+        (-120, -4),
+        "grad_floor_fisher_wikitext2048_smaller_cap/frozen_harmbench_cap0p6_f0_c0p56/summary.json",
+        "floorfisher_k12000_floor0p0_c0p56_cap0p6_damp1p0",
+    ),
 )
 
 
 def load_point(point: Point) -> dict[str, float | str]:
     path = RESULTS / point.run_dir / "summary.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
+    if point.harmbench_summary is None:
+        harmbench = float(payload["harmbench"]["attack_success_rate"])
+    else:
+        harmbench_payload = json.loads(
+            (RESULTS / point.harmbench_summary).read_text(encoding="utf-8")
+        )
+        match = next(
+            row
+            for row in harmbench_payload["summaries"]
+            if row["experiment"] == point.harmbench_experiment
+        )
+        harmbench = float(match["attack_success_rate"])
     return {
         "label": point.label,
         "family": point.family,
         "marker": point.marker,
         "offset": point.offset,
         "ifeval": float(payload["ifeval"]["strict"]["prompt_accuracy"]),
-        "harmbench": float(payload["harmbench"]["attack_success_rate"]),
+        "harmbench": harmbench,
     }
 
 
@@ -159,7 +223,7 @@ def normalize_svg(path: Path) -> None:
 
 
 def main() -> None:
-    rows = [load_point(point) for point in POINTS]
+    rows = [load_point(point) for point in POINTS if point.label in DISPLAY_LABELS]
     direct_s1 = [row for row in rows if row["family"] == "direct"]
 
     plt.rcParams.update(

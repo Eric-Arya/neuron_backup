@@ -2,20 +2,20 @@
 
 ## Recommendation
 
-Use **direct positive-only Grad scaling with the first-cue-256 ranking, `k=4,000`,
-`s=1`** as the balanced operating point. On the frozen sets it gives 4.0%
-HarmBench ASR and 64.5% strict IFEval prompt accuracy. If lower ASR is more
-important than degeneration, direct `k=8,000`, `s=0.75` is the safety-first
-alternative: 2.5% ASR and 62.0% strict IFEval, but 115/200 HarmBench responses
-are repetitive versus 94/200 at `k=4,000`.
+Under the selected feasibility criterion of **frozen HarmBench ASR below 10%**,
+use the 2,048-context diagonal-Fisher controller with the original first-cue
+Grad prefix, `k=12,000`, zero direct floor, `c=0.22`, cap 0.75, and damping of
+one median Fisher diagonal. It gives 7.5% frozen ASR, 67.0% strict IFEval, and
+46/100 MATH. It exactly matches direct `k=8,000`, `s=0.6` on IFEval while
+improving MATH by four points; frozen HarmBench repetition also falls from 103
+to 94 responses, at the cost of one additional successful attack.
 
-Fisher should not currently determine the activation multipliers. Every tested
-individual, bounded, blended, tail-augmented, full-selection, and
-conservative-replacement Fisher controller was dominated by a direct
-controller once HarmBench repetition and frozen IFEval were considered. A
-later direct-floor plus Fisher controller substantially improved the individual
-Fisher results, but still produced a different trade-off rather than a Pareto
-improvement over direct scaling.
+Two stronger Fisher alternatives remain useful. `c=0.24` gives 7.0% ASR,
+65.5% IFEval, and 47/100 MATH with the same 94 HarmBench repetitions. `c=0.48`
+is the math/safety-oriented point: 1.5% ASR, 64.0% IFEval, and 49/100 MATH,
+but 110/200 HarmBench responses are repetitive. These results supersede the
+earlier direct-only recommendation: diagonal Fisher is useful when its score is
+applied to a larger Grad prefix with zero floor and `c` is searched directly.
 
 ## Protocol
 
@@ -23,7 +23,9 @@ improvement over direct scaling.
 - Ranking: first completed refusal cue from 256 safe on-policy SNCorpus raw
   responses, tail/final-position scope, positive gradients only.
 - General corpus: `Salesforce/wikitext`, `wikitext-2-raw-v1` train split.
-- Fisher data: 1,024 deterministic raw contexts of exactly 128 Llama-3 tokens.
+- Initial Fisher data: 1,024 deterministic raw contexts of exactly 128 Llama-3
+  tokens. The final expanded study uses 2,048 such contexts and a top-16k
+  diagonal Fisher pool.
 - KL validation data: 256 additional disjoint raw contexts.
 - Fisher continuations: 32 tokens sampled from the unedited model with no chat
   template.
@@ -229,6 +231,57 @@ finalists are nine points below the unedited model and six points below direct
 edit. The BBH and MATH100 results therefore support the broader conclusion that
 capability preservation is benchmark-dependent rather than uniform.
 
+### Expanded 2,048-context, top-16k diagonal study
+
+The follow-up doubled the WikiText Fisher corpus to 2,048 raw 128-token
+contexts and expanded the diagonal pool to the first 16,000 neurons in the
+same first-cue Grad ranking. With four probes and 32 generated continuation
+tokens, the run accumulated 8,192 score vectors over 65,511 tokens in 888.5
+seconds. The median positive Fisher diagonal was `0.00019967`; damping remained
+one median diagonal. No quadratic epsilon or actual-KL match determined the
+final controller. Instead, the searched multiplier was
+
+\[
+\Delta_j(c)=\min\left(s_{\max},\ s_{\min}+
+c\frac{|g_j^{\mathrm{safe}}|}{F_{jj}+\lambda}\right).
+\]
+
+For the top 12k prefix, the median raw score was 1.1589. This statistic centered
+the `c` grids, but `c` was selected empirically using HarmBench-47 tuning,
+disjoint HarmBench-150 confirmation, and disjoint IFEval-64 development. The
+larger-`k` phase first held floor 0.4, cap 0.75, and damping fixed while testing
+8k, 12k, and 16k. The 16k variants reached 0% tuning/confirmation ASR but caused
+the most repetition. Twelve thousand neurons gave the best development balance
+and was fixed before lowering the floor.
+
+The next phase searched floors 0, 0.1, 0.2, 0.3, and 0.4. Zero floor was best:
+it lets low-score Grad neurons receive nearly no edit instead of imposing a
+shared intervention on all 12k coordinates. Reducing the cap from 0.75 to 0.6
+lowered repetition but also removed much of the safety and MATH gain; cap 0.5
+was already too weak on HarmBench-47.
+
+After the feasibility criterion was set to frozen ASR below 10%, a final gentle
+search covered `c=0.18` through 0.40 at zero floor and cap 0.75. `c=0.18` and
+0.20 exceeded 10% tuning ASR; `c=0.22` was the lowest feasible boundary. The
+validated frontier is:
+
+| Controller | Median/mean delta | Capped | Frozen ASR | HB rep. | Frozen strict IFEval | MATH100 | MATH rep. |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Direct 8k, `s=0.6` | 0.600/0.600 | 0 | 6.5% | 103 | **67.0%** | 42 | **12** |
+| Fisher 12k, floor 0, `c=0.22`, cap 0.75 | 0.255/0.300 | 705 | 7.5% | **94** | **67.0%** | 46 | 18 |
+| Fisher 12k, floor 0, `c=0.24`, cap 0.75 | 0.278/0.323 | 851 | 7.0% | **94** | 65.5% | 47 | 18 |
+| Fisher 12k, floor 0, `c=0.48`, cap 0.75 | 0.556/0.535 | 3,523 | 1.5% | 110 | 64.0% | **49** | 15 |
+| Fisher 12k, floor 0, `c=0.56`, cap 0.6 | 0.600/0.511 | 6,710 | 3.5% | 103 | 64.0% | 44 | 20 |
+| Fisher 12k, floor 0.4, `c=0.12`, cap 0.75 | 0.539/0.559 | 977 | **1.0%** | 118 | 62.0% | — | — |
+
+The main capability result is the `c=0.22` row: compared with direct 8k,
+`s=0.6`, it holds IFEval fixed at 67.0%, raises MATH100 from 42 to 46, and
+reduces HarmBench repetition by nine responses while remaining below the 10%
+ASR threshold. The `c=0.48` row is stronger for MATH and safety, scoring one
+point above the unedited model on MATH100, but its higher repetition and
+three-point IFEval loss make it a different operating point rather than the
+balanced default.
+
 ## Frozen comparison
 
 All rows use the same ranking, model, decoding, raw HarmBench set, and IFEval
@@ -249,6 +302,10 @@ sequence appears at least five times.
 | 80% Fisher blend, actual-KL `s=0.6` | variable/8,000 | 6.5% | 107 | 65.0% | 74.36% |
 | Floor Fisher 8k, floor 0.35, median 0.6, cap 0.75 | 8,000 | 6.0% | 102 | 65.0% | 74.36% |
 | Floor Fisher 8k, floor 0.4, median 0.6, cap 0.75 | 8,000 | 5.5% | 101 | 65.5% | 74.68% |
+| Floor Fisher 12k, floor 0, `c=0.22`, cap 0.75 | 12,000 | 7.5% | 94 | **67.0%** | **77.24%** |
+| Floor Fisher 12k, floor 0, `c=0.24`, cap 0.75 | 12,000 | 7.0% | 94 | 65.5% | 76.28% |
+| Floor Fisher 12k, floor 0, `c=0.48`, cap 0.75 | 12,000 | 1.5% | 110 | 64.0% | 72.12% |
+| Floor Fisher 12k, floor 0, `c=0.56`, cap 0.6 | 12,000 | 3.5% | 103 | 64.0% | 73.08% |
 | Diagonal Fisher, cap 1 | variable/8,000 | 4.5% | 98 | 61.0% | 69.23% |
 | Fisher full select, 4k, `s=1` | 4,000 | 3.0% | 133 | 61.5% | 68.91% |
 | Fisher full select, 6k, `s=1` | 6,000 | 2.0% | 130 | 54.0% | 65.71% |
@@ -256,11 +313,11 @@ sequence appears at least five times.
 
 ![Direct and Fisher-guided HarmBench–IFEval trade-off](../figures/grad_fisher_ifeval_harmbench.png)
 
-The figure includes only direct and Fisher-guided first-cue Grad interventions
-with both frozen metrics available. The connected blue trajectory is the direct
-`s=1` neuron-count sweep; direct 8k at `s=0.6` and `s=0.75` is shown separately
-because the strength differs. Fisher-guided variants are not connected because
-their selection and scaling rules are not a single ordered trajectory.
+The figure includes the direct first-cue Grad baselines and the selected new
+12k Fisher-guided endpoints with both frozen metrics available. The connected
+blue trajectory is the direct `s=1` neuron-count sweep; direct 8k at `s=0.6` and
+`s=0.75` is shown separately because the strength differs. Fisher-guided
+variants are not connected because `c` and the cap differ.
 
 The direct 4k and 6k failures are nested on frozen HarmBench: direct 6k fixes
 four of direct 4k's eight attacks and introduces no new attacks. That real safety
@@ -273,41 +330,50 @@ safety controller.
 
 ## Interpretation
 
-At present, diagonal Fisher is useful as a diagnostic and can provide a smooth
-safety/capability trade-off when combined with a direct floor, but it is still
-not the recommended controller.
-The WikiText curvature estimate does detect directions that strongly alter model
-behavior, yet low quadratic cost around the unedited model does not predict good
-instruction following after a large activation edit. Shrinkage, damping, smaller
-radii, actual-KL calibration, coordinate caps, an 8k Fisher pool, direct–Fisher
-blending, tail-only allocation, top-4k redistribution, full curvature selection,
-limited replacement, and bounded direct-floor scaling all failed to produce a
-Pareto improvement.
+The expanded study changes the conclusion. Diagonal Fisher is not reliable as
+an unconstrained natural-gradient controller, selector, or large-delta KL
+surrogate, but its local score is useful for distributing a moderate edit over
+a larger Grad prefix. The important ingredients are zero direct floor, a cap,
+and direct empirical search of `c`; forcing every selected neuron to receive a
+substantial edit was responsible for much of the earlier capability loss.
 
-The direct sweep gives two defensible choices:
+Under the chosen ASR-below-10% criterion, the defensible choices are:
 
-1. **Balanced default:** `k=4,000`, `s=1`.
-2. **Safety-first alternative:** `k=8,000`, `s=0.75`, accepting 2.5 fewer strict
-   IFEval prompt points and 21 additional repetitive HarmBench outputs for a
-   1.5-point ASR reduction.
+1. **Capability-oriented default:** Fisher 12k, floor 0, `c=0.22`, cap 0.75.
+   It gives 7.5% ASR, 67.0% IFEval, and 46/100 MATH.
+2. **Intermediate:** Fisher 12k, floor 0, `c=0.24`, cap 0.75. It gives 7.0%
+   ASR, 65.5% IFEval, and 47/100 MATH.
+3. **Math/safety-oriented:** Fisher 12k, floor 0, `c=0.48`, cap 0.75. It gives
+   1.5% ASR, 64.0% IFEval, and 49/100 MATH, accepting more repetition.
 
-The direct-floor controller is an improvement over the unbounded individual
-Fisher method, but not over the best direct baselines. A future Fisher attempt
-should change the objective or general-data distribution rather than only tune
-damping or KL radius—for example, measure curvature on instruction-following
-continuations and explicitly penalize repetition.
+The result also sharpens the research trade-off. Direct 8k, `s=0.6` and Fisher
+12k, `c=0.22` have identical frozen IFEval, but Fisher recovers four MATH points
+through a nonuniform allocation. Moving from `c=0.22` to 0.48 gains three MATH
+points and six ASR points while losing three IFEval points and adding 16
+repetitive HarmBench responses. Thus general capability is multidimensional:
+IFEval and mathematical reasoning do not move together under neuron editing.
 
 ## Artifacts
 
 - WikiText contexts: `/workspace/xcy/dataset/wikitext/wikitext-2-raw-v1/firstcue_fisher_seed42/`
+- Expanded WikiText contexts:
+  `/workspace/xcy/dataset/wikitext/wikitext-2-raw-v1/firstcue_fisher_seed42_n2048/`
 - Dense Fisher: `results/grad_firstcue_fisher_wikitext1024_k2000/`
 - Diagonal 8k Fisher: `results/grad_firstcue_fisher_diag_wikitext1024_k8000/`
+- Expanded diagonal 16k Fisher:
+  `results/grad_firstcue_fisher_diag_wikitext2048_k16000/`
 - Fisher scale sweep: `results/grad_fisher_diag_k8000_variant_sweep/`
 - Fisher selection sweep: `results/grad_fisher_selection_k8000_variant_sweep/`
 - Conservative replacement sweep: `results/grad_fisher_replacement_k8000_variant_sweep/`
 - Direct-floor Fisher primary/local sweeps:
   `results/grad_floor_fisher_primary_sweep/` and
   `results/grad_floor_fisher_k8000_local/`
+- Expanded 12k floor/cap sweeps:
+  `results/grad_floor_fisher_wikitext2048_larger_k/`,
+  `results/grad_floor_fisher_wikitext2048_lower_floor/`,
+  `results/grad_floor_fisher_wikitext2048_smaller_cap/`,
+  `results/grad_floor_fisher_wikitext2048_gentle12k/`, and
+  `results/grad_floor_fisher_wikitext2048_gentler12k/`
 - Direct-floor Fisher BBH finalists:
   `results/bbh_grad_floorfisher_f0p35_m0p6_c0p75_d1_firstcue256_k8000_raw_cot_fp32/`
   and

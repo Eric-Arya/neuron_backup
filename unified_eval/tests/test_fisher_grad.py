@@ -5,6 +5,7 @@ import torch
 from unified_eval.fisher_grad import (
     anchored_tail_deltas,
     box_fisher_deltas,
+    capped_floor_fisher_deltas,
     conservative_replacement_indices,
     floor_fisher_deltas,
     nonnegative_natural_direction,
@@ -48,6 +49,17 @@ def test_floor_fisher_deltas_hit_target_median_and_cap() -> None:
     )
     assert scale == 0.125
     assert torch.allclose(deltas, torch.tensor([0.375, 0.5, 0.625, 0.75]))
+
+
+def test_capped_floor_fisher_deltas_use_explicit_score_scale() -> None:
+    deltas = capped_floor_fisher_deltas(
+        torch.tensor([1.0, 2.0, 100.0]),
+        torch.ones(3),
+        floor=0.1,
+        score_scale=0.2,
+        cap=0.7,
+    )
+    assert torch.allclose(deltas, torch.tensor([0.3, 0.5, 0.7]))
 
 
 def test_conservative_replacement_keeps_budget_and_uses_tail() -> None:
