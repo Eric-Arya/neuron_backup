@@ -202,6 +202,23 @@ def build_parser() -> argparse.ArgumentParser:
     floor.add_argument("--caps", type=float, nargs="+", default=[0.9, 1.0])
     floor.add_argument("--damping-ratios", type=float, nargs="+", default=[1.0])
 
+    dense_prefix = subparsers.add_parser("make-dense-prefix-variants")
+    dense_prefix.add_argument("--fisher", type=Path, required=True)
+    dense_prefix.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
+    dense_prefix.add_argument("--output-dir", type=Path, required=True)
+    dense_prefix.add_argument(
+        "--active-k", type=int, nargs="+", default=[250, 500, 1000, 1500, 2000]
+    )
+    dense_prefix.add_argument(
+        "--target-positive-medians",
+        type=float,
+        nargs="+",
+        default=[0.1, 0.2, 0.3, 0.45, 0.6],
+    )
+    dense_prefix.add_argument("--cap", type=float, default=0.75)
+    dense_prefix.add_argument("--shrinkage", type=float, default=0.5)
+    dense_prefix.add_argument("--damping-ratio", type=float, default=0.01)
+
     blend = subparsers.add_parser("make-blend-variants")
     blend.add_argument("--first-scales", type=Path, required=True)
     blend.add_argument("--second-scales", type=Path, required=True)
@@ -1224,6 +1241,102 @@ def finalize_floor_fisher_manifest(
     )
 
 
+def make_dense_prefix_variants(args: argparse.Namespace) -> None:
+    """Solve bounded nonnegative directions using dense Fisher prefixes."""
+    validate_positive(
+        [
+            *args.active_k,
+            *args.target_positive_medians,
+            args.cap,
+            args.damping_ratio,
+        ],
+        "dense prefix variant values",
+    )
+    if not 0 <= args.shrinkage < 1:
+        raise ValueError("dense prefix shrinkage must be in [0, 1)")
+    if any(value >= args.cap for value in args.target_positive_medians):
+        raise ValueError("dense prefix target medians must be below the cap")
+
+    payload = torch.load(args.fisher, map_location="cpu", weights_only=True)
+    fisher = payload["fisher"].float()
+    gradient = payload["gradient"].float().clamp_min(0)
+    if fisher.ndim != 2 or fisher.shape[0] != fisher.shape[1]:
+        raise ValueError("dense prefix variants require a square full Fisher")
+    max_k = max(args.active_k)
+    if max_k > fisher.shape[0] or gradient.numel() < max_k:
+        raise ValueError("dense Fisher artifact does not cover the requested prefixes")
+
+    ranking = read_positive_ranking(args.ranking, max_k)
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    outputs = []
+    for active_k in args.active_k:
+        raw_prefix = fisher[:active_k, :active_k].clone()
+        matrix, damping = shrunk_fisher(
+            raw_prefix, args.shrinkage, args.damping_ratio
+        )
+        direction, solver = nonnegative_natural_direction(
+            matrix, gradient[:active_k]
+        )
+        positive = direction[direction > 0]
+        if not positive.numel():
+            raise ValueError(f"dense Fisher K={active_k} direction is all zero")
+        direction_positive_median = float(positive.median())
+        for target_median in args.target_positive_medians:
+            direction_scale = target_median / direction_positive_median
+            deltas = (direction * direction_scale).clamp(max=args.cap)
+            encoded_median = str(target_median).replace(".", "p")
+            encoded_cap = str(args.cap).replace(".", "p")
+            encoded_shrinkage = str(args.shrinkage).replace(".", "p")
+            encoded_damping = str(args.damping_ratio).replace(".", "p")
+            label = (
+                f"densefisher_k{active_k}_m{encoded_median}_cap{encoded_cap}_"
+                f"shrink{encoded_shrinkage}_damp{encoded_damping}"
+            )
+            artifact = scale_artifact(
+                "dense_full_fisher_nonnegative_capped",
+                ranking[:active_k],
+                deltas,
+                {
+                    "label": label,
+                    "source_fisher": str(args.fisher.resolve()),
+                    "source_fisher_sha256": sha256_file(args.fisher),
+                    "active_k": active_k,
+                    "uses_off_diagonal_fisher": True,
+                    "shrinkage": args.shrinkage,
+                    "damping_ratio": args.damping_ratio,
+                    "damping": damping,
+                    "direct_floor": 0.0,
+                    "delta_cap": args.cap,
+                    "target_positive_median": target_median,
+                    "direction_positive_median": direction_positive_median,
+                    "direction_scale": direction_scale,
+                    "actual_delta_min": float(deltas.min()),
+                    "actual_delta_median": float(deltas.median()),
+                    "actual_positive_delta_median": float(deltas[deltas > 0].median()),
+                    "actual_delta_mean": float(deltas.mean()),
+                    "actual_delta_max": float(deltas.max()),
+                    "positive_count": int((deltas > 0).sum()),
+                    "capped_count": int((deltas == args.cap).sum()),
+                    "solver": solver,
+                },
+            )
+            path = args.output_dir / f"{label}.json"
+            atomic_write_json(path, artifact)
+            outputs.append({"label": label, "path": str(path.resolve())})
+
+    atomic_write_json(
+        args.output_dir / "manifest.json",
+        {
+            "fisher": str(args.fisher.resolve()),
+            "fisher_sha256": sha256_file(args.fisher),
+            "ranking": str(args.ranking.resolve()),
+            "ranking_sha256": sha256_file(args.ranking),
+            "uses_off_diagonal_fisher": True,
+            "variants": outputs,
+        },
+    )
+
+
 def make_box_fisher_variants(args: argparse.Namespace) -> None:
     validate_positive(
         [
@@ -2010,6 +2123,8 @@ def main() -> None:
         make_box_fisher_variants(args)
     elif args.command == "make-floor-fisher-variants":
         make_floor_fisher_variants(args)
+    elif args.command == "make-dense-prefix-variants":
+        make_dense_prefix_variants(args)
     elif args.command == "make-blend-variants":
         make_blend_variants(args)
     elif args.command == "make-anchored-tail-variants":
