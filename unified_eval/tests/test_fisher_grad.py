@@ -13,6 +13,10 @@ from unified_eval.fisher_grad import (
     scale_artifact,
     shrunk_fisher,
 )
+from unified_eval.verify_approximations import (
+    directional_curvatures,
+    validate_t_values,
+)
 
 
 def test_anchored_tail_deltas_preserve_prefix_and_scale_only_tail() -> None:
@@ -99,3 +103,15 @@ def test_scale_artifact_records_multipliers() -> None:
     assert artifact["scope"] == "last"
     assert artifact["rows"][0]["delta"] == 0.75
     assert artifact["rows"][0]["multiplier"] == 1.75
+
+
+def test_directional_curvatures_keep_cross_coordinate_terms() -> None:
+    score_vectors = torch.tensor([[[1.0, 2.0], [3.0, 4.0]]])
+    directions = torch.tensor([[2.0, 1.0]])
+    full, diagonal = directional_curvatures(score_vectors, directions)
+    assert torch.allclose(full, torch.tensor([[58.0]]))
+    assert torch.allclose(diagonal, torch.tensor([[30.0]]))
+
+
+def test_validate_t_values_sorts_and_requires_endpoints() -> None:
+    assert validate_t_values([1, 0.5, 0, 0.5]) == [0.0, 0.5, 1.0]

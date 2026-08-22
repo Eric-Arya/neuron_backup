@@ -372,6 +372,17 @@ def attach_selected_alphas(
                 current_neurons,
                 alpha[current_ranks].to(dtype=activation.dtype),
             )
+            row_starts = state.get("start_positions")
+            if row_starts is not None:
+                starts = torch.as_tensor(row_starts, device=activation.device)
+                if starts.ndim != 1 or starts.numel() != activation.shape[0]:
+                    raise ValueError("start_positions must contain one value per row")
+                positions = torch.arange(
+                    activation.shape[1], device=activation.device
+                ).view(1, -1, 1)
+                mask = positions >= starts.view(-1, 1, 1)
+                scaled = torch.where(mask, activation * multiplier, activation)
+                return (scaled, *inputs[1:])
             start = (
                 0
                 if state.get("decode_all") and activation.shape[1] == 1
