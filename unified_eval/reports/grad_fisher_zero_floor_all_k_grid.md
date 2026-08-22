@@ -11,8 +11,9 @@ controller sizes. Every Fisher controller used
 \]
 
 with floor zero, positive-only direction, and final-position intervention.
-The plotted capability trajectory contains `K=1k, 2k, 4k, 12k, 16k`.
-Capability evaluation for `K=6k` and `K=8k` was intentionally deferred.
+The plotted capability trajectory contains every tested size:
+`K=1k, 2k, 4k, 6k, 8k, 12k, 16k`. A stronger `K=12k, c=0.48`
+point is also plotted as a separate fixed-K branch.
 
 The main result is that the larger zero-floor Fisher controllers reach about
 7.5% frozen HarmBench ASR while retaining 67.0% strict IFEval, 62.5--63.5%
@@ -48,16 +49,18 @@ show the trajectory. Ties favored fewer repetitive responses and then smaller
 | 1k | 0.64 | 40.43% | 38.5% | 67.5% | 63.5% | 49.0% |
 | 2k | 0.64 | 25.53% | 21.0% | 66.5% | 61.5% | 48.0% |
 | 4k | 0.40 | 17.02% | 15.0% | 65.5% | 62.0% | 46.0% |
-| 6k | 0.52 | 10.64% | 7.5% | deferred | deferred | deferred |
-| 8k | 0.48 | 6.38% | 7.0% | deferred | deferred | deferred |
+| 6k | 0.52 | 10.64% | 7.5% | 66.0% | 61.0% | 47.0% |
+| 8k | 0.48 | 6.38% | 7.0% | 63.5% | 63.5% | 45.0% |
 | 12k | 0.22 | 8.51% | 7.5% | 67.0% | 62.5% | 46.0% |
+| 12k | 0.48 | 0.00% | 1.5% | 64.0% | 65.0% | 49.0% |
 | 16k | 0.18 | 6.38% | 7.5% | 67.0% | 63.5% | 47.0% |
 
-The trajectory is not monotone in capability cost. The 16k controller is much
-safer than the 1k--4k controllers while recovering IFEval and BBH to the 1k
-level. Its MATH100 accuracy is one point above 12k and two points below 1k.
-The 12k and 16k points coincide in the IFEval--HarmBench panel at
-`(67.0, 7.5)` but remain separately identified as F4 and F5.
+The trajectory is not monotone in capability cost. The 8k point dips to 63.5%
+IFEval and 45% MATH100, while the gentler 12k and 16k controllers recover to
+67.0% IFEval. The stronger 12k `c=0.48` controller reaches 1.5% frozen ASR and
+improves BBH/MATH100 to 65%/49%, but lowers IFEval to 64%. The 12k `c=0.22`
+and 16k points coincide in the IFEval--HarmBench panel at `(67.0, 7.5)` but
+remain separately identified as F6 and F8.
 
 ## KL-matched direct gate
 
@@ -96,8 +99,8 @@ All plotted direct Grad points use first-cue-256.
 - `figures/math500_harmbench_tradeoff_main_only.{png,pdf,svg}`
 - `figures/ifeval_harmbench_tradeoff_main_only.{png,pdf,svg}`
 
-The Fisher IDs are F1--F5 for `(K,c)=(1k,.64),(2k,.64),(4k,.40),
-(12k,.22),(16k,.18)`.
+The Fisher IDs are F1--F8 for `(K,c)=(1k,.64),(2k,.64),(4k,.40),
+(6k,.52),(8k,.48),(12k,.22),(12k,.48),(16k,.18)`.
 
 ## Artifacts
 

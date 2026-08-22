@@ -160,12 +160,36 @@ FISHER_SOURCES = (
         "floorfisher_k4000_floor0p0_c0p4_cap0p75_damp1p0",
     ),
     FisherSource(
+        "K=6k, c=.52",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k6000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k6000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k6000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard1-of-2/summary.json",
+        "floorfisher_k6000_floor0p0_c0p52_cap0p75_damp1p0",
+    ),
+    FisherSource(
+        "K=8k, c=.48",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k8000_c0p48_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k8000_c0p48_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k8000_c0p48_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard1-of-2/summary.json",
+        "floorfisher_k8000_floor0p0_c0p48_cap0p75_damp1p0",
+    ),
+    FisherSource(
         "K=12k, c=.22",
         "grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75",
         "math100_grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75",
         "bbh_grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75_raw_cot_fp32",
         "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard0-of-2/summary.json",
         "floorfisher_k12000_floor0p0_c0p22_cap0p75_damp1p0",
+    ),
+    FisherSource(
+        "K=12k, c=.48",
+        "grad_floorfisher_wt2048_k12000_f0_c0p48",
+        "math100_grad_floorfisher_wt2048_k12000_f0_c0p48_cap0p75",
+        "bbh_grad_floorfisher_wt2048_k12000_f0_c0p48_cap0p75_raw_cot_fp32",
+        "grad_floor_fisher_wikitext2048_finalists/frozen_harmbench/summary.json",
+        "floorfisher_k12000_floor0p0_c0p48_cap0p75_damp1p0",
     ),
     FisherSource(
         "K=16k, c=.18",
@@ -352,8 +376,11 @@ POINT_IDS = {
     (FISHER_GRAD, "K=1k, c=.64"): "F1",
     (FISHER_GRAD, "K=2k, c=.64"): "F2",
     (FISHER_GRAD, "K=4k, c=.40"): "F3",
-    (FISHER_GRAD, "K=12k, c=.22"): "F4",
-    (FISHER_GRAD, "K=16k, c=.18"): "F5",
+    (FISHER_GRAD, "K=6k, c=.52"): "F4",
+    (FISHER_GRAD, "K=8k, c=.48"): "F5",
+    (FISHER_GRAD, "K=12k, c=.22"): "F6",
+    (FISHER_GRAD, "K=12k, c=.48"): "F7",
+    (FISHER_GRAD, "K=16k, c=.18"): "F8",
 }
 
 
@@ -367,8 +394,9 @@ def point_key(benchmark: str) -> str:
         "Point IDs — SN1–4: α=1,4,6,8  |  "
         "IA1–6: α=1,1.5,2,2.5,3,3.5  |  "
         f"P1–{2 if benchmark == 'bbh' else 4}: K={patch_values}\n"
-        "D1–4: (K,s)=(1k,1),(2k,1),(4k,1),(4k,.75)  |  "
-        "F1–5: (K,c)=(1k,.64),(2k,.64),(4k,.40),(12k,.22),(16k,.18)"
+        "D1–4: (K,s)=(1k,1),(2k,1),(4k,1),(4k,.75)\n"
+        "F1–8: (K,c)=(1k,.64),(2k,.64),(4k,.40),(6k,.52),(8k,.48),"
+        "(12k,.22),(12k,.48),(16k,.18)"
     )
 
 
@@ -395,7 +423,10 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (FISHER_GRAD, "K=1k, c=.64"): (8, 7),
         (FISHER_GRAD, "K=2k, c=.64"): (8, 7),
         (FISHER_GRAD, "K=4k, c=.40"): (-25, 7),
+        (FISHER_GRAD, "K=6k, c=.52"): (-25, -18),
+        (FISHER_GRAD, "K=8k, c=.48"): (-25, 7),
         (FISHER_GRAD, "K=12k, c=.22"): (-38, -18),
+        (FISHER_GRAD, "K=12k, c=.48"): (8, -18),
         (FISHER_GRAD, "K=16k, c=.18"): (8, -18),
     },
     "math": {
@@ -420,8 +451,11 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (FISHER_GRAD, "K=1k, c=.64"): (8, 7),
         (FISHER_GRAD, "K=2k, c=.64"): (8, 7),
         (FISHER_GRAD, "K=4k, c=.40"): (-25, 7),
+        (FISHER_GRAD, "K=6k, c=.52"): (-28, -18),
+        (FISHER_GRAD, "K=8k, c=.48"): (-25, 7),
         (FISHER_GRAD, "K=12k, c=.22"): (-25, -18),
-        (FISHER_GRAD, "K=16k, c=.18"): (8, -18),
+        (FISHER_GRAD, "K=12k, c=.48"): (8, -18),
+        (FISHER_GRAD, "K=16k, c=.18"): (8, 7),
     },
     "bbh": {
         (SN_TUNE, "alpha=1"): (-48, -17),
@@ -443,7 +477,10 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (FISHER_GRAD, "K=1k, c=.64"): (8, 7),
         (FISHER_GRAD, "K=2k, c=.64"): (-25, 7),
         (FISHER_GRAD, "K=4k, c=.40"): (8, 7),
+        (FISHER_GRAD, "K=6k, c=.52"): (-25, -18),
+        (FISHER_GRAD, "K=8k, c=.48"): (-25, 7),
         (FISHER_GRAD, "K=12k, c=.22"): (-34, -18),
+        (FISHER_GRAD, "K=12k, c=.48"): (8, -18),
         (FISHER_GRAD, "K=16k, c=.18"): (8, -18),
     },
 }
@@ -523,7 +560,7 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
     ax.set_title(
         f"{config['title']}\n"
         "All Grad results use first-cue-256; direct: solid s=1 K sweep, "
-        "dashed K=4k strength branch; diagonal Fisher: zero-floor K sweep, cap=.75"
+        "dashed fixed-K strength branches; diagonal Fisher: zero-floor K sweep, cap=.75"
     )
 
     ax.scatter(
@@ -571,7 +608,24 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         zorder=3,
     )
     annotate(ax, benchmark, direct_s075[0])
-    plot_trajectory(ax, benchmark, baseline, fisher)
+    fisher_c48 = next(point for point in fisher if point.setting == "K=12k, c=.48")
+    fisher_c22 = next(point for point in fisher if point.setting == "K=12k, c=.22")
+    fisher_k_sweep = [point for point in fisher if point is not fisher_c48]
+    plot_trajectory(ax, benchmark, baseline, fisher_k_sweep)
+    ax.plot(
+        [fisher_c22.capability, fisher_c48.capability],
+        [fisher_c22.harmbench, fisher_c48.harmbench],
+        color=COLORS[FISHER_GRAD],
+        marker=MARKERS[FISHER_GRAD],
+        markevery=[1],
+        markerfacecolor="white",
+        markeredgewidth=1.5,
+        markersize=7.2,
+        linewidth=1.7,
+        linestyle="--",
+        zorder=3,
+    )
+    annotate(ax, benchmark, fisher_c48)
 
     legend = [
         Line2D([], [], marker="*", linestyle="none", color="#222222", label=BASELINE),
@@ -596,7 +650,7 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         handles=legend,
         frameon=False,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.285),
+        bbox_to_anchor=(0.5, -0.34),
         ncol=4,
     )
     ax.text(
