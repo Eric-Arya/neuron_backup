@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Plot the main HarmBench--capability comparisons with direct and Fisher Grad.
 
-The three plots use the same curated Grad subset so that the BBH, MATH100, and
-IFEval panels can be compared directly.  Existing method trajectories are read
-from the frozen trade-off table; new Grad values are read from their frozen run
-artifacts rather than copied into this script.
+All Grad points use the first-cue-256 ranking objective. The three plots use the
+same curated Grad subset so that the BBH, MATH100, and IFEval panels can be
+compared directly. Existing non-Grad trajectories are read from the frozen
+trade-off table; Grad values are read from their frozen run artifacts rather
+than copied into this script.
 """
 
 from __future__ import annotations
@@ -28,15 +29,13 @@ BASELINE = "Unmodified"
 SN_TUNE = "SN-Tune"
 IA3_SFT = "IA3-SFT"
 IA3_PATCH = "IA3 guide patch"
-GRAD_ON_POLICY = "Grad (on-policy)"
-DIRECT_GRAD = "Grad (first-cue-256)"
-FISHER_GRAD = "Diagonal Fisher Grad (first-cue-256)"
+DIRECT_GRAD = "Direct Grad"
+FISHER_GRAD = "Diagonal Fisher Grad"
 
 COLORS = {
     SN_TUNE: "#0072B2",
     IA3_SFT: "#CC79A7",
     IA3_PATCH: "#E69F00",
-    GRAD_ON_POLICY: "#009E73",
     DIRECT_GRAD: "#56B4E9",
     FISHER_GRAD: "#D55E00",
 }
@@ -44,7 +43,6 @@ MARKERS = {
     SN_TUNE: "o",
     IA3_SFT: "^",
     IA3_PATCH: "P",
-    GRAD_ON_POLICY: "D",
     DIRECT_GRAD: "X",
     FISHER_GRAD: "h",
 }
@@ -60,11 +58,6 @@ OTHER_ORDER = {
         "alpha=3.5",
     ),
     IA3_PATCH: ("K=40000", "K=80000", "K=160000", "K=320000"),
-    GRAD_ON_POLICY: (
-        "K=1000, strength=1",
-        "K=2000, strength=1",
-        "K=4000, strength=1",
-    ),
 }
 
 BBH_RUNS = {
@@ -81,15 +74,6 @@ BBH_RUNS = {
     (IA3_SFT, "alpha=3.5"): "bbh_ia3_sft_snraw_alpha3p5_raw_cot_fp32",
     (IA3_PATCH, "K=40000"): "bbh_sft_patch_snraw_alpha3_top40000_raw_cot_bf16",
     (IA3_PATCH, "K=80000"): "bbh_sft_patch_snraw_alpha3_top80000_raw_cot_bf16",
-    (GRAD_ON_POLICY, "K=1000, strength=1"): (
-        "bbh_grad_onpolicy_expanded_k1000_s1_raw_cot_fp32"
-    ),
-    (GRAD_ON_POLICY, "K=2000, strength=1"): (
-        "bbh_grad_onpolicy_expanded_k2000_s1_raw_cot_fp32"
-    ),
-    (GRAD_ON_POLICY, "K=4000, strength=1"): (
-        "bbh_grad_onpolicy_expanded_k4000_s1_raw_cot_fp32"
-    ),
 }
 
 
@@ -331,18 +315,39 @@ def load_other_points(
     return baseline, groups
 
 
-def display_label(point: Point) -> str:
-    setting = point.setting
-    if setting.startswith("alpha="):
-        return rf"$\alpha={setting.removeprefix('alpha=')}$"
-    if point.method == IA3_PATCH:
-        return rf"$K={int(setting.removeprefix('K=')) // 1000}\mathrm{{k}}$"
-    if point.method == FISHER_GRAD:
-        return rf"$c={setting.rsplit('=', 1)[1]}$"
-    if point.method == DIRECT_GRAD and "s=.75" in setting:
-        return r"$K=4\mathrm{k},\ s=.75$"
-    k_value = setting.split(",", maxsplit=1)[0].removeprefix("K=")
-    return rf"$K={k_value}$"
+POINT_IDS = {
+    **{(SN_TUNE, f"alpha={value}"): f"SN{index}" for index, value in enumerate((1, 4, 6, 8), 1)},
+    **{
+        (IA3_SFT, f"alpha={value}"): f"IA{index}"
+        for index, value in enumerate((1, 1.5, 2, 2.5, 3, 3.5), 1)
+    },
+    **{
+        (IA3_PATCH, f"K={value}"): f"P{index}"
+        for index, value in enumerate((40000, 80000, 160000, 320000), 1)
+    },
+    (DIRECT_GRAD, "K=1k, s=1"): "D1",
+    (DIRECT_GRAD, "K=2k, s=1"): "D2",
+    (DIRECT_GRAD, "K=4k, s=1"): "D3",
+    (DIRECT_GRAD, "K=4k, s=.75"): "D4",
+    (FISHER_GRAD, "K=12k, c=.22"): "F1",
+    (FISHER_GRAD, "K=12k, c=.24"): "F2",
+    (FISHER_GRAD, "K=12k, c=.48"): "F3",
+}
+
+
+def point_id(point: Point) -> str:
+    return POINT_IDS[(point.method, point.setting)]
+
+
+def point_key(benchmark: str) -> str:
+    patch_values = "40k,80k" if benchmark == "bbh" else "40k,80k,160k,320k"
+    return (
+        "Point IDs — SN1–4: α=1,4,6,8  |  "
+        "IA1–6: α=1,1.5,2,2.5,3,3.5  |  "
+        f"P1–{2 if benchmark == 'bbh' else 4}: K={patch_values}\n"
+        "D1–4: (K,s)=(1k,1),(2k,1),(4k,1),(4k,.75)  |  "
+        "F1–3: K=12k, c=.22,.24,.48"
+    )
 
 
 OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
@@ -361,9 +366,6 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (IA3_PATCH, "K=80000"): (7, 6),
         (IA3_PATCH, "K=160000"): (-55, 7),
         (IA3_PATCH, "K=320000"): (8, 10),
-        (GRAD_ON_POLICY, "K=1000, strength=1"): (7, -17),
-        (GRAD_ON_POLICY, "K=2000, strength=1"): (-10, 14),
-        (GRAD_ON_POLICY, "K=4000, strength=1"): (-56, -16),
         (DIRECT_GRAD, "K=1k, s=1"): (-48, 7),
         (DIRECT_GRAD, "K=2k, s=1"): (-58, 7),
         (DIRECT_GRAD, "K=4k, s=1"): (7, -17),
@@ -387,9 +389,6 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (IA3_PATCH, "K=80000"): (7, 7),
         (IA3_PATCH, "K=160000"): (-22, -17),
         (IA3_PATCH, "K=320000"): (7, -15),
-        (GRAD_ON_POLICY, "K=1000, strength=1"): (7, 7),
-        (GRAD_ON_POLICY, "K=2000, strength=1"): (-55, 7),
-        (GRAD_ON_POLICY, "K=4000, strength=1"): (7, 7),
         (DIRECT_GRAD, "K=1k, s=1"): (-52, 7),
         (DIRECT_GRAD, "K=2k, s=1"): (7, 7),
         (DIRECT_GRAD, "K=4k, s=1"): (7, -16),
@@ -411,9 +410,6 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (IA3_SFT, "alpha=3.5"): (7, 5),
         (IA3_PATCH, "K=40000"): (7, 6),
         (IA3_PATCH, "K=80000"): (7, -16),
-        (GRAD_ON_POLICY, "K=1000, strength=1"): (-58, 7),
-        (GRAD_ON_POLICY, "K=2000, strength=1"): (-58, -16),
-        (GRAD_ON_POLICY, "K=4000, strength=1"): (7, -15),
         (DIRECT_GRAD, "K=1k, s=1"): (7, -17),
         (DIRECT_GRAD, "K=2k, s=1"): (-54, 7),
         (DIRECT_GRAD, "K=4k, s=1"): (7, -17),
@@ -427,12 +423,13 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
 
 def annotate(ax: plt.Axes, benchmark: str, point: Point) -> None:
     ax.annotate(
-        display_label(point),
+        point_id(point),
         (point.capability, point.harmbench),
         xytext=OFFSETS[benchmark][(point.method, point.setting)],
         textcoords="offset points",
         color=COLORS[point.method],
-        fontsize=8.4,
+        fontsize=8.2,
+        fontweight="semibold",
     )
 
 
@@ -487,7 +484,7 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
     direct = load_direct_points(benchmark)
     fisher = load_fisher_points(benchmark)
 
-    fig, ax = plt.subplots(figsize=(11.4, 6.4), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(11.4, 7.0), constrained_layout=True)
     ax.grid(True, color="#D8D8D8", linewidth=0.7, alpha=0.75)
     ax.set_axisbelow(True)
     ax.spines[["top", "right"]].set_visible(False)
@@ -497,8 +494,8 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
     ax.set_ylabel("HarmBench attack success rate (%)  ↓")
     ax.set_title(
         f"{config['title']}\n"
-        "Direct: solid s=1 K sweep, dashed K=4k strength branch; "
-        "diagonal Fisher: K=12k c sweep"
+        "All Grad results use first-cue-256; direct: solid s=1 K sweep, "
+        "dashed K=4k strength branch; diagonal Fisher: K=12k c sweep"
     )
 
     ax.scatter(
@@ -562,7 +559,6 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
                 SN_TUNE,
                 IA3_SFT,
                 IA3_PATCH,
-                GRAD_ON_POLICY,
                 DIRECT_GRAD,
                 FISHER_GRAD,
             )
@@ -572,8 +568,19 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         handles=legend,
         frameon=False,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.205),
+        bbox_to_anchor=(0.5, -0.285),
         ncol=4,
+    )
+    ax.text(
+        0.5,
+        -0.145,
+        point_key(benchmark),
+        transform=ax.transAxes,
+        ha="center",
+        va="top",
+        fontsize=8.1,
+        linespacing=1.45,
+        color="#333333",
     )
     save_figure(fig, str(config["stem"]))
     plt.close(fig)
