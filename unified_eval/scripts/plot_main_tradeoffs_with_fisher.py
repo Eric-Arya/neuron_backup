@@ -486,15 +486,28 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
 }
 
 
-def annotate(ax: plt.Axes, benchmark: str, point: Point) -> None:
+def annotate(
+    ax: plt.Axes, benchmark: str, point: Point, label: str | None = None
+) -> None:
+    del benchmark
+    hollow = point.setting in {"K=4k, s=.75", "K=12k, c=.48"}
+    text_color = (
+        COLORS[point.method]
+        if hollow
+        else ("#5B3A00" if point.method == IA3_PATCH else "white")
+    )
     ax.annotate(
-        point_id(point),
+        label or point_id(point),
         (point.capability, point.harmbench),
-        xytext=OFFSETS[benchmark][(point.method, point.setting)],
+        xytext=(0, 0),
         textcoords="offset points",
-        color=COLORS[point.method],
-        fontsize=8.2,
-        fontweight="semibold",
+        ha="center",
+        va="center",
+        color=text_color,
+        fontsize=4.8 if label and "\n" in label else 6.2,
+        fontweight="bold",
+        linespacing=0.75,
+        zorder=6,
     )
 
 
@@ -520,13 +533,21 @@ def plot_trajectory(
         markevery=range(1, len(xs)),
         markerfacecolor=markerfacecolor,
         markeredgewidth=1.4 if markerfacecolor else 0.8,
-        markersize=7.2,
+        markersize=13.0,
         linewidth=2.15,
         linestyle=linestyle,
         zorder=2,
     )
+    coincident: dict[tuple[float, float], list[Point]] = {}
     for point in points:
-        annotate(ax, benchmark, point)
+        coincident.setdefault((point.capability, point.harmbench), []).append(point)
+    for shared in coincident.values():
+        annotate(
+            ax,
+            benchmark,
+            shared[0],
+            label="\n".join(point_id(point) for point in shared),
+        )
 
 
 def normalize_svg(path: Path) -> None:
@@ -602,7 +623,7 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         markevery=[1],
         markerfacecolor="white",
         markeredgewidth=1.5,
-        markersize=7.2,
+        markersize=13.0,
         linewidth=1.7,
         linestyle="--",
         zorder=3,
@@ -620,7 +641,7 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         markevery=[1],
         markerfacecolor="white",
         markeredgewidth=1.5,
-        markersize=7.2,
+        markersize=13.0,
         linewidth=1.7,
         linestyle="--",
         zorder=3,
