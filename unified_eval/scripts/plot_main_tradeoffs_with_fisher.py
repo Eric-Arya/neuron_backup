@@ -45,10 +45,10 @@ COLORS = {
 }
 MARKERS = {
     SN_TUNE: "o",
-    IA3_SFT: "^",
-    IA3_PATCH: "P",
-    DIRECT_GRAD: "X",
-    FISHER_GRAD: "h",
+    IA3_SFT: "o",
+    IA3_PATCH: "o",
+    DIRECT_GRAD: "o",
+    FISHER_GRAD: "o",
 }
 
 OTHER_ORDER = {
@@ -496,11 +496,21 @@ def annotate(
         if hollow
         else ("#5B3A00" if point.method == IA3_PATCH else "white")
     )
-    ax.annotate(
+    shared = bool(label and "\n" in label)
+    ax.scatter(
+        [point.capability],
+        [point.harmbench],
+        s=205 if shared else 155,
+        marker="o",
+        facecolor="white" if hollow else COLORS[point.method],
+        edgecolor=COLORS[point.method] if hollow else "white",
+        linewidth=1.5 if hollow else 0.7,
+        zorder=5,
+    )
+    ax.text(
+        point.capability,
+        point.harmbench,
         label or point_id(point),
-        (point.capability, point.harmbench),
-        xytext=(0, 0),
-        textcoords="offset points",
         ha="center",
         va="center",
         color=text_color,
@@ -518,7 +528,6 @@ def plot_trajectory(
     points: list[Point],
     *,
     linestyle: str = "-",
-    markerfacecolor: str | None = None,
 ) -> None:
     if not points:
         return
@@ -529,11 +538,6 @@ def plot_trajectory(
         xs,
         ys,
         color=COLORS[method],
-        marker=MARKERS[method],
-        markevery=range(1, len(xs)),
-        markerfacecolor=markerfacecolor,
-        markeredgewidth=1.4 if markerfacecolor else 0.8,
-        markersize=13.0,
         linewidth=2.15,
         linestyle=linestyle,
         zorder=2,
@@ -619,11 +623,6 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         branch_x,
         branch_y,
         color=COLORS[DIRECT_GRAD],
-        marker=MARKERS[DIRECT_GRAD],
-        markevery=[1],
-        markerfacecolor="white",
-        markeredgewidth=1.5,
-        markersize=13.0,
         linewidth=1.7,
         linestyle="--",
         zorder=3,
@@ -637,11 +636,6 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
         [fisher_c22.capability, fisher_c48.capability],
         [fisher_c22.harmbench, fisher_c48.harmbench],
         color=COLORS[FISHER_GRAD],
-        marker=MARKERS[FISHER_GRAD],
-        markevery=[1],
-        markerfacecolor="white",
-        markeredgewidth=1.5,
-        markersize=13.0,
         linewidth=1.7,
         linestyle="--",
         zorder=3,
