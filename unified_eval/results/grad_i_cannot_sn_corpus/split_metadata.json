@@ -6,7 +6,6 @@
     "development": 197,
     "excluded_test_prompt_duplicates": 3,
     "id_complement": 200,
-    "selection": 150,
     "test": 200,
     "tuning": 47
   },
@@ -18,10 +17,6 @@
     "excluded_test_prompt_duplicates": {
       "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/excluded_test_prompt_duplicates.jsonl",
       "sha256": "52edbc92a0488ac69ec1dc69818320ef382bbe704b3fb9bdb4ff993b2cba2eec"
-    },
-    "selection": {
-      "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/selection_manifest.jsonl",
-      "sha256": "22ade27f318a3c7676ea5d3dcf124f77539ad8dc27b842b4628bf51652310cf6"
     },
     "tuning": {
       "path": "/workspace/xcy/safety_repro/unified_eval/results/grad_i_cannot_sn_corpus/tuning_manifest.jsonl",

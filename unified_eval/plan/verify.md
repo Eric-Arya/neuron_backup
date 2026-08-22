@@ -257,7 +257,7 @@ $$
 因此应进行独立的次级分析：
 
 1. 对每个方向和 $t$ 记录真实 $\Delta L_{\mathrm{tgt}}$ 和真实 WikiText KL；
-2. 在 HarmBench tuning/confirmation raw split 上测 ASR 和 repetition；
+2. 在 HarmBench-47 raw tuning 上选择配置，随后直接在 HarmBench-200 raw test 上测 ASR 和 repetition；不使用 HarmBench-150 confirmation；
 3. 在开发集上测 IFEval 和 MATH；
 4. 分析真实 $\Delta L_{\mathrm{tgt}}$ 与 ASR 的相关性；
 5. 在相近真实 KL 下比较 capability。

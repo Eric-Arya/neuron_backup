@@ -49,9 +49,9 @@ $$
 - Grad direction 保持 positive-only；
 - SNCorpus、HarmBench 和安全评估均使用 raw format；
 - 先在 HarmBench-47 tuning split 筛选；
-- 再在 disjoint HarmBench-150 confirmation split 确认；
+- 选定配置后直接在固定 HarmBench-200 test 上测试，不使用 HarmBench-150 confirmation split；
 - 同时记录 repetition、真实 $L_{\mathrm{tgt}}$ 和真实 WikiText KL；
-- 不接触 frozen HarmBench、IFEval 或 MATH，直到选出明确 finalist；
+- 不接触 HarmBench-200、IFEval 或 MATH，直到 HB47 选出明确 finalist；
 - 不运行 BeaverTrail、Beaver score、GSM8K 或 MMLU。
 
 这一步不能证明一阶近似在 $t=.4$ 仍然准确。此时真实目标增益仅为线性预测的约 24%--32%。它的作用是绕过不准确的线性增益预测，直接用真实目标和开发集行为选择步长。
@@ -140,7 +140,7 @@ $$
 
 在现有两个 endpoint 上，`1.5×` diagonal 分别为 0.3460 和 0.8270，对应真实 KL 0.3653 和 0.8067，误差约为 -5.3% 和 +2.5%。
 
-这个 `1.5×` 因子只能作为 pilot 的保守工程校准，不能直接宣称普适。正式实验应在 calibration split 上确定因子，并在独立 confirmation split 或更多方向上验证。对于每个新方向，也可以直接估计
+这个 `1.5×` 因子只能作为 pilot 的保守工程校准，不能直接宣称普适。正式实验应在 calibration split 上确定因子，并在 HarmBench-200 test 或更多方向上验证。对于每个新方向，也可以直接估计
 
 $$
 d_m^\top Fd_m=\mathbb E[(s^\top d_m)^2],
@@ -295,7 +295,7 @@ $$
 
 1. 对 `.24/.48` 生成 $t=.2,.3,.4,.5,.6$ scale artifacts。
 2. 在 HarmBench-47 raw tuning split 上测 ASR 和 repetition。
-3. 对可行点在 HarmBench-150 raw confirmation split 上确认。
+3. 选定一个明确 finalist 后，直接在 HarmBench-200 raw test 上测试。
 4. 同时记录真实 target objective 和 WikiText KL。
 5. 如果 $t=.3$--`.5` 能保留足够安全性，则先把它作为更温和 endpoint。
 
@@ -339,7 +339,7 @@ $$
 - 每一步实际 target gain 必须为正；
 - 每一步实际/预测 target gain 位于预设 calibration band；
 - 每步与累计 KL 均不得超过预算；
-- confirmation ASR 必须满足预设 feasibility threshold；
+- HarmBench-200 test ASR 必须满足预设 feasibility threshold；
 - repetition 不能通过退化换取表面安全；
 - 最终方法应在相近安全或相近真实 KL 下与一次大步比较能力。
 

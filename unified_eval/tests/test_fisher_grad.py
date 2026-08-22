@@ -5,6 +5,7 @@ import torch
 from unified_eval.fisher_grad import (
     anchored_tail_deltas,
     box_fisher_deltas,
+    build_parser,
     capped_floor_fisher_deltas,
     conservative_replacement_indices,
     floor_fisher_deltas,
@@ -23,6 +24,20 @@ def test_anchored_tail_deltas_preserve_prefix_and_scale_only_tail() -> None:
     fisher = torch.tensor([0.2, 0.4, 0.6, 0.8])
     deltas = anchored_tail_deltas(fisher, base_k=2, base_strength=0.75, tail_weight=0.5)
     assert torch.allclose(deltas, torch.tensor([0.75, 0.75, 0.3, 0.4]))
+
+
+def test_safety_evaluation_defaults_to_harmbench_200() -> None:
+    args = build_parser().parse_args(
+        ["evaluate-safety", "--scale-files", "scales.json", "--output-dir", "out"]
+    )
+    assert args.manifest.name == "table1_seed42_n200.jsonl"
+
+
+def test_rescale_defaults_to_low_cost_line_search() -> None:
+    args = build_parser().parse_args(
+        ["rescale-scales", "--base-scales", "base.json", "--output-dir", "out"]
+    )
+    assert args.t_values == [0.2, 0.3, 0.4, 0.5, 0.6]
 
 
 def test_box_fisher_deltas_match_reference_budget_and_cap() -> None:

@@ -5,13 +5,14 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${REPO_ROOT}"
 
-COMMAND="${COMMAND:-all}"
+COMMAND="${COMMAND:-prepare}"
 GPU="${GPU:-0}"
 PYTHON_BIN="${PYTHON_BIN:-python}"
 OUTPUT_DIR="${OUTPUT_DIR:-${REPO_ROOT}/results/grad_harmbench_development}"
 MODEL="${MODEL:-/workspace/xcy/models/Meta-Llama-3-8B-Instruct}"
 SEED="${SEED:-112}"
-SELECTION_COUNT="${SELECTION_COUNT:-150}"
+TUNING_COUNT="${TUNING_COUNT:-47}"
+SELECTION_MANIFEST="${SELECTION_MANIFEST:-}"
 BATCH_SIZE="${BATCH_SIZE:-32}"
 REFUSAL_TARGET="${REFUSAL_TARGET:-I cannot assist with that request.}"
 CONTRAST_TOKENS="${CONTRAST_TOKENS:-16}"
@@ -36,7 +37,7 @@ read -r -a EXTRA_ARRAY <<< "${EXTRA_ARGS}"
 prepare() {
   "${PYTHON_BIN}" -m unified_eval.grad_development prepare \
     --output-dir "${OUTPUT_DIR}" --seed "${SEED}" \
-    --selection-count "${SELECTION_COUNT}"
+    --tuning-count "${TUNING_COUNT}"
 }
 
 benchmark() {
@@ -52,12 +53,17 @@ baseline() {
 }
 
 extract() {
+  if [[ -z "${SELECTION_MANIFEST}" ]]; then
+    echo "SELECTION_MANIFEST must name explicit training-only data for legacy extract" >&2
+    exit 2
+  fi
   "${PYTHON_BIN}" -m unified_eval.grad_development extract \
     --output-dir "${OUTPUT_DIR}" --model "${MODEL}" --device cuda:0 \
     --refusal-target "${REFUSAL_TARGET}" --contrast-tokens "${CONTRAST_TOKENS}" \
     --contrast-weight "${CONTRAST_WEIGHT}" \
     --safe-preservation-weight "${SAFE_PRESERVATION_WEIGHT}" \
     --candidate-pool "${CANDIDATE_POOL}" --top-k "${RANKING_TOP_K}" \
+    --selection-manifest "${SELECTION_MANIFEST}" \
     "${EXTRA_ARRAY[@]}"
 }
 

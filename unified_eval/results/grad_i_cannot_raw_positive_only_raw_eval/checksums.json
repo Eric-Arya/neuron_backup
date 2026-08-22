@@ -14,7 +14,6 @@
   "frontier_positive_only_all_raw/selected_config.json": "abd8e497f73e1f71c61285228a1e05afd759a35f102333db6519a4aaed9cd3e5",
   "frontier_positive_only_all_raw/summary.csv": "cbac8d0d595fccdf9dede6fa9d2adce76c45223a8bd8665a6cf5e6e8a05efc82",
   "frontier_positive_only_all_raw/summary.json": "6d546666596c4096090a10d6983402a81727a29dc46155e6700578573255559a",
-  "selection_manifest.jsonl": "22ade27f318a3c7676ea5d3dcf124f77539ad8dc27b842b4628bf51652310cf6",
-  "split_metadata.json": "dc0cb6b6b666191823b822a614ece732866a11d88207e512e61c59a0fbf6f2d3",
+  "split_metadata.json": "8c5f7bcece0a9a49c1f9c28ba2b7f77a0c865ce7a80122803f852b6d0a97345f",
   "tuning_manifest.jsonl": "0ef082a5778b1a739c2c79a168975ec95677f8f2fa9a386adb65d4583e5f5b5c"
 }

@@ -69,14 +69,14 @@ DIRECT_REFUSAL_PHRASES = (
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Develop a fixed Grad controller without touching the frozen test half."
+        description="Tune a fixed Grad controller on HB47 before the HB200 test."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     prepare = subparsers.add_parser("prepare")
     add_data_arguments(prepare)
     prepare.add_argument("--seed", type=int, default=112)
-    prepare.add_argument("--selection-count", type=int, default=150)
+    prepare.add_argument("--tuning-count", type=int, default=47)
 
     benchmark = subparsers.add_parser("benchmark")
     add_runtime_arguments(benchmark)
@@ -114,6 +114,15 @@ def build_parser() -> argparse.ArgumentParser:
     extract = subparsers.add_parser("extract")
     add_runtime_arguments(extract)
     extract.add_argument("--refusal-target", default=DEFAULT_REFUSAL)
+    extract.add_argument(
+        "--selection-manifest",
+        type=Path,
+        required=True,
+        help=(
+            "Explicit training-only manifest for the legacy HarmBench gradient "
+            "extractor. No HB150 confirmation manifest is used by default."
+        ),
+    )
     extract.add_argument("--contrast-tokens", type=int, default=16)
     extract.add_argument("--contrast-weight", type=float, default=0.5)
     extract.add_argument("--safe-preservation-weight", type=float, default=0.25)
@@ -261,13 +270,12 @@ def validate_positive(values: Sequence[int | float], description: str) -> None:
         raise ValueError(f"{description} must be finite and positive: {values}")
 
 
-def build_complement_split(
+def build_tuning_split(
     all_rows: Sequence[dict[str, Any]],
     test_rows: Sequence[dict[str, Any]],
     seed: int,
-    selection_count: int,
+    tuning_count: int,
 ) -> tuple[
-    list[dict[str, Any]],
     list[dict[str, Any]],
     list[dict[str, Any]],
     list[dict[str, Any]],
@@ -291,34 +299,31 @@ def build_complement_split(
         row for row in complement if str(row["prompt"]) in test_prompts
     ]
     development = [row for row in complement if str(row["prompt"]) not in test_prompts]
-    if not 0 < selection_count < len(development):
-        raise ValueError(
-            "selection-count must leave non-empty selection and tuning sets"
-        )
+    if not 0 < tuning_count < len(development):
+        raise ValueError("tuning-count must be smaller than the development pool")
     shuffled = list(development)
     random.Random(seed).shuffle(shuffled)
-    selection = shuffled[:selection_count]
-    tuning = shuffled[selection_count:]
-    return development, selection, tuning, excluded_prompt_duplicates
+    # Keep the established HB47 IDs while discarding—not materializing—the old
+    # first 150 rows that were previously called a confirmation split.
+    tuning = shuffled[-tuning_count:]
+    return development, tuning, excluded_prompt_duplicates
 
 
 def prepare(args: argparse.Namespace) -> None:
     all_rows = read_jsonl(args.all_harmbench)
     test_rows = read_jsonl(args.test_harmbench)
-    development, selection, tuning, excluded = build_complement_split(
-        all_rows, test_rows, args.seed, args.selection_count
+    development, tuning, excluded = build_tuning_split(
+        all_rows, test_rows, args.seed, args.tuning_count
     )
     args.output_dir.mkdir(parents=True, exist_ok=True)
     paths = {
         "development": args.output_dir / "development_manifest.jsonl",
-        "selection": args.output_dir / "selection_manifest.jsonl",
         "tuning": args.output_dir / "tuning_manifest.jsonl",
         "excluded_test_prompt_duplicates": (
             args.output_dir / "excluded_test_prompt_duplicates.jsonl"
         ),
     }
     atomic_write_jsonl(paths["development"], development)
-    atomic_write_jsonl(paths["selection"], selection)
     atomic_write_jsonl(paths["tuning"], tuning)
     atomic_write_jsonl(paths["excluded_test_prompt_duplicates"], excluded)
     test_ids = {str(row["id"]) for row in test_rows}
@@ -334,7 +339,6 @@ def prepare(args: argparse.Namespace) -> None:
             "test": 200,
             "id_complement": 200,
             "development": len(development),
-            "selection": len(selection),
             "tuning": len(tuning),
             "excluded_test_prompt_duplicates": len(excluded),
         },
@@ -516,7 +520,7 @@ def baseline(args: argparse.Namespace) -> None:
     manifest_path = args.output_dir / (
         "development_manifest.jsonl"
         if args.limit is None
-        else "selection_manifest.jsonl"
+        else "tuning_manifest.jsonl"
     )
     manifest = read_jsonl(manifest_path)
     if args.limit is not None:
@@ -1084,7 +1088,7 @@ def extract(args: argparse.Namespace) -> None:
     )
     if args.contrast_weight < 0 or args.safe_preservation_weight < 0:
         raise ValueError("Gradient weights must be non-negative")
-    selection = read_jsonl(args.output_dir / "selection_manifest.jsonl")
+    selection = read_jsonl(args.selection_manifest)
     if args.limit is not None:
         selection = selection[: args.limit]
     baseline_path = args.output_dir / (
@@ -1184,12 +1188,8 @@ def extract(args: argparse.Namespace) -> None:
         output_dir / "metadata.json",
         {
             "model": str(args.model.resolve()),
-            "selection_manifest": str(
-                (args.output_dir / "selection_manifest.jsonl").resolve()
-            ),
-            "selection_manifest_sha256": sha256_file(
-                args.output_dir / "selection_manifest.jsonl"
-            ),
+            "selection_manifest": str(args.selection_manifest.resolve()),
+            "selection_manifest_sha256": sha256_file(args.selection_manifest),
             "baseline_scored": str(baseline_path.resolve()),
             "baseline_scored_sha256": sha256_file(baseline_path),
             "num_examples": len(selection),

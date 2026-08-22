@@ -7,7 +7,7 @@ import torch
 from unified_eval.grad_development import (
     attach_gradient_alphas,
     build_parser,
-    build_complement_split,
+    build_tuning_split,
     choose_gate_threshold,
     choose_config,
     configure_masks,
@@ -147,39 +147,46 @@ def test_positive_only_masks_skip_negative_gradient_neurons() -> None:
     assert masks[0].tolist() == [[1.0, 3.0, 3.0, 1.0]]
 
 
-def test_complement_split_is_disjoint_deterministic_and_complete() -> None:
+def test_tuning_split_is_disjoint_deterministic_and_complete() -> None:
     all_rows = [
         {"id": f"harmbench_{index}", "prompt": f"p{index}"} for index in range(400)
     ]
     test_rows = all_rows[::2]
-    development, selection, tuning, excluded = build_complement_split(
-        all_rows, test_rows, seed=112, selection_count=150
+    development, tuning, excluded = build_tuning_split(
+        all_rows, test_rows, seed=112, tuning_count=47
     )
     assert len(development) == 200
-    assert len(selection) == 150
-    assert len(tuning) == 50
+    assert len(tuning) == 47
     assert excluded == []
     assert {row["id"] for row in test_rows}.isdisjoint(
         {row["id"] for row in development}
     )
-    repeated = build_complement_split(all_rows, test_rows, 112, 150)
-    assert selection == repeated[1]
-    assert tuning == repeated[2]
+    repeated = build_tuning_split(all_rows, test_rows, 112, 47)
+    assert tuning == repeated[1]
 
 
-def test_complement_split_excludes_exact_test_prompt_duplicates() -> None:
+def test_tuning_split_excludes_exact_test_prompt_duplicates() -> None:
     all_rows = [
         {"id": f"harmbench_{index}", "prompt": f"p{index}"} for index in range(400)
     ]
     test_rows = all_rows[::2]
     all_rows[1]["prompt"] = test_rows[0]["prompt"]
-    development, selection, tuning, excluded = build_complement_split(
-        all_rows, test_rows, seed=112, selection_count=150
+    development, tuning, excluded = build_tuning_split(
+        all_rows, test_rows, seed=112, tuning_count=47
     )
     assert [row["id"] for row in excluded] == ["harmbench_1"]
     assert len(development) == 199
-    assert len(selection) == 150
-    assert len(tuning) == 49
+    assert len(tuning) == 47
+
+
+def test_legacy_harmbench_gradient_extraction_requires_explicit_training_data() -> None:
+    parser = build_parser()
+    try:
+        parser.parse_args(["extract"])
+    except SystemExit as error:
+        assert error.code == 2
+    else:
+        raise AssertionError("extract should require --selection-manifest")
 
 
 def test_stable_ranking_stays_within_abs_mean_candidate_pool() -> None:

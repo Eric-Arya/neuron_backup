@@ -33,6 +33,10 @@ DEFAULT_RANKING = Path(
     "grad_onpolicy_sn_safe256_first_cue_tail_expanded50000/gradients/"
     "top_neurons_stable.csv"
 )
+DEFAULT_TEST_HARMBENCH = Path(
+    "/workspace/xcy/dataset/projects/neurips_neuron/harmbench/splits/"
+    "table1_seed42_n200.jsonl"
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -113,10 +117,23 @@ def build_parser() -> argparse.ArgumentParser:
     )
     variants.add_argument("--individual-caps", type=float, nargs="+", default=[1, 2, 4])
 
+    rescale = subparsers.add_parser("rescale-scales")
+    rescale.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
+    rescale.add_argument("--base-scales", type=Path, required=True)
+    rescale.add_argument("--output-dir", type=Path, required=True)
+    rescale.add_argument(
+        "--t-values", type=float, nargs="+", default=[0.2, 0.3, 0.4, 0.5, 0.6]
+    )
+
     safety = subparsers.add_parser("evaluate-safety")
     safety.add_argument("--model", type=Path, default=DEFAULT_LLAMA3)
     safety.add_argument("--ranking", type=Path, default=DEFAULT_RANKING)
-    safety.add_argument("--manifest", type=Path, required=True)
+    safety.add_argument(
+        "--manifest",
+        type=Path,
+        default=DEFAULT_TEST_HARMBENCH,
+        help="Safety manifest; defaults to the fixed 200-example HarmBench test.",
+    )
     safety.add_argument("--scale-files", type=Path, nargs="+", required=True)
     safety.add_argument("--output-dir", type=Path, required=True)
     safety.add_argument("--batch-size", type=int, default=16)
@@ -889,6 +906,48 @@ def make_variants(args: argparse.Namespace) -> None:
         {
             "ranking": str(args.ranking.resolve()),
             "ranking_sha256": sha256_file(args.ranking),
+            "variants": outputs,
+        },
+    )
+
+
+def rescale_scales(args: argparse.Namespace) -> None:
+    """Create smaller endpoints along one existing positive-only direction."""
+    t_values = sorted(set(float(value) for value in args.t_values))
+    if not t_values or any(not 0 < value < 1 for value in t_values):
+        raise ValueError("t-values must be unique finite values strictly inside (0, 1)")
+    base = json.loads(args.base_scales.read_text(encoding="utf-8"))
+    if base.get("direction") != "positive-only":
+        raise ValueError("Only positive-only scale artifacts may be rescaled")
+    ranking = read_positive_ranking(args.ranking, int(base["top_k"]))
+    _, base_delta = load_scale_deltas(args.base_scales, ranking, None)
+    base_label = str(base.get("label") or args.base_scales.stem)
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    outputs = []
+    for t in t_values:
+        t_label = str(t).replace(".", "p")
+        label = f"{base_label}_t{t_label}"
+        artifact = scale_artifact(
+            "positive_only_path_rescaled",
+            ranking,
+            base_delta * t,
+            {
+                "source": str(args.base_scales.resolve()),
+                "source_sha256": sha256_file(args.base_scales),
+                "delta_scale": t,
+                "label": label,
+            },
+        )
+        path = args.output_dir / f"{label}.json"
+        atomic_write_json(path, artifact)
+        outputs.append({"label": label, "t": t, "path": str(path.resolve())})
+    atomic_write_json(
+        args.output_dir / "manifest.json",
+        {
+            "ranking": str(args.ranking.resolve()),
+            "ranking_sha256": sha256_file(args.ranking),
+            "base_scales": str(args.base_scales.resolve()),
+            "base_scales_sha256": sha256_file(args.base_scales),
             "variants": outputs,
         },
     )
@@ -1941,6 +2000,8 @@ def main() -> None:
         validate_kl(args)
     elif args.command == "make-variants":
         make_variants(args)
+    elif args.command == "rescale-scales":
+        rescale_scales(args)
     elif args.command == "evaluate-safety":
         evaluate_safety(args)
     elif args.command == "make-fisher-selection-variants":
