@@ -12,9 +12,13 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+# Keep PDF/SVG metadata deterministic across regenerations.
+os.environ.setdefault("SOURCE_DATE_EPOCH", "0")
 
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -132,28 +136,44 @@ DIRECT_SOURCES = (
 
 FISHER_SOURCES = (
     FisherSource(
+        "K=1k, c=.64",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k1000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k1000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k1000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard0-of-2/summary.json",
+        "floorfisher_k1000_floor0p0_c0p64_cap0p75_damp1p0",
+    ),
+    FisherSource(
+        "K=2k, c=.64",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k2000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k2000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k2000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard1-of-2/summary.json",
+        "floorfisher_k2000_floor0p0_c0p64_cap0p75_damp1p0",
+    ),
+    FisherSource(
+        "K=4k, c=.40",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k4000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k4000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k4000_cap0p75_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard0-of-2/summary.json",
+        "floorfisher_k4000_floor0p0_c0p4_cap0p75_damp1p0",
+    ),
+    FisherSource(
         "K=12k, c=.22",
         "grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75",
         "math100_grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75",
         "bbh_grad_floorfisher_wt2048_k12000_f0_c0p22_cap0p75_raw_cot_fp32",
-        "grad_floor_fisher_wikitext2048_gentler12k/frozen_harmbench_c0p22/summary.json",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard0-of-2/summary.json",
         "floorfisher_k12000_floor0p0_c0p22_cap0p75_damp1p0",
     ),
     FisherSource(
-        "K=12k, c=.24",
-        "grad_floorfisher_wt2048_k12000_f0_c0p24_cap0p75",
-        "math100_grad_floorfisher_wt2048_k12000_f0_c0p24_cap0p75",
-        "bbh_grad_floorfisher_wt2048_k12000_f0_c0p24_cap0p75_raw_cot_fp32",
-        "grad_floor_fisher_wikitext2048_gentle12k/frozen_harmbench_c0p24/summary.json",
-        "floorfisher_k12000_floor0p0_c0p24_cap0p75_damp1p0",
-    ),
-    FisherSource(
-        "K=12k, c=.48",
-        "grad_floorfisher_wt2048_k12000_f0_c0p48",
-        "math100_grad_floorfisher_wt2048_k12000_f0_c0p48_cap0p75",
-        "bbh_grad_floorfisher_wt2048_k12000_f0_c0p48_cap0p75_raw_cot_fp32",
-        "grad_floor_fisher_wikitext2048_finalists/frozen_harmbench/summary.json",
-        "floorfisher_k12000_floor0p0_c0p48_cap0p75_damp1p0",
+        "K=16k, c=.18",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k16000_c0p18_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k16000_c0p18_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/capability/fisher_zero_floor_math100_k16000_c0p18_cap0p75",
+        "grad_fisher_zero_floor_all_k_cap0p75/frozen_harmbench/shard1-of-2/summary.json",
+        "floorfisher_k16000_floor0p0_c0p18_cap0p75_damp1p0",
     ),
 )
 
@@ -329,9 +349,11 @@ POINT_IDS = {
     (DIRECT_GRAD, "K=2k, s=1"): "D2",
     (DIRECT_GRAD, "K=4k, s=1"): "D3",
     (DIRECT_GRAD, "K=4k, s=.75"): "D4",
-    (FISHER_GRAD, "K=12k, c=.22"): "F1",
-    (FISHER_GRAD, "K=12k, c=.24"): "F2",
-    (FISHER_GRAD, "K=12k, c=.48"): "F3",
+    (FISHER_GRAD, "K=1k, c=.64"): "F1",
+    (FISHER_GRAD, "K=2k, c=.64"): "F2",
+    (FISHER_GRAD, "K=4k, c=.40"): "F3",
+    (FISHER_GRAD, "K=12k, c=.22"): "F4",
+    (FISHER_GRAD, "K=16k, c=.18"): "F5",
 }
 
 
@@ -346,7 +368,7 @@ def point_key(benchmark: str) -> str:
         "IA1–6: α=1,1.5,2,2.5,3,3.5  |  "
         f"P1–{2 if benchmark == 'bbh' else 4}: K={patch_values}\n"
         "D1–4: (K,s)=(1k,1),(2k,1),(4k,1),(4k,.75)  |  "
-        "F1–3: K=12k, c=.22,.24,.48"
+        "F1–5: (K,c)=(1k,.64),(2k,.64),(4k,.40),(12k,.22),(16k,.18)"
     )
 
 
@@ -370,9 +392,11 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (DIRECT_GRAD, "K=2k, s=1"): (-58, 7),
         (DIRECT_GRAD, "K=4k, s=1"): (7, -17),
         (DIRECT_GRAD, "K=4k, s=.75"): (8, 15),
-        (FISHER_GRAD, "K=12k, c=.22"): (9, -19),
-        (FISHER_GRAD, "K=12k, c=.24"): (-48, -19),
-        (FISHER_GRAD, "K=12k, c=.48"): (-10, -20),
+        (FISHER_GRAD, "K=1k, c=.64"): (8, 7),
+        (FISHER_GRAD, "K=2k, c=.64"): (8, 7),
+        (FISHER_GRAD, "K=4k, c=.40"): (-25, 7),
+        (FISHER_GRAD, "K=12k, c=.22"): (-38, -18),
+        (FISHER_GRAD, "K=16k, c=.18"): (8, -18),
     },
     "math": {
         (SN_TUNE, "alpha=1"): (7, 7),
@@ -393,9 +417,11 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (DIRECT_GRAD, "K=2k, s=1"): (7, 7),
         (DIRECT_GRAD, "K=4k, s=1"): (7, -16),
         (DIRECT_GRAD, "K=4k, s=.75"): (-88, 14),
-        (FISHER_GRAD, "K=12k, c=.22"): (8, 14),
-        (FISHER_GRAD, "K=12k, c=.24"): (7, -17),
-        (FISHER_GRAD, "K=12k, c=.48"): (7, 7),
+        (FISHER_GRAD, "K=1k, c=.64"): (8, 7),
+        (FISHER_GRAD, "K=2k, c=.64"): (8, 7),
+        (FISHER_GRAD, "K=4k, c=.40"): (-25, 7),
+        (FISHER_GRAD, "K=12k, c=.22"): (-25, -18),
+        (FISHER_GRAD, "K=16k, c=.18"): (8, -18),
     },
     "bbh": {
         (SN_TUNE, "alpha=1"): (-48, -17),
@@ -414,9 +440,11 @@ OFFSETS: dict[str, dict[tuple[str, str], tuple[int, int]]] = {
         (DIRECT_GRAD, "K=2k, s=1"): (-54, 7),
         (DIRECT_GRAD, "K=4k, s=1"): (7, -17),
         (DIRECT_GRAD, "K=4k, s=.75"): (-72, 14),
-        (FISHER_GRAD, "K=12k, c=.22"): (8, 13),
-        (FISHER_GRAD, "K=12k, c=.24"): (-43, -17),
-        (FISHER_GRAD, "K=12k, c=.48"): (7, 7),
+        (FISHER_GRAD, "K=1k, c=.64"): (8, 7),
+        (FISHER_GRAD, "K=2k, c=.64"): (-25, 7),
+        (FISHER_GRAD, "K=4k, c=.40"): (8, 7),
+        (FISHER_GRAD, "K=12k, c=.22"): (-34, -18),
+        (FISHER_GRAD, "K=16k, c=.18"): (8, -18),
     },
 }
 
@@ -495,7 +523,7 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
     ax.set_title(
         f"{config['title']}\n"
         "All Grad results use first-cue-256; direct: solid s=1 K sweep, "
-        "dashed K=4k strength branch; diagonal Fisher: K=12k c sweep"
+        "dashed K=4k strength branch; diagonal Fisher: zero-floor K sweep, cap=.75"
     )
 
     ax.scatter(
