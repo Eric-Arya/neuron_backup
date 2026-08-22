@@ -3,16 +3,15 @@
 ## Result
 
 Dense full Fisher did not produce a viable safety controller in the tested
-range. The best raw HarmBench-47 result was 42.55% attack success rate (ASR),
-at `k=2,000` with target positive-coordinate median 0.45 or 0.60. This is well
-above the established 10% advancement gate, so none of these configurations
-should advance to frozen HarmBench or capability evaluation.
+range. After a brief extension through `k=4,000`, the best raw HarmBench-47
+result was 29.79% attack success rate (ASR), at `k=4,000` with target
+positive-coordinate median 0.60. This is well above the established 10%
+advancement gate, so none of these configurations should advance to frozen
+HarmBench or capability evaluation.
 
 Increasing `k` helped: the best ASR fell from 55.32% at `k=250` to 42.55% at
-`k=2,000`. However, the gain came with more repetitive responses, reaching
-14/47 for both best `k=2,000` settings. The saved dense Fisher artifact covers
-only the first 2,000 ranked neurons; larger `k` would require computing a new
-quadratically larger matrix.
+`k=2,000`, 31.91% at `k=3,000`, and 29.79% at `k=4,000`. However, the gain came
+with more repetitive responses, reaching 15/47 at the best `k=4,000` setting.
 
 ## Protocol
 
@@ -20,9 +19,11 @@ quadratically larger matrix.
 - Ranking and safe gradient: first completed refusal cue from 256 safe
   on-policy SNCorpus raw responses, tail/final-position scope, positive
   gradients only.
-- Fisher: saved empirical 2,000 by 2,000 full matrix estimated from 1,024 raw
-  WikiText contexts, with all off-diagonal entries retained.
-- Prefixes: `k=250, 500, 1,000, 1,500, 2,000`.
+- Fisher: empirical full matrices estimated from the same 1,024 raw WikiText
+  contexts, with all off-diagonal entries retained. The initial matrix covered
+  2,000 neurons; the brief extension computed a new 4,000 by 4,000 matrix.
+- Prefixes: `k=250, 500, 1,000, 1,500, 2,000`, followed by a smaller search at
+  `k=3,000` and `k=4,000`.
 - Safety screen: the raw 47-example HarmBench tuning subset, greedy decoding,
   128 generated tokens, batch size 16.
 - Edit constraints: floor 0 and maximum delta 0.75.
@@ -51,11 +52,16 @@ cross-neuron curvature. The final edit is
 \]
 
 with `a` chosen so the uncapped positive-coordinate median targets one of
-0.10, 0.20, 0.30, 0.45, or 0.60. All five nonnegative solves converged.
+0.10, 0.20, 0.30, 0.45, or 0.60. All seven nonnegative prefix solves
+converged; the larger-k extension used only 0.30, 0.45, and 0.60.
 
-The existing real-context benchmark was reused rather than repeated. For full
-Fisher construction, batch size 4 was fastest at 3.108 contexts/s and used
-39.3 GB on an H100; batch 16 remained the persisted safety-evaluation setting.
+The existing real-context benchmark was reused for the initial sweep. Before
+computing the larger matrix, the 4k workload was benchmarked on 16 real
+contexts: batch size 4 was fastest at 3.370 contexts/s and used 38.96 GB on an
+H100, versus 2.355 contexts/s for batch 2 and 3.111 for batch 8. Batch 4 is
+persisted in the larger-k runner. The production matrix used 4,096 score
+vectors, took 443.5 seconds, and peaked at 39.0 GB. Batch 16 remained the
+persisted safety-evaluation setting.
 
 ## HarmBench-47 sweep
 
@@ -90,6 +96,17 @@ Fisher construction, batch size 4 was fastest at 3.108 contexts/s and used
 | 2,000 | 0.45 | 20/47 | 42.55% | 14 | 1,598 | 455 |
 | 2,000 | 0.60 | 20/47 | 42.55% | 14 | 1,598 | 659 |
 
+### Brief larger-k extension
+
+| k | Target positive median | Successful attacks | ASR | Repetitive | Positive | Capped |
+|---:|---:|---:|---:|---:|---:|---:|
+| 3,000 | 0.30 | 20/47 | 42.55% | 14 | 2,408 | 358 |
+| 3,000 | 0.45 | 16/47 | 34.04% | 16 | 2,408 | 723 |
+| 3,000 | 0.60 | 15/47 | 31.91% | 16 | 2,408 | 1,015 |
+| 4,000 | 0.30 | 19/47 | 40.43% | 15 | 3,147 | 404 |
+| 4,000 | 0.45 | 15/47 | 31.91% | 15 | 3,147 | 885 |
+| 4,000 | 0.60 | 14/47 | **29.79%** | 15 | 3,147 | 1,288 |
+
 ## Interpretation
 
 Within each `k`, stronger median edits usually reduce ASR, and larger prefixes
@@ -98,9 +115,11 @@ safety threshold: at `k=2,000`, increasing the target median from 0.45 to 0.60
 caps 204 additional coordinates without changing either ASR or repetition.
 This makes further strength escalation under the same 0.75 cap unattractive.
 
-The practical conclusion is that the tested dense natural-gradient allocation
-is not competitive for safety editing at the available `k<=2,000`. The strong
-diagonal-Fisher results depend on much larger prefixes, up to 12,000 neurons;
-testing whether full Fisher eventually benefits from the same scale would
-require a substantially more memory-efficient structured or blockwise
-approximation rather than materializing a 12,000 by 12,000 dense matrix.
+The larger-k extension confirms that dense natural-gradient allocation keeps
+improving beyond 2k, but the improvement from 3k to 4k is only 2.12 ASR points
+at median 0.60 and remains 19.79 points above the gate. The practical
+conclusion is that it is not competitive for safety editing in the tested
+`k<=4,000` range. The strong diagonal-Fisher results depend on prefixes up to
+12,000 neurons; a broad full-Fisher extension to that scale would be better
+handled with a structured or blockwise approximation rather than continuing
+to materialize quadratically larger dense matrices.
