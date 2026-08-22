@@ -10,6 +10,7 @@ than copied into this script.
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import os
@@ -78,6 +79,8 @@ BBH_RUNS = {
     (IA3_SFT, "alpha=3.5"): "bbh_ia3_sft_snraw_alpha3p5_raw_cot_fp32",
     (IA3_PATCH, "K=40000"): "bbh_sft_patch_snraw_alpha3_top40000_raw_cot_bf16",
     (IA3_PATCH, "K=80000"): "bbh_sft_patch_snraw_alpha3_top80000_raw_cot_bf16",
+    (IA3_PATCH, "K=160000"): "bbh_sft_patch_snraw_alpha3_top160000_raw_cot_bf16",
+    (IA3_PATCH, "K=320000"): "bbh_sft_patch_snraw_alpha3_top320000_raw_cot_bf16",
 }
 
 
@@ -389,11 +392,11 @@ def point_id(point: Point) -> str:
 
 
 def point_key(benchmark: str) -> str:
-    patch_values = "40k,80k" if benchmark == "bbh" else "40k,80k,160k,320k"
+    del benchmark
     return (
         "Point IDs — SN1–4: α=1,4,6,8  |  "
         "IA1–6: α=1,1.5,2,2.5,3,3.5  |  "
-        f"P1–{2 if benchmark == 'bbh' else 4}: K={patch_values}\n"
+        "P1–4: K=40k,80k,160k,320k\n"
         "D1–4: (K,s)=(1k,1),(2k,1),(4k,1),(4k,.75)\n"
         "F1–8: (K,c)=(1k,.64),(2k,.64),(4k,.40),(6k,.52),(8k,.48),"
         "(12k,.22),(12k,.48),(16k,.18)"
@@ -684,6 +687,15 @@ def render(benchmark: str, rows: dict[tuple[str, str], dict[str, str]]) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--benchmarks",
+        nargs="+",
+        choices=tuple(BENCHMARKS),
+        default=tuple(BENCHMARKS),
+        help="Regenerate only the selected capability panels.",
+    )
+    args = parser.parse_args()
     plt.rcParams.update(
         {
             "font.size": 10,
@@ -696,7 +708,7 @@ def main() -> None:
         }
     )
     rows = load_tradeoff_rows()
-    for benchmark in ("bbh", "math", "ifeval"):
+    for benchmark in args.benchmarks:
         render(benchmark, rows)
 
 

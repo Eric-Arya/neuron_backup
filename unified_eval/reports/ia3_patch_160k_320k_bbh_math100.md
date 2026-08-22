@@ -19,6 +19,16 @@ The bold entries within the requested 160k/320k pair identify the better
 result for each capability benchmark. BBH differs by one answer, whereas
 MATH100 differs by three answers.
 
+## Figures
+
+The common point key labels the IA3 guide-patch series as P1–P4 for
+`K=40k, 80k, 160k, 320k`; therefore the new points are P3 and P4. Point IDs are
+drawn directly over their markers.
+
+![IA3 patch in the HarmBench–BBH trade-off](../figures/bbh_harmbench_tradeoff_main_only.png)
+
+![IA3 patch in the HarmBench–MATH100 trade-off](../figures/math500_harmbench_tradeoff_main_only.png)
+
 ## Protocol
 
 - Base: `Meta-Llama-3-8B-Instruct`.
